@@ -1,6 +1,8 @@
 package com.tgwei.demopet.demos.web.service;
 
+
 import com.tgwei.demopet.demos.web.entity.SysUser;
+import com.tgwei.demopet.demos.web.exception.CustomException;
 import com.tgwei.demopet.demos.web.mapper.LoginMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,18 +20,18 @@ public class LoginService {
     @Resource
     private LoginMapper loginMapper;
 
-    public SysUser login(SysUser sysUser) {
+    public SysUser adminLogin(SysUser sysUser) {
         String username = sysUser.getUsername();
-        SysUser dbSysUser = loginMapper.getSysUserByUsername(username);
+        SysUser dbSysUser = loginMapper.getSysUserByAdminUsername(username);
 
         // 验证用户是否存在
         if (dbSysUser == null) {
-            throw new RuntimeException("用户不存在");
+            throw new CustomException(400, "用户不存在");
         }
 
         // 验证用户是否被禁用
         if (dbSysUser.getStatus() != 1) {
-            throw new RuntimeException("账号已被禁用，请联系管理员");
+            throw new CustomException(500, "账号已被禁用，请联系管理员");
         }
 
         String inputPassword = sysUser.getPassword();// 输入的明文密码
@@ -40,7 +42,7 @@ public class LoginService {
 
         // 比较加密后的密码
         if (!storedPassword.equals(encryptedInputPassword)) {
-            throw new RuntimeException("密码错误");
+            throw new CustomException(400, "密码错误");
         }
 
         return dbSysUser;

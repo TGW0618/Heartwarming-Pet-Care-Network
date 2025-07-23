@@ -1,4 +1,3 @@
-// 导入 axios 库和 Element Plus 的消息提示组件
 import axios from "axios";
 import { ElMessage } from "element-plus";
 

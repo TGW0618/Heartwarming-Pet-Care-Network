@@ -1,13 +1,13 @@
 <template>
   <!--宠物主人-->
   <div>
-    <h2>全部客户</h2>
+    <h2>客户</h2>
     <Owners/>
   </div>
-
+  <hr>
   <!--员工-->
   <div>
-    <h2>全部员工</h2>
+    <h2>员工</h2>
     <Employees/>
   </div>
 

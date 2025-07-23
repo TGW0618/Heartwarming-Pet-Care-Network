@@ -1,7 +1,7 @@
 <template>
-  <h1>Home</h1>
+  <h1>首页</h1>
   <div>
-    <Data  value=""/>
+    <Data value=""/>
   </div>
 </template>
 

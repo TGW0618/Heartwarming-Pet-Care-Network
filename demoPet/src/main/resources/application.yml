@@ -11,3 +11,8 @@ spring:
 pet:
   security:
     salt: "Pet@2025Sys"  # 密码加密盐值
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {ElMessage} from "element-plus";
+import {reactive} from "vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -7,8 +9,8 @@ const router = createRouter({
         {
             path: '/',
             // 通过redirect重定向设置默认路由跳转
-            redirect: '/admin/login',
-            component: () => import('../../Backend/views/AdminLogin.vue'),
+            redirect: '/admin/home',
+            component: () => import('../../Backend/views/Home.vue'),
         },
         // 后台管理系统路由
         {
@@ -22,8 +24,9 @@ const router = createRouter({
         {
             path: '/admin',
             component: () => import('../../Backend/AdminApp.vue'),
-            redirect: '/admin/login',
+            redirect: '/admin/home',
             children: [
+                // 主要
                 {
                     path: 'home',
                     name: 'adminHome',
@@ -33,21 +36,59 @@ const router = createRouter({
                     component: () => import('../../Backend/views/Home.vue'),
                 },
                 {
-                    path: 'UserCenter',
+                    path: 'Appointment',
+                    name: 'Appointment',
+                    meta: {
+                        title: '预约管理',
+                    },
+                    component: () => import('../../Backend/views/Appointment.vue'),
+                },
+                {
+                    path: 'order',
+                    name: 'adminOrder',
+                    meta: {
+                        title: '订单管理',
+                    }
+                    ,
+                    component: () => import('../../Backend/views/Order.vue'),
+                },
+                {
+                    path: 'userCenter',
                     name: 'UserCenter',
                     meta: {
                         title: '个人中心',
                     },
                     component: () => import('../../Backend/views/UserCenter.vue'),
                 },
+                // 业务
+                {
+                    path: 'foster',
+                    name: 'Foster',
+                    meta: {
+                        title: '宠物寄养',
+                        roles: ['admin', 'foster_staff'],
+                    },
+                    component: () => import('../../Backend/views/Foster.vue'),
+                },
+                {
+                    path: 'vet',
+                    name: 'Vet',
+                    meta: {
+                        title: '医疗服务',
+                        roles: ['admin', 'veterinarian'],
+                    },
+                    component: () => import('../../Backend/views/Vet.vue'),
+                },
                 {
                     path: 'users',
                     name: 'Users',
                     meta: {
                         title: '用户管理',
+                        roles: ['admin'],
                     },
                     component: () => import('../../Backend/views/Users.vue'),
                 }
+                //     系统
 
             ]
         },
@@ -83,9 +124,38 @@ const router = createRouter({
     ],
 })
 
+const data = reactive({
+    user: null
+})
+
+
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '宠物管家系统'
-    next()
+
+    const user = JSON.parse(localStorage.getItem("petSysUser"))
+
+    // 如果访问的是登录页面，直接放行
+    if (to.path === '/admin/login') {
+        next()
+        return
+    }
+
+    // 检查是否已登录
+    if (!user) {
+        ElMessage.error("请先登录")
+        next('/admin/login')
+    } else {
+        data.user = user
+        // 权限校验
+        const requiredRoles = to.meta.roles
+        if (requiredRoles && !requiredRoles.includes(user.role)) {
+            ElMessage.error("无权限")
+            next('/404')
+            return
+        }
+        next()
+    }
 })
+
 
 export default router

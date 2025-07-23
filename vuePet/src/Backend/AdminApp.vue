@@ -9,8 +9,8 @@
             <div class="logo-content">
               <img src="../assets/icon/宠物天地.png" alt="logo" class="logo-img">
               <div>
-                <h2 class="logo-title" style="color: #2c3e50">宠物管家</h2>
-                <p class="logo-subtitle" style="color: #7f8c8d">专业寄养管理系统</p>
+                <h2 class="logo-title">宠物管家</h2>
+                <p class="logo-subtitle">专业寄养管理系统</p>
               </div>
             </div>
           </div>
@@ -25,77 +25,58 @@
                 router
                 :default-active="router.currentRoute.value.path"
             >
-              <!--              主要-->
-              <div style="padding-bottom: 5px">
-                <div style="width: 100%;">
-                  <p class="menu-title">主要</p>
-                </div>
+              <!-- 主要 -->
+              <div class="menu-section">
+                <p class="menu-title">主要</p>
                 <el-menu-item index="/admin/home">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <House/>
-                  </el-icon>
+                  <el-icon><House /></el-icon>
                   <span>首页</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/1">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <Timer/>
-                  </el-icon>
+                <el-menu-item index="/admin/Appointment">
+                  <el-icon><Timer /></el-icon>
                   <span>预约管理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/2">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <Collection/>
-                  </el-icon>
+                <el-menu-item index="/admin/order">
+                  <el-icon><Collection /></el-icon>
                   <span>订单管理</span>
                 </el-menu-item>
               </div>
-              <!--              业务-->
-              <div style="padding-bottom: 5px">
-                <div style="width: 100%;">
-                  <p class="menu-title">业务</p>
-                </div>
-                <el-menu-item index="/admin/3">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <Notification/>
-                  </el-icon>
+
+              <!-- 业务 -->
+              <div class="menu-section">
+                <p class="menu-title">业务</p>
+                <el-menu-item
+                  index="/admin/foster"
+                  v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
+                >
+                  <el-icon><Notification /></el-icon>
                   <span>宠物寄养</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/4">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <Phone/>
-                  </el-icon>
+                <el-menu-item
+                  index="/admin/vet"
+                  v-if="data.user.role === 'admin' || data.user.role === 'veterinarian'"
+                >
+                  <el-icon><Phone /></el-icon>
                   <span>医疗服务</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/users">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <UserFilled/>
-                  </el-icon>
+                <el-menu-item
+                  index="/admin/users"
+                  v-if="data.user.role === 'admin'"
+                >
+                  <el-icon><UserFilled /></el-icon>
                   <span>用户管理</span>
                 </el-menu-item>
               </div>
-              <!--              系统-->
-              <div style="padding-bottom: 5px">
-                <div style="width: 100%;">
-                  <p class="menu-title">系统</p>
-                </div>
-                <el-menu-item index="/admin/5">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <Tools/>
-                  </el-icon>
+
+              <!-- 系统 -->
+              <div class="menu-section" v-if="data.user.role === 'admin'">
+                <p class="menu-title">系统</p>
+                <el-menu-item index="/admin/system">
+                  <el-icon><Tools /></el-icon>
                   <span>系统管理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/6">
-                  <div>&nbsp;</div>
-                  <el-icon>
-                    <TrendCharts/>
-                  </el-icon>
+                <el-menu-item index="/admin/statistics">
+                  <el-icon><TrendCharts /></el-icon>
                   <span>数据统计</span>
                 </el-menu-item>
               </div>
@@ -113,24 +94,32 @@
           <div class="header-content">
             <div class="page-title">{{ $route.meta.title }}</div>
             <div class="search-bar">
-              <el-input :prefix-icon="Search" class="search-input" type="text" placeholder="搜索宠物、客户或订单...">
-              </el-input>
+              <el-input
+                :prefix-icon="Search"
+                class="search-input"
+                type="text"
+                placeholder="搜索宠物、客户或订单..."
+              />
             </div>
             <div class="user-info">
-              <div>
-                <el-icon>
-                  <Bell/>
-                </el-icon>
+              <div class="notification-icon">
+                <el-icon><Bell /></el-icon>
               </div>
-              <div style="padding: 28px">
-                <el-icon>
-                  <Message/>
-                </el-icon>
+              <div class="message-icon">
+                <el-icon><Message /></el-icon>
               </div>
-              <div @click="userCenter" style="width: 38px;height: 38px;">
-                <img :src="data.user.avatar" alt="头像" class="user-avatar">
+              <div class="avatar-wrapper" @click="toUserCenter">
+                <!-- 当用户有头像时显示用户头像，否则显示默认头像 -->
+                <img
+                  v-if="data.user && data.user.avatar"
+                  :src="data.user.avatar"
+                  alt="头像"
+                  class="user-avatar"
+                >
+                <el-avatar v-else class="user-avatar">
+                  <DefaultAvatar />
+                </el-avatar>
               </div>
-
             </div>
           </div>
         </el-header>
@@ -157,21 +146,21 @@ import {
   Notification,
   Phone,
   Search,
-  Timer, Tools, TrendCharts,
+  Timer,
+  Tools,
+  TrendCharts,
   UserFilled
 } from "@element-plus/icons-vue";
-import {reactive,} from "vue";
+import { onMounted, reactive } from "vue";
+import DefaultAvatar from "@/Common/components/DefaultAvatar.vue";
 
 const data = reactive({
-  user: JSON.parse(localStorage.getItem("petSysUser")),
+  user: JSON.parse(localStorage.getItem("petSysUser")) || {},
 })
 
-
-const userCenter = () => {
-  console.log("个人中心")
+const toUserCenter = () => {
   router.push("/admin/userCenter");
 };
-
 </script>
 
 <style scoped>
@@ -190,10 +179,19 @@ const userCenter = () => {
   background-color: var(--white-color);
   box-shadow: 1px 0 10px rgba(0, 0, 0, 0.05);
   height: 100vh;
-  transition: all 0.3s;
-
+  position: fixed; /* 固定定位 */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* 确保在最上层 */
+  overflow-y: auto; /* 允许滚动 */
 }
 
+/* 右侧主容器 */
+.main-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  margin-left: 240px; /* 为固定菜单留出空间 */
+}
 
 .sidebar-container {
   display: flex;
@@ -204,8 +202,7 @@ const userCenter = () => {
 /* Logo区域样式 */
 .logo-container {
   padding: 24px;
-  border-bottom: 1px solid var(--border-color);
-  border-bottom: #e9ecef 1px solid;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .logo-content {
@@ -240,47 +237,37 @@ const userCenter = () => {
   padding: 8px 0;
 }
 
+.menu-section {
+  padding-bottom: 5px;
+}
+
 .custom-menu {
   border-right: none;
   font-weight: 500;
   color: var(--text-dark);
 }
 
-.custom-menu span {
-  font-size: 16px;
-  letter-spacing: 0.1rem;
-}
-
-.custom-menu > div > .el-menu-item {
+.custom-menu :deep(.el-menu-item) {
   height: 40px;
   border-radius: 0 8px 8px 0;
+  margin: 2px 0;
 }
 
-.custom-menu > div > .el-menu-item:hover {
+.custom-menu :deep(.el-menu-item:hover) {
   background-color: #fbf6fc;
   color: #af54c2;
 }
 
-.custom-menu > .el-menu-item:active {
-  background-color: #f3e6f6;
-}
-
-.el-menu .is-active {
+.custom-menu :deep(.el-menu-item.is-active) {
   background-color: #f3e6f6 !important;
+  color: #af54c2;
 }
 
 .menu-title {
   font-size: 12px;
   color: #7f8c8d;
-  margin-left: 28px;
-  margin-bottom: 5px;
-}
-
-
-/* 右侧主容器 */
-.main-container {
-  background-color: #f8f9fa;
-  min-height: 100vh;
+  margin: 15px 28px 5px;
+  font-weight: 600;
 }
 
 /* 头部样式 */
@@ -291,6 +278,9 @@ const userCenter = () => {
   display: flex;
   align-items: center;
   padding: 0 24px;
+  position: sticky; /* 粘性定位 */
+  top: 0;
+  z-index: 999;
 }
 
 .header-content {
@@ -311,8 +301,6 @@ const userCenter = () => {
   flex: 1;
   max-width: 480px;
   margin: 0 20px;
-  position: relative;
-  padding-right: 100px;
 }
 
 /* 使用 :deep() 穿透 Element Plus 组件样式 */
@@ -349,25 +337,71 @@ const userCenter = () => {
   align-items: center;
   min-width: 160px;
   justify-content: flex-end;
+  gap: 20px;
+}
+
+.notification-icon, .message-icon {
+  font-size: 20px;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.notification-icon:hover, .message-icon:hover {
+  color: #af54c2;
+
+}
+
+.avatar-wrapper {
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.avatar-wrapper:hover {
+  transform: scale(1.1);
+  box-shadow: 2px 2px 18px 0 #af54c2;
 }
 
 .user-avatar {
-  cursor: pointer;
-  transition: all 0.3s;
-  height: 100%;
   width: 100%;
-  border-radius: 38px;
+  height: 100%;
+  display: block;
 }
-
-.user-avatar:hover {
-  transform: scale(1.1);
-  box-shadow: #987efb 3px 3px 8px 0px;
-}
-
 
 /* 内容区域 */
 .content-main {
   padding: 20px;
   background-color: transparent;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .custom-aside {
+    width: 70px;
+  }
+
+  .logo-title, .logo-subtitle, .menu-title, .custom-menu span {
+    display: none;
+  }
+
+  .logo-container {
+    padding: 24px 12px;
+  }
+
+  .logo-content {
+    justify-content: center;
+  }
+
+  .logo-img {
+    margin: 0 auto;
+  }
+
+  .main-container {
+    margin-left: 70px;
+  }
 }
 </style>

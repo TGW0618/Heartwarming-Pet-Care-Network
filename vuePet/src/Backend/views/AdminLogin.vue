@@ -87,6 +87,7 @@ import {reactive, ref} from 'vue'
 import {Avatar, Message, Cellphone} from '@element-plus/icons-vue'
 import request from "@/Backend/utils/request.js";
 import {ElMessage} from "element-plus";
+import router from "@/Common/router/index.js";
 
 const loginFormRef = ref(null)
 const rememberMe = ref(false)
@@ -102,26 +103,21 @@ const data = reactive({
       {required: true, message: '请输入密码', trigger: 'blur'},
       {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
     ]
-  }
+  },
 })
 
 
 const handleLogin = () => {
   loginFormRef.value.validate(valid => {
     if (valid) {
-
       // 登录请求(后台管理系统)
-      request.post('/login', data.loginForm).then(res => {
+      request.post('/admin/login', data.loginForm).then(res => {
+        console.log(res.data)
         if (res.code === 200) {
-
-          ElMessage.success("登陆成功")
-          //   存储后台返回的用户数据信息
           localStorage.setItem('petSysUser', JSON.stringify(res.data))// 把数据转为json字符串存储用户数据，
-
-          setTimeout(() => {
-            window.location.href = '/admin/home'
-          }, 300)
-
+          ElMessage.success("登陆成功")
+          //   跳转后台管理系统
+          router.replace('/admin/home')
         } else {
           ElMessage.error(res.message)
         }

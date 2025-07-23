@@ -1,5 +1,4 @@
 <template>
-  <h1>SysUserEmployees全部员工信息</h1>
   <div>
     <SysUsersComponent :users="data.users"/>
   </div>

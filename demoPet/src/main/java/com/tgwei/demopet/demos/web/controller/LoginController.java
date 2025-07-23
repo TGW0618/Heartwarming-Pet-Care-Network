@@ -15,12 +15,19 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
-    @PostMapping("/login")
-    public Result login(@RequestBody SysUser sysUser) {
-        SysUser dbSysUser =loginService.login(sysUser);
+    //    后台管理系统登录接口
+    @PostMapping("/admin/login")
+    public Result adminLogin(@RequestBody SysUser sysUser) {
+        SysUser dbSysUser = loginService.adminLogin(sysUser);
         return Result.success(dbSysUser);
     }
 
+//    客户端登录接口
+    @PostMapping("/client/login")
+    public Result clientLogin(@RequestBody SysUser sysUser) {
+        SysUser dbSysUser = loginService.adminLogin(sysUser);
+        return Result.success(dbSysUser);
+    }
 
 
 }
