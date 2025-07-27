@@ -38,5 +38,8 @@ public class SysUserService {
         sysUserMapper.updateSysUserPwd(sysUser);
     }
 
-
+    //新增用户
+    public void addSysUsers(SysUser sysUser) {
+        sysUserMapper.addSysUsers(sysUser);
+    }
 }

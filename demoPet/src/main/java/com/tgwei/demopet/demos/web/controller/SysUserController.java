@@ -49,5 +49,12 @@ public class SysUserController {
         return Result.success();
     }
 
+//    新增用户
+    @PostMapping("/addSysUsers")
+    public Result addSysUsers(@RequestBody SysUser sysUser) {
+        sysUserService.addSysUsers(sysUser);
+        return Result.success();
+    }
+
 
 }
