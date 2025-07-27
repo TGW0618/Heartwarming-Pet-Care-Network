@@ -191,10 +191,101 @@ import {HomeFilled,} from '@element-plus/icons-vue'
 
 .action-buttons {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-top: 30px;
+}
+
+.action-btn {
+  position: relative;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 500;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+.btn-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  transition: transform 0.3s;
+}
+
+.action-btn:hover .btn-icon {
+  transform: scale(1.1);
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-hover-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.4s ease;
+  z-index: 1;
+}
+
+.action-btn:hover .btn-hover-effect {
+  width: 100%;
+}
+
+/* 修改密码按钮特殊样式 */
+.password-btn {
+  background: linear-gradient(135deg, #272527, #8e44ad);
+  color: white;
+}
+
+.password-btn:hover {
+  background: linear-gradient(135deg, #9b4db0, #7d3c98);
+}
+
+/* 编辑资料按钮特殊样式 */
+.profile-btn {
+  background: linear-gradient(135deg, #ffb347, #ff8c00);
+  color: white;
+}
+
+.profile-btn:hover {
+  background: linear-gradient(135deg, #e6a142, #e67e00);
+}
+
+/* 退出登录按钮特殊样式 */
+.logout-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5253);
+  color: white;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #e65a5a, #d44a4a);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
 }
 
 .home-button {

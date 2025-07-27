@@ -64,7 +64,7 @@ request.interceptors.response.use(
             }
         } else if (error.request) {
             // 请求已发出但未收到响应（如后端服务未启动）
-            ElMessage.error('网络异常，请检查后端是否启动');
+            ElMessage.error('网络异常，请检查后端服务是否启动');
         } else {
             // 其他错误（如设置请求时出错）
             console.error('请求错误:', error.message);

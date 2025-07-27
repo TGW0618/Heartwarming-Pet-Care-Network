@@ -35,6 +35,10 @@ defineProps({
   }
 })
 
+const deleteUser = (id) => {
+  console.log("id:" + id)
+}
+
 </script>
 
 

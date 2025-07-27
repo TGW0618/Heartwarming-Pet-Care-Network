@@ -1,9 +1,9 @@
 <template>
   <div class="user-profile-container">
     <div class="user-profile">
-      <!-- 用户信息卡片 -->
+      <!-- 用户信息卡片开始 -->
       <el-card class="user-card" shadow="hover">
-        <!-- 头像和信息区域 -->
+        <!-- 头像和信息区域开始 -->
         <div class="user-info-container">
           <!-- 头像区域 -->
           <div class="avatar-section">
@@ -60,7 +60,7 @@
                   </el-icon>
                 </div>
                 <div class="info-content">
-                  <span class="info-label">姓名</span>
+                  <span class="info-label">名字</span>
                   <span class="info-value">{{ data.user.realName || '未设置' }}</span>
                 </div>
               </div>
@@ -127,31 +127,124 @@
             </div>
           </div>
         </div>
+        <!-- 头像和信息区域结束 -->
       </el-card>
+      <!-- 用户信息卡片结束 -->
     </div>
 
-    <!-- 操作按钮区域 -->
+    <!-- 操作按钮区域开始 -->
     <div class="action-buttons">
-      <el-button type="primary" @click="upPassword" round>
-        <el-icon>
+      <el-button
+          type="primary"
+          @click="updatePasswordBtn"
+          class="action-btn password-btn"
+      >
+        <el-icon class="btn-icon">
           <EditPen/>
         </el-icon>
-        修改密码
+        <span class="btn-text">修改密码</span>
+        <span class="btn-hover-effect"></span>
       </el-button>
-      <el-button type="warning" @click="editProfile" round>
-        <el-icon>
+
+      <el-button
+          type="warning"
+          @click="EditProfileBtn"
+          class="action-btn profile-btn"
+      >
+        <el-icon class="btn-icon">
           <User/>
         </el-icon>
-        编辑资料
+        <span class="btn-text">编辑资料</span>
+        <span class="btn-hover-effect"></span>
       </el-button>
-      <el-button type="danger" @click="loginOut" round>
-        <el-icon>
+
+      <el-button
+          type="danger"
+          @click="loginOut"
+          class="action-btn logout-btn"
+      >
+        <el-icon class="btn-icon">
           <SwitchButton/>
         </el-icon>
-        退出登录
+        <span class="btn-text">退出登录</span>
+        <span class="btn-hover-effect"></span>
       </el-button>
     </div>
+    <!-- 操作按钮区域结束 -->
   </div>
+  <!--    表单开始-->
+  <div>
+    <!--修改密码开始-->
+    <el-dialog
+        v-model="data.dialogVisibleUpdatePassword"
+        title="修改密码"
+        width="38%"
+
+    >
+      <el-form :model="data.updatePasswordData" :rules="data.updatePasswordDataRules" ref="passwordFormRef">
+        <el-form-item label="账号">
+          <span class="el-form-item__label">{{ data.user.username }}</span>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input type="password" v-model="data.updatePasswordData.newPassword"/>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPassword">
+          <el-input type="password" v-model="data.updatePasswordData.confirmPassword"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="data.dialogVisibleUpdatePassword = false">关闭</el-button>
+        <el-button type="primary" @click="savaUpdatePassword">
+          保存
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
+    <!--    修改密码结束-->
+    <!--    编辑资料开始-->
+    <el-dialog
+        v-model="data.dialogVisibleEditProfile"
+        title="个人信息"
+        width="38%"
+
+    >
+      <el-form :model="data.form">
+        <el-form-item label="名字">
+          <el-input v-model="data.form.realName"/>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-select
+              v-model="data.form.sex"
+              class="m-2"
+              placeholder="请选择性别"
+              style="width: 240px"
+          >
+            <el-option label="男" value="male"></el-option>
+            <el-option label="女" value="female"></el-option>
+            <el-option label="其他" value="other"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input v-model="data.form.phone"/>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="data.form.email"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="data.dialogVisibleEditProfile = false">关闭</el-button>
+        <el-button type="primary" @click="savaProfile">
+          保存
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
+    <!--    编辑资料结束-->
+  </div>
+  <!--    表单结束-->
+
 </template>
 
 <script setup>
@@ -172,11 +265,49 @@ import {
 import router from "@/Common/router/index.js"
 import {reactive, ref} from "vue"
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue"
+import request from "@/Backend/utils/request.js";
+
 
 const data = reactive({
-  user: JSON.parse(localStorage.getItem("petSysUser")),
+  loginToUsersData: JSON.parse(localStorage.getItem("petSysUser")),
+  user: [],
+  form: null,
+  updatePasswordData: {
+    id: null,
+    newPassword: null,
+    confirmPassword: null
+  },
+  updatePasswordDataRules: {
+    newPassword: [
+      {required: true, message: '请输入新密码', trigger: 'blur'},
+      {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+    ],
+    confirmPassword: [
+      {required: true, message: '请输入确认密码', trigger: 'blur'},
+      {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'},
+    ]
+  },
   userSex: ref(),
+  dialogVisibleUpdatePassword: ref(false),//修改密码弹窗显示表单
+  dialogVisibleEditProfile: ref(false),//编辑资料弹窗显示表单
+
+
 })
+const passwordFormRef = ref()
+
+
+// 根据localStorage本地缓存中的id请求获取对应的用户数据
+const getUsersData = () => {
+  console.log(data.loginToUsersData.id)
+  request.get("/sysUser/getSysUserById", {
+    params: {
+      id: data.loginToUsersData.id
+    }
+  }).then(res => {
+    data.user = res.data
+  })
+}
+getUsersData()
 
 // 添加简单的日期格式化函数
 const formatDate = (dateString) => {
@@ -215,19 +346,72 @@ const getSexDisplayName = (sex) => {
   return sexMap[sex] || sex
 }
 
-// 修改密码
-const upPassword = () => {
-  ElMessageBox.alert("修改密码功能待开发", "提示", {
-    type: "info"
+// 修改密码按钮updatePasswordBtn
+const updatePasswordBtn = () => {
+  data.dialogVisibleUpdatePassword = true
+  data.updatePasswordData.id = data.user.id
+  console.log(data.updatePasswordData)
+}
+
+// 保存修改密码
+const savaUpdatePassword = () => {
+  passwordFormRef.value.validate((valid) => {
+    if (valid) {
+      if (data.updatePasswordData.newPassword !== data.updatePasswordData.confirmPassword) {
+        ElMessage.error("新密码和确认密码不一致")
+      } else {
+        data.user.password = data.updatePasswordData.newPassword
+        ElMessageBox.confirm('确定修改密码吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          request.put('/sysUser/updateSysUserPwd', data.user).then(res => {
+            if (res.code === 200) {
+              passwordFormRef.value.resetFields() // 重置表单
+              data.dialogVisibleUpdatePassword = false
+              ElMessage.success('修改成功,请重新登录')
+              localStorage.removeItem("petSysUser")
+              router.push('/admin/login')
+            } else {
+              ElMessage.error(res.message)
+            }
+          }).catch(err => {
+            ElMessage.error(err.message)
+          })
+        })
+
+      }
+
+    } else {
+      ElMessage.error('请检查输入内容')
+      return false
+    }
+
   })
 }
 
-// 编辑资料
-const editProfile = () => {
-  ElMessageBox.alert("编辑资料功能待开发", "提示", {
-    type: "info"
+// 编辑资料按钮EditProfileBtn
+const EditProfileBtn = () => {
+  data.dialogVisibleEditProfile = true
+  data.form = JSON.parse(JSON.stringify(data.user))//深度拷贝一个新对象，避免修改原对象
+  console.log(data.form)
+}
+
+// 保存编辑资料
+const savaProfile = () => {
+  request.put('/sysUser/updateSysUsers', data.form).then(res => {
+    console.log(res.code)
+    if (res.code === 200) {
+      ElMessage.success("保存成功")
+      data.dialogVisibleEditProfile = false
+      getUsersData()
+    } else {
+      ElMessage.error("保存失败")
+    }
   })
 }
+
 
 // 退出登录
 const loginOut = () => {

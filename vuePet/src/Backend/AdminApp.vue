@@ -29,15 +29,21 @@
               <div class="menu-section">
                 <p class="menu-title">主要</p>
                 <el-menu-item index="/admin/home">
-                  <el-icon><House /></el-icon>
+                  <el-icon>
+                    <House/>
+                  </el-icon>
                   <span>首页</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/Appointment">
-                  <el-icon><Timer /></el-icon>
+                  <el-icon>
+                    <Timer/>
+                  </el-icon>
                   <span>预约管理</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/order">
-                  <el-icon><Collection /></el-icon>
+                  <el-icon>
+                    <Collection/>
+                  </el-icon>
                   <span>订单管理</span>
                 </el-menu-item>
               </div>
@@ -46,24 +52,30 @@
               <div class="menu-section">
                 <p class="menu-title">业务</p>
                 <el-menu-item
-                  index="/admin/foster"
-                  v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
+                    index="/admin/foster"
+                    v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
                 >
-                  <el-icon><Notification /></el-icon>
+                  <el-icon>
+                    <Notification/>
+                  </el-icon>
                   <span>宠物寄养</span>
                 </el-menu-item>
                 <el-menu-item
-                  index="/admin/vet"
-                  v-if="data.user.role === 'admin' || data.user.role === 'veterinarian'"
+                    index="/admin/vet"
+                    v-if="data.user.role === 'admin' || data.user.role === 'veterinarian'"
                 >
-                  <el-icon><Phone /></el-icon>
+                  <el-icon>
+                    <Phone/>
+                  </el-icon>
                   <span>医疗服务</span>
                 </el-menu-item>
                 <el-menu-item
-                  index="/admin/users"
-                  v-if="data.user.role === 'admin'"
+                    index="/admin/users"
+                    v-if="data.user.role === 'admin'"
                 >
-                  <el-icon><UserFilled /></el-icon>
+                  <el-icon>
+                    <UserFilled/>
+                  </el-icon>
                   <span>用户管理</span>
                 </el-menu-item>
               </div>
@@ -72,11 +84,15 @@
               <div class="menu-section" v-if="data.user.role === 'admin'">
                 <p class="menu-title">系统</p>
                 <el-menu-item index="/admin/system">
-                  <el-icon><Tools /></el-icon>
+                  <el-icon>
+                    <Tools/>
+                  </el-icon>
                   <span>系统管理</span>
                 </el-menu-item>
                 <el-menu-item index="/admin/statistics">
-                  <el-icon><TrendCharts /></el-icon>
+                  <el-icon>
+                    <TrendCharts/>
+                  </el-icon>
                   <span>数据统计</span>
                 </el-menu-item>
               </div>
@@ -95,29 +111,33 @@
             <div class="page-title">{{ $route.meta.title }}</div>
             <div class="search-bar">
               <el-input
-                :prefix-icon="Search"
-                class="search-input"
-                type="text"
-                placeholder="搜索宠物、客户或订单..."
+                  :prefix-icon="Search"
+                  class="search-input"
+                  type="text"
+                  placeholder="搜索宠物、客户或订单..."
               />
             </div>
             <div class="user-info">
               <div class="notification-icon">
-                <el-icon><Bell /></el-icon>
+                <el-icon>
+                  <Bell/>
+                </el-icon>
               </div>
               <div class="message-icon">
-                <el-icon><Message /></el-icon>
+                <el-icon>
+                  <Message/>
+                </el-icon>
               </div>
               <div class="avatar-wrapper" @click="toUserCenter">
                 <!-- 当用户有头像时显示用户头像，否则显示默认头像 -->
                 <img
-                  v-if="data.user && data.user.avatar"
-                  :src="data.user.avatar"
-                  alt="头像"
-                  class="user-avatar"
+                    v-if="data.user && data.user.avatar"
+                    :src="data.user.avatar"
+                    alt="头像"
+                    class="user-avatar"
                 >
                 <el-avatar v-else class="user-avatar">
-                  <DefaultAvatar />
+                  <DefaultAvatar/>
                 </el-avatar>
               </div>
             </div>
@@ -151,7 +171,7 @@ import {
   TrendCharts,
   UserFilled
 } from "@element-plus/icons-vue";
-import { onMounted, reactive } from "vue";
+import {onMounted, reactive} from "vue";
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue";
 
 const data = reactive({
@@ -404,4 +424,6 @@ const toUserCenter = () => {
     margin-left: 70px;
   }
 }
+
+
 </style>

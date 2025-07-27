@@ -44,7 +44,7 @@
 
           <div class="form-actions">
             <el-checkbox v-model="rememberMe">记住我</el-checkbox>
-            <el-link type="primary">忘记密码?</el-link>
+            <el-link type="primary" @click="forgetPassword">忘记密码?</el-link>
           </div>
 
           <el-button
@@ -60,13 +60,13 @@
         <div class="third-party-login">
           <p class="divider"><span>其他登录方式</span></p>
           <div class="social-icons">
-            <el-icon class="social-icon">
+            <el-icon class="social-icon" @click="handleLoginUser">
               <Avatar/>
             </el-icon>
-            <el-icon class="social-icon">
+            <el-icon class="social-icon" @click="handleLoginMessage">
               <Message/>
             </el-icon>
-            <el-icon class="social-icon">
+            <el-icon class="social-icon" @click="handleLoginPhone">
               <Cellphone/>
             </el-icon>
           </div>
@@ -112,7 +112,6 @@ const handleLogin = () => {
     if (valid) {
       // 登录请求(后台管理系统)
       request.post('/admin/login', data.loginForm).then(res => {
-        console.log(res.data)
         if (res.code === 200) {
           localStorage.setItem('petSysUser', JSON.stringify(res.data))// 把数据转为json字符串存储用户数据，
           ElMessage.success("登陆成功")
@@ -125,6 +124,20 @@ const handleLogin = () => {
     }
   })
 }
+
+const forgetPassword = () => {
+  ElMessage.info('请联系管理员')
+}
+const handleLoginUser = () => {
+  ElMessage.info('功能开发中')
+}
+const handleLoginMessage = () => {
+  ElMessage.info('功能开发中')
+}
+const handleLoginPhone = () => {
+  ElMessage.info('功能开发中')
+}
+
 </script>
 
 <style scoped>

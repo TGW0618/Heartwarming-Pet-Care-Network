@@ -3,9 +3,7 @@ package com.tgwei.demopet.demos.web.controller;
 import com.tgwei.demopet.demos.web.common.Result;
 import com.tgwei.demopet.demos.web.entity.SysUser;
 import com.tgwei.demopet.demos.web.service.SysUserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +26,27 @@ public class SysUserController {
     public Result getAllSysUserEmployee() {
         List<SysUser> sysUser = sysUserService.getAllSysUserEmployee();
         return Result.success(sysUser);
+    }
+
+    //    根据id查询用户信息
+    @GetMapping("/getSysUserById")
+    public Result getSysUserById(@RequestParam Integer id) {
+        SysUser sysUser = sysUserService.getSysUserById(id);
+        return Result.success(sysUser);
+    }
+
+    //    修改用户信息
+    @PutMapping("/updateSysUsers")
+    public Result updateSysUsers(@RequestBody SysUser sysUser) {
+        sysUserService.updateSysUsers(sysUser);
+        return Result.success();
+    }
+
+    //    修改用户密码
+    @PutMapping("/updateSysUserPwd")
+    public Result updateSysUserPwd(@RequestBody SysUser sysUser) {
+        sysUserService.updateSysUserPwd(sysUser);
+        return Result.success();
     }
 
 

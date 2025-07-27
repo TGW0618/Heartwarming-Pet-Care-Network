@@ -26,11 +26,10 @@ const getAllSysUserOwner = () => {
       username: data.value.username
     }
   }).then(res => {
-    console.log(res)
+
     if (res.code === 200) {
       data.value.users = res.data || []
       data.value.total = res.data.total || 0
-      console.log(data.value.users)
     } else {
       ElMessage.error(res.message)
     }

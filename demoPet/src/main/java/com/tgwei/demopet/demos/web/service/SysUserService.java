@@ -22,5 +22,21 @@ public class SysUserService {
         return sysUserMapper.getAllSysUserEmployee();
     }
 
+    //根据id查询用户信息
+    public SysUser getSysUserById(Integer id) {
+        return sysUserMapper.getSysUserById(id);
+    }
+
+    // 修改用户 信息
+    public void updateSysUsers(SysUser sysUser) {
+        sysUserMapper.updateSysUsers(sysUser);
+    }
+
+
+    // 修改用户 密码
+    public void updateSysUserPwd(SysUser sysUser) {
+        sysUserMapper.updateSysUserPwd(sysUser);
+    }
+
 
 }
