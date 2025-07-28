@@ -49,10 +49,18 @@ public class SysUserController {
         return Result.success();
     }
 
-//    新增用户
+    //    新增用户
     @PostMapping("/addSysUsers")
     public Result addSysUsers(@RequestBody SysUser sysUser) {
         sysUserService.addSysUsers(sysUser);
+        return Result.success();
+    }
+
+//    删除 用户
+
+    @DeleteMapping("/deleteSysUsers")
+    public Result deleteSysUsers(@RequestParam Integer id) {
+        sysUserService.deleteSysUsers(id);
         return Result.success();
     }
 

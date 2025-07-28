@@ -42,4 +42,9 @@ public class SysUserService {
     public void addSysUsers(SysUser sysUser) {
         sysUserMapper.addSysUsers(sysUser);
     }
+
+    //    删除用户
+    public void deleteSysUsers(Integer id) {
+        sysUserMapper.deleteSysUsers(id);
+    }
 }

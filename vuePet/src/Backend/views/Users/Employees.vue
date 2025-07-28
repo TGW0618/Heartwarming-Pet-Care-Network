@@ -1,14 +1,15 @@
 <template>
   <div>
-    <SysUsersComponent :users="data.users"/>
+    <SysUsersComponent :users="data.users" />
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import request from "@/Backend/utils/request.js";
 import SysUsersComponent from '../../components/SysUsersComponents.vue'
 import {ElMessage} from "element-plus";
+import {useUserStore} from '@/Backend/stores/userStore.js'
 
 const data = ref({
   users: [],
@@ -17,6 +18,15 @@ const data = ref({
   total: 0,
   username: null,
 })
+
+const userStore = useUserStore()
+// 监听状态变化
+watch(() => userStore.refreshFlag, () => {
+  // 刷新数据
+  getAllSysUserEmployee()
+
+})
+
 
 const getAllSysUserEmployee = () => {
   request.get('/sysUser/getAllSysUserEmployee', {

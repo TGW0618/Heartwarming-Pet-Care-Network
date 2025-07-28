@@ -1,6 +1,7 @@
 package com.tgwei.demopet.demos.web.mapper;
 
 import com.tgwei.demopet.demos.web.entity.SysUser;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -24,7 +25,7 @@ public interface SysUserMapper {
     SysUser getSysUserById(Integer id);
 
     //    根据id修改用户信息
-    @Select("update sys_user set username=#{username},password=sha2(concat(#{password},'Pet@2025Sys'),256),real_name=#{realName},sex=#{sex},phone=#{phone},email=#{email},avatar=#{avatar} where id=#{id}")
+    @Select("update sys_user set username=#{username},password=sha2(concat(#{password},'Pet@2025Sys'),256),real_name=#{realName},sex=#{sex},phone=#{phone},email=#{email},avatar=#{avatar},status=#{status},role=#{role} where id=#{id}")
     void updateSysUsers(SysUser sysUser);
 
     //    修改用户密码
@@ -34,4 +35,8 @@ public interface SysUserMapper {
     //新增用户
     @Insert("insert into sys_user(username,password,real_name,sex,phone,email,avatar,role,status) values(#{username},sha2(concat(#{password},'Pet@2025Sys'),256),#{realName},#{sex},#{phone},#{email},#{avatar},#{role},#{status})")
     void addSysUsers(SysUser sysUser);
+
+    //    删除用户
+    @Delete("delete from sys_user where id=#{id}")
+    void deleteSysUsers(Integer id);
 }
