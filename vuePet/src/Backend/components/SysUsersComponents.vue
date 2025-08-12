@@ -127,6 +127,7 @@
           label-width="100px"
           label-position="left"
       >
+        <!-- 基本信息 -->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="用户ID">
@@ -142,43 +143,44 @@
 
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="data.upSysUsersForm.password" show-password/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="昵称" prop="realName">
               <el-input v-model="data.upSysUsersForm.realName"/>
             </el-form-item>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="性别" prop="sex">
-              <el-select v-model="data.upSysUsersForm.sex" placeholder="请选择性别">
+              <el-select v-model="data.upSysUsersForm.sex" placeholder="请选择性别" style="width: 100%">
                 <el-option label="男" value="male"/>
                 <el-option label="女" value="female"/>
                 <el-option label="其他" value="other"/>
               </el-select>
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <!-- 联系方式 -->
+        <el-divider content-position="left">联系方式</el-divider>
+
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="手机号" prop="phone">
               <el-input v-model="data.upSysUsersForm.phone"/>
             </el-form-item>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="data.upSysUsersForm.email"/>
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <!-- 权限设置 -->
+        <el-divider content-position="left">权限设置</el-divider>
+
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="角色" prop="role">
-              <el-select v-model="data.upSysUsersForm.role" placeholder="选择角色">
+              <el-select v-model="data.upSysUsersForm.role" placeholder="选择角色" style="width: 100%">
                 <el-option
                     v-for="item in optionsRole"
                     :key="item.value"
@@ -188,17 +190,18 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="状态" prop="status">
+              <el-switch
+                  v-model="data.upSysUsersForm.status"
+                  :active-value="1"
+                  :inactive-value="0"
+                  active-text="启用"
+                  inactive-text="禁用"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
-
-        <el-form-item label="状态" prop="status">
-          <el-switch
-              v-model="data.upSysUsersForm.status"
-              :active-value="1"
-              :inactive-value="0"
-              active-text="启用"
-              inactive-text="禁用"
-          />
-        </el-form-item>
       </el-form>
 
       <template #footer>
@@ -214,9 +217,9 @@
 </template>
 
 <script setup>
-import {defineProps, reactive, ref, computed} from 'vue'
+import {computed, defineProps, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus"
-import {Search, Edit, Delete} from '@element-plus/icons-vue'
+import {Delete, Edit, Search} from '@element-plus/icons-vue'
 import request from "@/Backend/utils/request.js"
 import {useUserStore} from '@/Backend/stores/userStore.js'
 
@@ -292,12 +295,13 @@ const getRoleTagType = (role) => {
     case 'foster_staff':
       return 'primary'
     default:
-      return ''
+      return null
   }
 }
 
+// 搜索
 const handleSearch = () => {
-  // 搜索逻辑
+
 }
 
 const deleteUserBtn = async (user) => {
@@ -360,9 +364,12 @@ const savaUpdateUser = async () => {
   }
 }
 
+// 状态修改请求
 const handleStatusChange = async (user) => {
+  console.log(user.id)
+  console.log(user.status)
   try {
-    const res = await request.put('/sysUser/updateStatus', {
+    const res = await request.put('/sysUser/updateSysUserStatus', {
       id: user.id,
       status: user.status
     })

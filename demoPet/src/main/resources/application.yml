@@ -8,11 +8,23 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
 pet:
   security:
     salt: "Pet@2025Sys"  # 密码加密盐值
 
-
+# MyBatis配置
 mybatis:
+  # MyBatis映射文件位置
+  mapper-locations: classpath:mapper/*.xml
   configuration:
+    # 配置日志实现，这里选择标准输出
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 自动将下划线风格的列名转换为驼峰风格的属性名
     map-underscore-to-camel-case: true
+

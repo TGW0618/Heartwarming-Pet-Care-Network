@@ -14,6 +14,7 @@ public class SysUserService {
 
     //   查询全部宠物主人信息
     public List<SysUser> getAllSysUserOwner() {
+
         return sysUserMapper.getAllSysUserOwner();
     }
 
@@ -46,5 +47,10 @@ public class SysUserService {
     //    删除用户
     public void deleteSysUsers(Integer id) {
         sysUserMapper.deleteSysUsers(id);
+    }
+
+//    修改用户状态
+    public void updateSysUserStatus(SysUser sysUser) {
+        sysUserMapper.updateSysUserStatus(sysUser);
     }
 }

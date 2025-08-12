@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SysUsersComponent :users="data.users" />
+    <SysUsersComponent :users="data.users"/>
   </div>
 </template>
 

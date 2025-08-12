@@ -84,7 +84,7 @@
 
 <script setup>
 import {reactive, ref} from 'vue'
-import {Avatar, Message, Cellphone} from '@element-plus/icons-vue'
+import {Avatar, Cellphone, Message} from '@element-plus/icons-vue'
 import request from "@/Backend/utils/request.js";
 import {ElMessage} from "element-plus";
 import router from "@/Common/router/index.js";
@@ -104,6 +104,7 @@ const data = reactive({
       {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
     ]
   },
+  loginUser: [],
 })
 
 
@@ -113,6 +114,7 @@ const handleLogin = () => {
       // 登录请求(后台管理系统)
       request.post('/admin/login', data.loginForm).then(res => {
         if (res.code === 200) {
+
           localStorage.setItem('petSysUser', JSON.stringify(res.data))// 把数据转为json字符串存储用户数据，
           ElMessage.success("登陆成功")
           //   跳转后台管理系统

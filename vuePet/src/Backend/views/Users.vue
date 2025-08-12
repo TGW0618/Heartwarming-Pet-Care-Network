@@ -2,23 +2,28 @@
   <div class="user-management-container">
     <!-- 顶部操作栏 -->
     <div class="action-bar">
+<!--      新增用户按钮开始-->
       <el-button
           type="primary"
           @click="addSysUsersBtn"
           class="add-user-btn"
       >
-        <el-icon><Plus /></el-icon>
+        <el-icon>
+          <Plus/>
+        </el-icon>
         新增用户
       </el-button>
+      <!--      新增用户按钮结束-->
+
     </div>
 
     <!-- 用户分类标签页 -->
     <el-tabs v-model="activeTab" class="user-tabs">
       <el-tab-pane label="客户管理" name="owners">
-        <Owners class="user-table" />
+        <Owners class="user-table"/>
       </el-tab-pane>
       <el-tab-pane label="员工管理" name="employees">
-        <Employees class="user-table" />
+        <Employees class="user-table"/>
       </el-tab-pane>
     </el-tabs>
 
@@ -73,9 +78,9 @@
                   placeholder="请选择性别"
                   class="w-full"
               >
-                <el-option label="男" value="male" />
-                <el-option label="女" value="female" />
-                <el-option label="其他" value="other" />
+                <el-option label="男" value="male"/>
+                <el-option label="女" value="female"/>
+                <el-option label="其他" value="other"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -124,8 +129,8 @@
                   placeholder="请选择状态"
                   class="w-full"
               >
-                <el-option label="启用" value="1" />
-                <el-option label="禁用" value="0" />
+                <el-option label="启用" value="1"/>
+                <el-option label="禁用" value="0"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -146,14 +151,15 @@
       </template>
     </el-dialog>
   </div>
+
 </template>
 
 <script setup>
-import { Plus } from '@element-plus/icons-vue'
+import {Plus} from '@element-plus/icons-vue'
 import Owners from './Users/Owners.vue'
 import Employees from './Users/Employees.vue'
-import { reactive, ref } from "vue"
-import { ElMessage } from "element-plus"
+import {reactive, ref} from "vue"
+import {ElMessage} from "element-plus"
 import request from "@/Backend/utils/request.js"
 
 const activeTab = ref('owners')
@@ -174,38 +180,41 @@ const data = reactive({
   },
 })
 
+// 角色设置
 const optionsRole = [
-  { value: 'admin', label: '管理员' },
-  { value: 'owner', label: '普通用户' },
-  { value: 'veterinarian', label: '医生' },
-  { value: 'foster_staff', label: '寄养员' },
+  {value: 'admin', label: '管理员'},
+  {value: 'owner', label: '普通用户'},
+  {value: 'veterinarian', label: '医生'},
+  {value: 'foster_staff', label: '寄养员'},
 ]
 
+// 设置表单必填提示
 const addSysUsersFormRules = {
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur' }
+    {required: true, message: '请输入用户名', trigger: 'blur'},
+    {min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur'}
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur' }
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur'}
   ],
   realName: [
-    { required: true, message: '请输入昵称', trigger: 'blur' },
-    { min: 2, max: 16, message: '长度在2到16个字符', trigger: 'blur' }
+    {required: true, message: '请输入昵称', trigger: 'blur'},
+    {min: 2, max: 16, message: '长度在2到16个字符', trigger: 'blur'}
   ],
   phone: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
-    { min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur' }
+    {required: true, message: '请输入手机号', trigger: 'blur'},
+    {min: 6, max: 16, message: '长度在6到16个字符', trigger: 'blur'}
   ],
   role: [
-    { required: true, message: '请选择角色', trigger: 'change' },
+    {required: true, message: '请选择角色', trigger: 'change'},
   ],
   status: [
-    { required: true, message: '请选择状态', trigger: 'change' },
+    {required: true, message: '请选择状态', trigger: 'change'},
   ],
 }
 
+// 新增用户按钮
 const addSysUsersBtn = () => {
   if (addSysUsersFormRef.value) {
     addSysUsersFormRef.value.resetFields()
@@ -213,6 +222,7 @@ const addSysUsersBtn = () => {
   data.dialogVisible = true
 }
 
+// 新增用户
 const handleAddUser = () => {
   addSysUsersFormRef.value.validate(async (valid) => {
     if (valid) {
@@ -240,6 +250,8 @@ const handleAddUser = () => {
 </script>
 
 <style scoped>
+
+
 .user-management-container {
   padding: 20px;
   background-color: #f5f7fa;

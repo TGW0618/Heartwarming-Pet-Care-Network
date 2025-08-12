@@ -27,7 +27,7 @@
             >
               <!-- 主要 -->
               <div class="menu-section">
-                <p class="menu-title">主要</p>
+                <!--                <p class="menu-title">主要</p>-->
                 <el-menu-item index="/admin/home">
                   <el-icon>
                     <House/>
@@ -50,7 +50,7 @@
 
               <!-- 业务 -->
               <div class="menu-section">
-                <p class="menu-title">业务</p>
+                <!--                <p class="menu-title">业务</p>-->
                 <el-menu-item
                     index="/admin/foster"
                     v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
@@ -82,7 +82,19 @@
 
               <!-- 系统 -->
               <div class="menu-section" v-if="data.user.role === 'admin'">
-                <p class="menu-title">系统</p>
+                <!--                <p class="menu-title">系统</p>-->
+                <el-menu-item index="/admin/system">
+                  <el-icon>
+                    <Tools/>
+                  </el-icon>
+                  <span>宠物管理</span>
+                </el-menu-item>
+                <el-menu-item index="/admin/system">
+                  <el-icon>
+                    <Tools/>
+                  </el-icon>
+                  <span>宠舍管理</span>
+                </el-menu-item>
                 <el-menu-item index="/admin/system">
                   <el-icon>
                     <Tools/>
@@ -131,8 +143,8 @@
               <div class="avatar-wrapper" @click="toUserCenter">
                 <!-- 当用户有头像时显示用户头像，否则显示默认头像 -->
                 <img
-                    v-if="data.user && data.user.avatar"
-                    :src="data.user.avatar"
+                    v-if="data.user && userStore.userAvatar"
+                    :src="userStore.userAvatar"
                     alt="头像"
                     class="user-avatar"
                 >
@@ -171,16 +183,27 @@ import {
   TrendCharts,
   UserFilled
 } from "@element-plus/icons-vue";
-import {onMounted, reactive} from "vue";
+import {reactive} from "vue";
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue";
+import {useUserStore} from "@/Backend/stores/userStore.js";
+
+const userStore = useUserStore()
+
 
 const data = reactive({
-  user: JSON.parse(localStorage.getItem("petSysUser")) || {},
+  user: JSON.parse(localStorage.getItem("petSysUser"))
 })
 
 const toUserCenter = () => {
   router.push("/admin/userCenter");
 };
+
+const getAvatar = async () => {
+  userStore.getUserAvatar(data.user.avatar)
+}
+getAvatar()
+
+
 </script>
 
 <style scoped>
@@ -390,6 +413,7 @@ const toUserCenter = () => {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: cover;
 }
 
 /* 内容区域 */

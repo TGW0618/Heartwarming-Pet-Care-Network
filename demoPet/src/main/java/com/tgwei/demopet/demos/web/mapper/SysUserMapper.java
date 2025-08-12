@@ -25,7 +25,7 @@ public interface SysUserMapper {
     SysUser getSysUserById(Integer id);
 
     //    根据id修改用户信息
-    @Select("update sys_user set username=#{username},password=sha2(concat(#{password},'Pet@2025Sys'),256),real_name=#{realName},sex=#{sex},phone=#{phone},email=#{email},avatar=#{avatar},status=#{status},role=#{role} where id=#{id}")
+    @Select("update sys_user set username=#{username},real_name=#{realName},sex=#{sex},phone=#{phone},email=#{email},avatar=#{avatar},status=#{status},role=#{role} where id=#{id}")
     void updateSysUsers(SysUser sysUser);
 
     //    修改用户密码
@@ -39,4 +39,8 @@ public interface SysUserMapper {
     //    删除用户
     @Delete("delete from sys_user where id=#{id}")
     void deleteSysUsers(Integer id);
+
+//    修改状态
+    @Select("update sys_user set status=#{status} where id=#{id}")
+    void updateSysUserStatus(SysUser sysUser);
 }

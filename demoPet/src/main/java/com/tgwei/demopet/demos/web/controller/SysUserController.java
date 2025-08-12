@@ -64,5 +64,12 @@ public class SysUserController {
         return Result.success();
     }
 
+//    修改 状态
+    @PutMapping("/updateSysUserStatus")
+    public Result updateSysUserStatus(@RequestBody  SysUser sysUser) {
+        sysUserService.updateSysUserStatus(sysUser);
+        return Result.success();
+    }
+
 
 }

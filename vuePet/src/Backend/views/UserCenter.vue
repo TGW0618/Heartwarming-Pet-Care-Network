@@ -203,6 +203,7 @@
     </el-dialog>
     <!--    修改密码结束-->
     <!--    编辑资料开始-->
+
     <el-dialog
         v-model="data.dialogVisibleEditProfile"
         title="个人信息"
@@ -210,6 +211,22 @@
 
     >
       <el-form :model="data.form">
+        <el-form-item label="头像" class="avatar-form-item">
+          <el-upload
+              class="avatar-uploader"
+              action="http://localhost:8083/files/upload"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <div class="avatar-preview">
+              <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar-image" alt="头像预览"/>
+              <el-icon v-else class="avatar-uploader-icon">
+                <Plus/>
+              </el-icon>
+            </div>
+          </el-upload>
+        </el-form-item>
+
         <el-form-item label="名字">
           <el-input v-model="data.form.realName"/>
         </el-form-item>
@@ -245,27 +262,31 @@
   </div>
   <!--    表单结束-->
 
+
 </template>
 
 <script setup>
 import {ElMessage, ElMessageBox} from "element-plus"
 import {
-  User,
-  Lock,
-  UserFilled,
-  Male,
-  Phone,
-  Message,
   Calendar,
-  Timer,
   EditPen,
+  Lock,
+  Male,
+  Message,
+  Phone,
+  SuccessFilled,
   SwitchButton,
-  SuccessFilled
+  Timer,
+  User,
+  UserFilled
 } from '@element-plus/icons-vue'
 import router from "@/Common/router/index.js"
 import {reactive, ref} from "vue"
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue"
 import request from "@/Backend/utils/request.js";
+import {useUserStore} from "@/Backend/stores/userStore.js";
+
+const userStore = useUserStore()
 
 
 const data = reactive({
@@ -305,6 +326,8 @@ const getUsersData = () => {
     }
   }).then(res => {
     data.user = res.data
+    localStorage.setItem("petSysUser", JSON.stringify(res.data))
+    userStore.getUserAvatar(res.data.avatar)
   })
 }
 getUsersData()
@@ -401,10 +424,10 @@ const EditProfileBtn = () => {
 // 保存编辑资料
 const savaProfile = () => {
   request.put('/sysUser/updateSysUsers', data.form).then(res => {
-    console.log(res.code)
     if (res.code === 200) {
       ElMessage.success("保存成功")
       data.dialogVisibleEditProfile = false
+      // 更新用户数据
       getUsersData()
     } else {
       ElMessage.error("保存失败")
@@ -432,6 +455,12 @@ const loginOut = () => {
     ElMessage.info("取消退出")
   })
 }
+
+const handleAvatarSuccess = (res) => {
+  console.log(res.data)
+  data.form.avatar = res.data
+};
+
 
 </script>
 
@@ -633,5 +662,43 @@ const loginOut = () => {
     height: 36px;
     margin-right: 12px;
   }
+}
+
+
+.avatar-uploader {
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px dashed #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.avatar-preview:hover {
+  border-color: #409eff;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  text-align: center;
 }
 </style>
