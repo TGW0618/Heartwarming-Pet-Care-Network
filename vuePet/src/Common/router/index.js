@@ -94,14 +94,14 @@ const router = createRouter({
         },
         // 客户端路由
         {
-            path: '/Client',
-            name: 'Client',
-            redirect: '/Client/home',
+            path: '/pet',
+            name: 'pet',
+            redirect: '/pet/home',
             component: () => import('../../Client/ClientApp.vue'),
             children: [
                 {
                     path: 'home',
-                    name: 'ClientHome',
+                    name: 'petHome',
                     meta: {
                         title: '首页',
                     },
