@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    color: #030303; /* 设置默认字体颜色 */
+    font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+}
+
+:root:root {
+    --van-nav-bar-icon-color: #000000; /* 设置头部导航返回icon颜色 */
+}
+
+@media screen and (max-width: 768px) {
+    /* 移动端样式 */
+}
+
+@media screen and (min-width: 769px) {
+    /* PC端样式 */
+}

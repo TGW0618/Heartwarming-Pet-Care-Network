@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  XML版本声明，定义文档的版本号和字符编码，确保文档在不同系统中被正确处理。
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  DOCTYPE声明，关联MyBatis的文档类型定义（DTD），确保mapper配置文件遵循MyBatis的规范。
+  这使得文档的结构和元素可以被正确地验证和解析。
+-->
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.SysOrderMapper">
+    <resultMap id="OrderListMap" type="com.tgwei.demopet.demos.web.entity.SysOrder">
+        <id column="id" property="id"/>
+        <result column="订单编号" property="orderNo"/>
+        <result column="订单状态" property="status"/>
+        <result column="订单金额" property="amount"/>
+        <result column="客户姓名" property="realName"/>
+        <result column="客户账号" property="username"/>
+        <result column="宠物名称" property="petName"/>
+        <result column="宠物类型" property="petType"/>
+        <result column="服务项目" property="serviceName"/>
+        <result column="服务类型" property="serviceType"/>
+        <result column="预约时间" property="appointmentStartTime"/>
+        <result column="服务开始时间" property="actualStartTime"/>
+        <result column="服务结束时间" property="actualEndTime"/>
+        <result column="支付时间" property="paymentTime"/>
+        <result column="下单时间" property="createTime"/>
+        <result column="支付状态" property="paymentStatus"/>
+        <result column="支付方式" property="paymentMethod"/>
+    </resultMap>
+    <select id="getAllSysOrder" resultMap="OrderListMap">
+        SELECT so.id                     AS 'id',
+               so.order_no               AS '订单编号',
+               so.Status                 AS '订单状态',
+               so.Amount                 AS '订单金额',
+               u.real_name               AS '客户姓名',
+               u.username                AS '客户账号',
+               p.pet_name                AS '宠物名称',
+               p.pet_type                AS '宠物类型',
+               si.service_name           AS '服务项目',
+               so.service_type           AS '服务类型',
+               so.appointment_start_time AS '预约时间',
+               so.actual_start_time      AS '服务开始时间',
+               so.actual_end_time        AS '服务结束时间',
+               so.payment_time           AS '支付时间',
+               so.create_time            AS '下单时间',
+               so.payment_status         AS '支付状态',
+               so.payment_method         AS '支付方式'
+        FROM service_order so
+                 LEFT JOIN sys_user u ON so.user_id = u.id
+                 LEFT JOIN pet_info p ON so.pet_id = p.id
+                 LEFT JOIN service_item si ON so.service_id = si.Id
+        ORDER BY so.create_time DESC
+        LIMIT 100
+    </select>
+</mapper>

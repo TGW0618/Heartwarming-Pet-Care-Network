@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.CsMapper">
+    <resultMap id="getAllUserList" type="com.tgwei.demopet.demos.web.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="getAllUser" resultMap="getAllUserList">
+        SELECT
+            id,
+            username,
+            password,
+            real_name,
+            sex,
+            phone,
+            email,
+            avatar,
+            role,
+            status,
+            create_time,
+            update_time
+        FROM sys_user
+    </select>
+</mapper>

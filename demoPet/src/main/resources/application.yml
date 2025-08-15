@@ -1,5 +1,6 @@
 server:
   port: 8083
+  address: 0.0.0.0
 
 spring:
   datasource:
@@ -34,5 +35,7 @@ pet:
   security:
     salt: "Pet@2025Sys"  # 密码加密盐值
 
-
+jwt:
+  secret: Pet2025Sys # JWT密钥
+  expiration: 3600 # Token过期时间(秒)
 

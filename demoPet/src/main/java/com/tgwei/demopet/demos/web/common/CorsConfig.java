@@ -17,7 +17,12 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // 允许的来源（前端地址）
-        config.addAllowedOrigin("http://localhost:8086");
+        config.addAllowedOriginPattern("http://localhost:*");
+        config.addAllowedOriginPattern("http://192.168.1.*:*");
+        config.addAllowedOriginPattern("http://10.0.2.*:*");
+        config.addAllowedOriginPattern("http://172.*.*.*:*");
+        // 允许所有域名访问（使用模式匹配）
+//        config.addAllowedOriginPattern("*");
 
         // 允许的请求头
         config.addAllowedHeader("*");

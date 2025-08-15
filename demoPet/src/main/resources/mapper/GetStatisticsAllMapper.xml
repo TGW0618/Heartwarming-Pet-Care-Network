@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.GetStatisticsAllMapper">
+    <select id="getStatisticsAll" resultType="com.tgwei.demopet.demos.web.entity.GetStatistics">
+        SELECT (SELECT COUNT(*) FROM sys_user WHERE role IS NOT NULL)                 AS totalSysUser,# 系统用户数
+               (SELECT COUNT(*) FROM sys_user WHERE role = 'owner')                   AS totalCustomers,# 客户人数
+               (SELECT COUNT(*) FROM sys_user WHERE role = 'veterinarian')            AS totalVeterinarian,# 兽医人数
+               (SELECT COUNT(*) FROM sys_user WHERE role = 'foster_staff')            AS totalFosterStaff,# 寄养员工人数
+               (SELECT COUNT(*)
+                FROM sys_user
+                WHERE role IN ('veterinarian', 'foster_staff'))                       AS totalStaff,# 员工人数
+               (SELECT COUNT(*) FROM service_order)                                   AS totalOrder,# 订单数
+               (SELECT COUNT(*) FROM service_order WHERE service_type = 'MEDICAL')    AS totalMedicalOrders,# 医疗订单数
+               (SELECT COUNT(*) FROM service_order WHERE service_type = 'FOSTER')     AS totalFosterOrders,# 寄养订单数
+               (SELECT SUM(amount) FROM service_order)                                AS totalIncome,# 收入
+               (SELECT SUM(amount) FROM service_order WHERE service_type = 'MEDICAL') AS totalMedicalIncome,# 医疗收入
+               (SELECT SUM(amount) FROM service_order WHERE service_type = 'FOSTER')  AS totalFosterIncome# 寄养收入
+    </select>
+</mapper>

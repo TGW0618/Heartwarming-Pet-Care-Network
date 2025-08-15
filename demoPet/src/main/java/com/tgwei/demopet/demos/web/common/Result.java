@@ -24,6 +24,7 @@ public class Result {
      */
     private Object data;
 
+
     /**
      * 创建一个成功的响应结果
      *
@@ -47,6 +48,7 @@ public class Result {
         result.setData(data);
         return result;
     }
+
 
     /**
      * 创建一个错误的响应结果
