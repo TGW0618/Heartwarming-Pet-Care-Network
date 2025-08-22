@@ -92,7 +92,7 @@ const router = createRouter({
             meta: {
                 title: '注册',
             },
-            component: () => import('../views/RegisteredView.vue')
+            component: () => import('../views/registered/RegisteredView.vue')
         },
         {
             path: '/setting',
@@ -103,6 +103,85 @@ const router = createRouter({
             },
             component: () => import('../views/set/SettingView.vue'),
 
+        },
+        {
+            path: '/userProfile',
+            name: 'userProfile',
+            meta: {
+                title: '资料',
+            },
+            component: () => import('../views/userProfile/UserProfileView.vue')
+        },
+        {
+            path: '/avatar',
+            name: 'avatar',
+            meta: {
+                title: '编辑头像',
+            },
+            component: () => import('../views/userProfile/AvatarView.vue')
+        },
+        {
+            path: '/realName',
+            name: 'realName',
+            meta: {
+                title: '编辑名字',
+            },
+            component: () => import('../views/userProfile/RealNameView.vue')
+        },
+        {
+            path: '/sex',
+            name: 'sex',
+            meta: {
+                title: '编辑性别',
+            },
+            component: () => import('../views/userProfile/SexView.vue')
+        },
+        {
+          path: '/phone',
+          name: 'phone',
+          meta: {
+              title: '编辑手机号',
+          },
+          component: () => import('../views/userProfile/PhoneView.vue')
+        },
+        {
+            path: '/email',
+            name: 'email',
+            meta: {
+                title: '编辑邮箱',
+            },
+            component: () => import('../views/userProfile/EmailView.vue')
+        },
+        {
+          path:'/petsProfile',
+          name: 'petsProfile',
+          meta: {
+              title: '宠物信息',
+          },
+          component: () => import('../views/petsProfile/PetsProfileView.vue')
+        },{
+        path: '/petInfo/:id',
+            name: 'petInfo',
+            meta: {
+                title: '宠物详情',
+            },
+            component: () => import('../views/petsProfile/PetInfoView.vue')
+        },
+        {
+            path: '/petsProfileEdit/:id',
+            name: 'petsProfileEdit',
+            meta: {
+                title: '编辑宠物信息',
+            },
+            component: () => import('../views/petsProfile/PetsProfileEditView.vue')
+        },
+        {
+            path: '/petsProfileAdd',
+            name: 'petsProfileAdd',
+            meta: {
+                title: '添加宠物信息',
+            },
+            component: () => import('../views/petsProfile/PetsProfileAddView.vue')
         },
 
     ],

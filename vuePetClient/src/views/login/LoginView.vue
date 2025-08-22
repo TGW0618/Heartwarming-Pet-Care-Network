@@ -19,7 +19,10 @@
         <!--        登录按钮-->
         <div style="margin-top: 0.5rem;">
           <van-button to="/loginInfo"
-                      style="background-color:#f8f8f8;border-radius: 3rem;width:3rem;font-weight: 600;">
+                      style="background-color:rgba(255,255,255,0.99);
+                      backdrop-filter: blur(8px);
+                      border-radius: 0.38rem;width:3rem;
+                      font-weight: 600;color: #2b2d30">
             登录
           </van-button>
         </div>

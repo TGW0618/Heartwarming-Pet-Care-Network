@@ -10,7 +10,7 @@
             <van-row>
               <!--                头像开始-->
               <van-col span="8" class="avatar-col">
-                <div class="avatar-container">
+                <div class="avatar-container" @click="onAvatarClick">
                   <img
                       v-if="data.userInfo?.avatar && data.userInfo.avatar.trim() !== ''"
                       :src="data.userInfo.avatar"
@@ -31,11 +31,11 @@
                 <div>
                   <van-row>
                     <van-col span="24">
-                      <!-- 修复：添加条件渲染 -->
+                      <!-- 条件渲染 -->
                       <p v-if="data.userInfo" class="welcome-text">HI,{{ data.userInfo.realName }}</p>
                       <p v-else class="welcome-text">HI,请先登录</p>
 
-                      <!-- 修复：添加条件渲染 -->
+                      <!-- 条件渲染 -->
                       <p v-if="data.userInfo" class="account-text">
                         <span
                             style="background-color: rgba(12,12,12,0.95);border-radius: 0.11rem;padding: 0.06rem 0.15rem;">账号</span>
@@ -94,18 +94,20 @@
             >
 
               <!--             资料-->
-              <van-grid-item @click="goToProfile">
+              <van-grid-item to="/userProfile">
                 <template #icon>
                   <van-icon name="friends-o"/>
                 </template>
                 <template #text>
                   <div>
-                    <p style="font-size: 0.2rem;color: #141414">资料</p>
+                    <p style="font-size: 0.2rem;color: #141414">
+                      资料
+                    </p>
                   </div>
                 </template>
               </van-grid-item>
               <!--      爱宠        -->
-              <van-grid-item @click="goToPets">
+              <van-grid-item to="/petsProfile">
                 <template #icon>
                   <van-icon name="like-o"/>
                 </template>
@@ -116,7 +118,7 @@
                 </template>
               </van-grid-item>
               <!--              寄养-->
-              <van-grid-item @click="goToFoster">
+              <van-grid-item to="/foster">
                 <template #icon>
                   <van-icon name="shop-collect-o"/>
                 </template>
@@ -127,7 +129,7 @@
                 </template>
               </van-grid-item>
               <!--              医疗-->
-              <van-grid-item @click="goToMedical">
+              <van-grid-item to="/medical">
                 <template #icon>
                   <van-icon name="shield-o"/>
                 </template>
@@ -164,7 +166,7 @@
                 </template>
               </van-grid-item>
               <!--      反馈        -->
-              <van-grid-item @click="goToFeedback">
+              <van-grid-item to="/feedback">
                 <template #icon>
                   <van-icon name="orders-o"/>
                 </template>
@@ -175,7 +177,7 @@
                 </template>
               </van-grid-item>
               <!--              评价-->
-              <van-grid-item @click="goToReview">
+              <van-grid-item to="/appraise">
                 <template #icon>
                   <van-icon name="edit"/>
                 </template>
@@ -186,7 +188,7 @@
                 </template>
               </van-grid-item>
               <!--              客服-->
-              <van-grid-item @click="goToService">
+              <van-grid-item to="/service">
                 <template #icon>
                   <van-icon name="service-o"/>
                 </template>
@@ -236,44 +238,15 @@ onMounted(async () => {
 });
 
 
-// 添加导航方法
-const goToProfile = () => {
-  checkLoginAndNavigate('/profile');
-};
-
-const goToPets = () => {
-  checkLoginAndNavigate('/pets');
-};
-
-const goToFoster = () => {
-  checkLoginAndNavigate('/foster');
-};
-
-const goToMedical = () => {
-  checkLoginAndNavigate('/medical');
-};
-
-const goToFeedback = () => {
-  checkLoginAndNavigate('/feedback');
-};
-
-const goToReview = () => {
-  checkLoginAndNavigate('/review');
-};
-
-const goToService = () => {
-  checkLoginAndNavigate('/service');
-};
-
-// 检查登录状态并导航
-const checkLoginAndNavigate = (path) => {
-  if (!userInfoStore.getToken) {
-    showToast('请先登录');
-    router.push('/login');
+// 导航方法
+const onAvatarClick = () => {
+  if (userInfoStore.getToken) {
+    router.push("/avatar")
   } else {
-    router.push(path);
+    showToast('请先登录');
   }
 };
+
 </script>
 
 <style scoped>

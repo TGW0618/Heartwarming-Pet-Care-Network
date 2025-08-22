@@ -36,6 +36,5 @@ pet:
     salt: "Pet@2025Sys"  # 密码加密盐值
 
 jwt:
-  secret: Pet2025Sys # JWT密钥
-  expiration: 3600 # Token过期时间(秒)
+  expiration: 86400 # Token过期时间(秒) 24小时
 

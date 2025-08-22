@@ -14,16 +14,17 @@ public class UserInfoDto {
     private Integer status;
     private String sex;
 
-    public UserInfoDto(SysUser sysUser) {
-        this.id = sysUser.getId();
-        this.username = sysUser.getUsername();
-        this.phone = sysUser.getPhone();
-        this.email = sysUser.getEmail();
-        this.realName = sysUser.getRealName();
-        this.avatar = sysUser.getAvatar();
-        this.role = sysUser.getRole().name();
-        this.status = sysUser.getStatus();
-        this.sex = sysUser.getSex().name();
-    }
+public UserInfoDto(SysUser sysUser) {
+    this.id = sysUser.getId();
+    this.username = sysUser.getUsername();
+    this.phone = sysUser.getPhone();
+    this.email = sysUser.getEmail();
+    this.realName = sysUser.getRealName();
+    this.avatar = sysUser.getAvatar();
+    this.role = sysUser.getRole() != null ? sysUser.getRole().name() : null;
+    this.status = sysUser.getStatus();
+    this.sex = sysUser.getSex() != null ? sysUser.getSex().name() : null; // 添加空值检查
+}
+
 
 }

@@ -19,21 +19,27 @@ const useUserInfoStore = defineStore('userInfo', {
     },
     actions: {
         setUserInfo(userInfo) {
+            // 添加空值检查
+            // if (!userInfo) {
+            //     console.warn('传入的用户信息为空');
+            //     return;
+            // }
+
             this.userInfo = userInfo;
             // 只存储非敏感信息到本地存储
             const safeUserInfo = {
-                id: userInfo.id,
-                username: userInfo.username,
-                realName: userInfo.realName,
-                avatar: userInfo.avatar,
-                phone: userInfo.phone,
-                email: userInfo.email,
-                sex: userInfo.sex,
-                role: userInfo.role
-                // 不存储 password 等敏感信息
+                id: userInfo.id || null,
+                username: userInfo.username || '',
+                realName: userInfo.realName || '',
+                avatar: userInfo.avatar || '',
+                phone: userInfo.phone || '',
+                email: userInfo.email || '',
+                sex: userInfo.sex || '',
+                role: userInfo.role || ''
             };
             localStorage.setItem('user-info', JSON.stringify(safeUserInfo));
         },
+
         setToken(token) {
             this.token = token;
             localStorage.setItem('token', token);
@@ -67,11 +73,21 @@ const useUserInfoStore = defineStore('userInfo', {
                 const userInfoStr = localStorage.getItem('user-info');
                 this.userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
             } catch (error) {
-                console.error('解析用户信息失败:', error);
                 this.userInfo = null;
                 // 清除损坏的数据
                 localStorage.removeItem('user-info');
             }
+        },
+        //     更新用户数据
+        updateUserInfo(dataFrom) {
+            // 更新store和localStorage
+            this.userInfo = dataFrom;
+            localStorage.setItem('user-info', JSON.stringify(dataFrom));
+            request.put('/sysUser/updateSysUsers', dataFrom).then(res => {
+            }).catch(err => {
+                console.log(err);
+
+            })
         }
     }
 })

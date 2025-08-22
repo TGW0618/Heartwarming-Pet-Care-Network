@@ -9,14 +9,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-
     @Autowired
     private JwtInterceptor jwtInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/sysOrder/**") // 需要验证Token的路径
+                .addPathPatterns("/sysOrder/**", "/ClientUserInfo/**", "/petsInfo/**") // 添加需要验证Token的路径
                 .excludePathPatterns("/client/login", "/admin/login"); // 排除登录接口
     }
 
@@ -28,6 +27,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/files/**")
                 .addResourceLocations("file:" + filePath);
     }
-
 }
-     

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {showFailToast} from "vant";
+import router from "@/router/index.js";
 
 // 根据访问方式动态确定后端地址
 const getBaseURL = () => {
@@ -20,7 +21,7 @@ const getBaseURL = () => {
 // 创建 axios 实例
 const request = axios.create({
     baseURL: getBaseURL(),
-    timeout: 15000 // 增加超时时间到15秒
+    timeout: 15000 // 超时时间到15秒
 });
 
 // 请求拦截器
@@ -53,11 +54,14 @@ request.interceptors.response.use(
             showFailToast('网络连接失败，请确保后端服务正在运行');
         } else if (error.response) {
             showFailToast(`服务器错误: ${error.response.status}`);
+            router.replace('/login')
+
         } else {
             showFailToast('请求失败: ' + (error.message || '未知错误'));
         }
+
         return Promise.reject(error);
-    }
+    },
 );
 
 export default request;

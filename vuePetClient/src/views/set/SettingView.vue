@@ -1,7 +1,15 @@
 <template>
   <div class="setting-container">
     <div class="setting-bg"></div>
-    <nav-bar-top title="设置" :show-back="true"></nav-bar-top>
+    <navBarTop title="我的设置">
+      <template #left>
+        <div @click="onClickLeft">
+          <slot>
+            <van-icon name="arrow-left"/>
+          </slot>
+        </div>
+      </template>
+    </navBarTop>
 
     <div class="setting-content">
       <!-- 用户信息卡片 -->
@@ -14,7 +22,7 @@
             class="user-avatar"
         />
         <div class="user-info">
-          <div class="realName">{{ userInfoStore.userInfo?.realName || '请先登录' }}</div>
+          <div class="realName">{{ userInfoStore.userInfo?.realName || 'Hi' }}</div>
           <div class="user-id">ID: {{ userInfoStore.userInfo?.username || '--' }}</div>
         </div>
       </div>
@@ -102,12 +110,16 @@ onMounted(async () => {
   }
 });
 
+const onClickLeft = () => {
+  router.go(-1)
+};
+
 const logout = () => {
   showConfirmDialog({
     title: '确认退出',
     message: '确定要退出当前账号吗？',
-    confirmButtonColor: '#c97536',
-    cancelButtonColor: '#958382',
+    closeOnClickOverlay: true,
+    className: 'pet-delete-dialog' // 添加自定义类名
   }).then(() => {
     userInfoStore.clearUserInfo();
     router.push('/login');
@@ -146,7 +158,7 @@ const goToAbout = () => {
 .setting-bg {
   width: 100%;
   height: 100vh;
-  background-image: url('/img/smiley-dog-laying-bed.jpg');
+  /*background-image: url('/img/smiley-dog-laying-bed.jpg');*/
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -263,4 +275,19 @@ const goToAbout = () => {
 .logout-btn:active {
   background-color: rgba(201, 117, 54, 0.1);
 }
+</style>
+<style>
+/* 非scoped样式，用于覆盖组件库样式 */
+.pet-delete-dialog .van-dialog__confirm {
+  background-color: #ffffff !important;
+  font-weight: bold;
+  color: #e5253d !important;
+}
+
+.pet-delete-dialog .van-dialog__cancel {
+  color: #fa233b !important;
+  font-weight: bold;
+  background-color: #ffffff !important;
+}
+
 </style>

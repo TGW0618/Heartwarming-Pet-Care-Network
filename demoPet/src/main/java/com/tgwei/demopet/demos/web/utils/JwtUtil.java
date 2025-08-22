@@ -11,6 +11,10 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * JWT工具类
+ * 提供JWT Token的生成、解析和验证功能
+ */
 @Component
 public class JwtUtil {
 
@@ -20,7 +24,12 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    // 生成Token
+    /**
+     * 生成JWT Token
+     * @param claims 自定义声明信息
+     * @param username 用户名
+     * @return 生成的JWT Token字符串
+     */
     public String generateToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -31,20 +40,32 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 从Token中获取用户名
+    /**
+     * 从Token中获取用户名
+     * @param token JWT Token字符串
+     * @return 用户名
+     */
     public String getUsernameFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.getSubject();
     }
 
-    // 验证Token是否过期
+    /**
+     * 验证Token是否过期
+     * @param token JWT Token字符串
+     * @return true表示已过期，false表示未过期
+     */
     public Boolean isTokenExpired(String token) {
         Claims claims = getClaimsFromToken(token);
         Date expiration = claims.getExpiration();
         return expiration.before(new Date());
     }
 
-    // 获取Claims
+    /**
+     * 从Token中获取Claims信息
+     * @param token JWT Token字符串
+     * @return Claims对象，包含Token中的所有声明信息
+     */
     public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -53,3 +74,4 @@ public class JwtUtil {
                 .getBody();
     }
 }
+

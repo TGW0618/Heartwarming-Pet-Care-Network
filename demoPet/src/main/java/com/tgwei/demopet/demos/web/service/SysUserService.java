@@ -3,11 +3,13 @@ package com.tgwei.demopet.demos.web.service;
 import com.tgwei.demopet.demos.web.entity.SysUser;
 import com.tgwei.demopet.demos.web.mapper.SysUserMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional
 public class SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
@@ -30,6 +32,9 @@ public class SysUserService {
 
     // 修改用户 信息
     public void updateSysUsers(SysUser sysUser) {
+        if (sysUser.getStatus() == null) {
+            sysUser.setStatus(1);
+        }
         sysUserMapper.updateSysUsers(sysUser);
     }
 
@@ -41,6 +46,16 @@ public class SysUserService {
 
     //新增用户
     public void addSysUsers(SysUser sysUser) {
+        if (sysUser.getRealName() == null) {
+            sysUser.setRealName(sysUser.getUsername());
+        }
+        if (sysUser.getRole() == null) {
+            sysUser.setRole(SysUser.Role.valueOf("owner"));
+        }
+        if (sysUser.getStatus() == null) {
+            sysUser.setStatus(1);
+        }
+
         sysUserMapper.addSysUsers(sysUser);
     }
 
@@ -49,7 +64,7 @@ public class SysUserService {
         sysUserMapper.deleteSysUsers(id);
     }
 
-//    修改用户状态
+    //    修改用户状态
     public void updateSysUserStatus(SysUser sysUser) {
         sysUserMapper.updateSysUserStatus(sysUser);
     }

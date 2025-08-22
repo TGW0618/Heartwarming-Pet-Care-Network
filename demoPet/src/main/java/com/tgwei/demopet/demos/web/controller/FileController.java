@@ -1,6 +1,7 @@
 package com.tgwei.demopet.demos.web.controller;
 
 import com.tgwei.demopet.demos.web.common.Result;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ public class FileController {
      * @return Result 操作结果封装对象，成功时返回success，失败时返回error及错误信息
      */
     @PostMapping("/upload")
+    @CrossOrigin(origins = "*") // 添加跨域支持
     public Result uploadFile(MultipartFile file) {
         String originalFilename = file.getOriginalFilename(); // 获取原始文件名
         if (originalFilename == null || originalFilename.isEmpty()) {
@@ -52,7 +54,9 @@ public class FileController {
         } catch (IOException e) {
             return Result.error(500, "文件上传失败: " + e.getMessage());
         }
-        String url = "http://localhost:8083/files/" + fileName;
+//        String url = "http://localhost:8083/files/" + fileName;
+        String url = "http://192.168.1.12:8083/files/" + fileName;
+
         return Result.success(url);
     }
 }

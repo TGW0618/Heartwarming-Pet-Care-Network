@@ -1,6 +1,7 @@
 package com.tgwei.demopet.demos.web.common;
 
 import com.tgwei.demopet.demos.web.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -40,16 +41,30 @@ public class JwtInterceptor implements HandlerInterceptor {
                 if (jwtUtil.isTokenExpired(token)) {
                     // 令牌过期，设置401未授权状态码并拒绝请求
                     response.setStatus(401);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"code\":401,\"message\":\"token已过期\"}");
                     return false;
                 }
+
+                // 解析token并将用户信息存入request attribute
+                Claims claims = jwtUtil.getClaimsFromToken(token);
+                request.setAttribute("claims", claims);
+                request.setAttribute("userId", Long.valueOf(claims.get("userId").toString()));
+                request.setAttribute("role", claims.get("role"));
+                return true;
             } catch (Exception e) {
                 // 令牌解析异常，设置401未授权状态码并拒绝请求
                 response.setStatus(401);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"code\":401,\"message\":\"token解析失败\"}");
                 return false;
             }
+        } else {
+            // 没有有效的token
+            response.setStatus(401);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\":401,\"message\":\"未授权访问\"}");
+            return false;
         }
-
-        // 令牌验证通过，允许继续执行后续操作
-        return true;
     }
 }

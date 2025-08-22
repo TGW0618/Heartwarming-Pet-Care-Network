@@ -1,17 +1,27 @@
 <template>
   <!--    头部开始-->
   <div>
-    <van-nav-bar
-        class="custom-nav-bar"
-        left-arrow
-        text-light
-        :title="props.title"
-        :left-text="props.leftText"
-        :right-text="props.rightText"
-        @click-left="onClickLeft"
-    >
-
-    </van-nav-bar>
+    <van-sticky>
+      <van-nav-bar
+          class="custom-nav-bar"
+          left-arrow
+          text-light
+          :title="props.title"
+          :left-text="props.leftText"
+          :right-text="props.rightText"
+      >
+        <template #left>
+          <slot name="left">
+            {{ props.leftText }}
+          </slot>
+        </template>
+        <template #right>
+          <slot name="right">
+            {{ props.rightText }}
+          </slot>
+        </template>
+      </van-nav-bar>
+    </van-sticky>
   </div>
   <!--    头部结束-->
 </template>
@@ -33,7 +43,7 @@ const props = defineProps({
   }
 });
 
-const onClickLeft = () => history.back();
+
 </script>
 
 
