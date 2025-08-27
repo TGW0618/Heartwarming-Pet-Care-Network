@@ -59,8 +59,10 @@ public class SysOrder {
 
     // ================= 支付信息 =================
     @Schema(description = "支付状态", example = "已支付")
-    private String paymentStatus;
+    private Integer paymentStatus;
 
     @Schema(description = "支付方式", example = "微信支付")
     private String paymentMethod;
+
+
 }

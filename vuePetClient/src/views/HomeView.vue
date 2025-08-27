@@ -1,10 +1,10 @@
 <template>
-  <div style="width: 10rem;height: 100vh;background-color: #ffffff">
+  <div style="width: 10rem;height: 100vh;">
     <div>
       <router-view/>
     </div>
     <div style="position: fixed;bottom: 0;left: 0;right: 0;">
-        <nav-bar-bottom />
+      <nav-bar-bottom/>
     </div>
   </div>
 

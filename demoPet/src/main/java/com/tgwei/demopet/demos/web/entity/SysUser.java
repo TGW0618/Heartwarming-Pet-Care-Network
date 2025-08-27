@@ -51,6 +51,22 @@ public class SysUser implements Serializable {
     }
 
     private Role role;
+
+    @Getter
+    public enum RoleSpecialty {
+        ordinary("ordinary"),
+        specialized("specialized");
+        private final String value;
+
+        RoleSpecialty(String value) {
+            this.value = value;
+        }
+    }
+
+    private RoleSpecialty roleSpecialty;
+
+    private String description;
+
     private Integer status;
     private Date createTime;
     private Date updateTime;

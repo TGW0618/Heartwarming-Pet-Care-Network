@@ -1,10 +1,9 @@
+<template>
+  咨询
+</template>
 <script setup>
 
 </script>
-
-<template>
-order
-</template>
 
 <style scoped>
 

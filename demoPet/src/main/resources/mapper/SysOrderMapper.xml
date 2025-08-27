@@ -30,6 +30,15 @@
         <result column="支付状态" property="paymentStatus"/>
         <result column="支付方式" property="paymentMethod"/>
     </resultMap>
+    <insert id="createSysOrder">
+        INSERT INTO service_order (order_no, user_id, pet_id, service_id, service_type, appointment_start_time,
+                                  actual_start_time, actual_end_time, amount, status, payment_status, payment_method,
+                                  payment_time, transaction_id, remark, create_time, update_time)
+        VALUES (#{orderNo}, #{userId}, #{petId}, #{serviceId}, #{serviceType}, #{appointmentStartTime},
+                #{actualStartTime}, #{actualEndTime}, #{amount}, #{status}, #{paymentStatus},
+                #{paymentMethod}, #{paymentTime}, #{transactionId}, #{remark}, #{createTime}, #{updateTime}
+        )
+    </insert>
     <select id="getAllSysOrder" resultMap="OrderListMap">
         SELECT so.id                     AS 'id',
                so.order_no               AS '订单编号',

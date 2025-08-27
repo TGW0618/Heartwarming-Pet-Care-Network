@@ -23,8 +23,9 @@ public class SysUserController {
 
     //    查询全部员工信息
     @GetMapping("/getAllSysUserEmployee")
-    public Result getAllSysUserEmployee() {
-        List<SysUser> sysUser = sysUserService.getAllSysUserEmployee();
+    public Result getAllSysUserEmployee(@RequestParam(required = false) String roleSpecialty,
+                                        @RequestParam(required = false) String role) {
+        List<SysUser> sysUser = sysUserService.getAllSysUserEmployee(roleSpecialty, role);
         return Result.success(sysUser);
     }
 
@@ -64,9 +65,9 @@ public class SysUserController {
         return Result.success();
     }
 
-//    修改 状态
+    //    修改 状态
     @PutMapping("/updateSysUserStatus")
-    public Result updateSysUserStatus(@RequestBody  SysUser sysUser) {
+    public Result updateSysUserStatus(@RequestBody SysUser sysUser) {
         sysUserService.updateSysUserStatus(sysUser);
         return Result.success();
     }

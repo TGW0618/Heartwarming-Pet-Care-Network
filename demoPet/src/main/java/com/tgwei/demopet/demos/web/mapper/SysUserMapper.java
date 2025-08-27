@@ -1,10 +1,7 @@
 package com.tgwei.demopet.demos.web.mapper;
 
 import com.tgwei.demopet.demos.web.entity.SysUser;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -16,9 +13,9 @@ public interface SysUserMapper {
     @Select("select * from sys_user where role = 'owner' order by id desc")
     List<SysUser> getAllSysUserOwner();
 
-    //    查询全部员工信息
-    @Select("select * from sys_user where role='foster_staff' or role='veterinarian' order by id desc")
-    List<SysUser> getAllSysUserEmployee();
+    // 查询全部员工信息（支持筛选）
+    List<SysUser> getAllSysUserEmployee(@Param("roleSpecialty") String roleSpecialty, @Param("role") String role);
+
 
     //    根据id查询用户信息
     @Select("select * from sys_user where id=#{id}")
@@ -40,7 +37,7 @@ public interface SysUserMapper {
     @Delete("delete from sys_user where id=#{id}")
     void deleteSysUsers(Integer id);
 
-//    修改状态
+    //    修改状态
     @Select("update sys_user set status=#{status} where id=#{id}")
     void updateSysUserStatus(SysUser sysUser);
 }

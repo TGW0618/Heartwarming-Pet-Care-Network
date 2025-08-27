@@ -22,7 +22,6 @@ public class FileController {
     private static final String filePath = System.getProperty("user.dir") + "/files/";
 
 
-
     /**
      * 上传文件接口
      * 将上传的文件保存到服务器指定目录中，文件名使用时间戳+原始文件名的方式保证唯一性
@@ -55,7 +54,9 @@ public class FileController {
             return Result.error(500, "文件上传失败: " + e.getMessage());
         }
 //        String url = "http://localhost:8083/files/" + fileName;
-        String url = "http://192.168.1.12:8083/files/" + fileName;
+//        String url = "http://192.168.1.12:8083/files/" + fileName;
+
+        String url = "/files/" + fileName;
 
         return Result.success(url);
     }

@@ -133,7 +133,7 @@ const delPetInfo = () => {
   showConfirmDialog({
     message: '你确定要删除该宠物信息吗?',
     confirmButtonText: '删除该宠物信息',
-    closeOnClickOverlay:true,
+    closeOnClickOverlay: true,
     className: 'pet-delete-dialog' // 添加自定义类名
   })
       .then(() => {
@@ -217,11 +217,11 @@ const editPetInfo = () => {
   font-weight: bold;
   color: #e5253d !important;
 }
-
 .pet-delete-dialog .van-dialog__cancel {
   color: #fa233b !important;
   font-weight: bold;
   background-color: #ffffff !important;
 }
+
 
 </style>

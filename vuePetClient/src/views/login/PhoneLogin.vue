@@ -25,7 +25,7 @@
           />
         </van-cell-group>
         <div style="margin: 16px;">
-          <van-button round block color="#3e6ae1" native-type="submit" >
+          <van-button round block color="#3e6ae1" native-type="submit">
             登录
           </van-button>
         </div>
@@ -65,7 +65,7 @@ const onSubmit = (values) => {
         duration: 400,
       });
       // 登录成功后设置用户信息和token
-      userInfoStore.setUserInfo(res.data.user); // 启用这行
+      userInfoStore.setUserInfo(res.data.user);
       userInfoStore.setToken(res.data.token);
       setTimeout(function () {
         router.replace("/userinfo"); // 统一跳转到个人中心

@@ -15,8 +15,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/sysOrder/**", "/ClientUserInfo/**", "/petsInfo/**") // 添加需要验证Token的路径
-                .excludePathPatterns("/client/login", "/admin/login"); // 排除登录接口
+                // 添加需要验证Token的路径
+                .addPathPatterns("/sysOrder/**",
+                        "/ClientUserInfo/**",
+                        "/petsInfo/**")
+                // 排除接口
+                .excludePathPatterns("/client/login",
+                        "/admin/login",
+                        "/sysOrder/getAllSysOrder",
+                        "/sysOrder/deleteSysOrder/{id}");
     }
 
     @Override

@@ -35,7 +35,7 @@ const props = defineProps({
   },
   leftText: {
     type: String,
-    default: ''
+    default: '<'
   },
   rightText: {
     type: String,

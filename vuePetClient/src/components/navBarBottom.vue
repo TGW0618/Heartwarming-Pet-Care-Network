@@ -6,8 +6,8 @@
       active-color="#171a20"
       inactive-color="#c4c4c4">
     <van-tabbar-item to="/home" icon="wap-home">首页</van-tabbar-item>
-    <van-tabbar-item to="/chat" icon="chat">消息</van-tabbar-item>
-    <van-tabbar-item to="order" icon="coupon">订单</van-tabbar-item>
+    <van-tabbar-item to="/booking" icon="todo-list">预约</van-tabbar-item>
+    <van-tabbar-item to="/consultation" icon="service">咨询</van-tabbar-item>
     <van-tabbar-item to="/userinfo" icon="friends">我的</van-tabbar-item>
   </van-tabbar>
 

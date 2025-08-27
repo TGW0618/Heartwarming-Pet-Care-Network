@@ -39,7 +39,6 @@ const useUserInfoStore = defineStore('userInfo', {
             };
             localStorage.setItem('user-info', JSON.stringify(safeUserInfo));
         },
-
         setToken(token) {
             this.token = token;
             localStorage.setItem('token', token);
@@ -48,8 +47,9 @@ const useUserInfoStore = defineStore('userInfo', {
         clearUserInfo() {
             this.userInfo = null;
             this.token = null;
-            localStorage.removeItem('user-info');
-            localStorage.removeItem('token');
+            // localStorage.removeItem('user-info');
+            // localStorage.removeItem('token');
+            localStorage.clear();
         },
         // 获取当前用户信息
         async fetchUserInfo() {
@@ -89,7 +89,8 @@ const useUserInfoStore = defineStore('userInfo', {
 
             })
         }
-    }
+    },
+
 })
 
 export default useUserInfoStore;

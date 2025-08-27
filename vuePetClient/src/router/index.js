@@ -6,33 +6,34 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'HomeView',
+            name: 'homeView',
             redirect: '/home',
             component: () => import('../views/HomeView.vue'),
             children: [
                 {
                     path: 'home',
-                    name: 'Home',
+                    name: 'home',
                     meta: {
                         title: '首页',
                     },
                     component: () => import('../views/petViews/Home.vue'),
                 },
                 {
-                    path: 'chat',
-                    name: 'chat',
+                    path: 'booking',
+                    name: 'booking',
                     meta: {
-                        title: 'chat',
+                        title: '预约',
                     },
-                    component: () => import('../views/petViews/Chat.vue'),
+                    component: () => import('../views/petViews/booking.vue'),
                 },
+
                 {
-                    path: 'order',
-                    name: 'order',
+                    path: 'consultation',
+                    name: 'consultation',
                     meta: {
-                        title: 'order',
+                        title: '咨询',
                     },
-                    component: () => import('../views/petViews/Order.vue'),
+                    component: () => import('../views/petViews/consultation.vue'),
                 },
                 {
                     path: 'userinfo',
@@ -44,7 +45,7 @@ const router = createRouter({
                 },
                 {
                     path: '/login',
-                    name: 'Login',
+                    name: 'login',
                     meta: {
                         title: 'login',
                     },
@@ -64,7 +65,7 @@ const router = createRouter({
         },
         {
             path: '/loginInfo',
-            name: 'LoginInfo',
+            name: 'loginInfo',
             meta: {
                 title: '登录',
             },
@@ -137,12 +138,12 @@ const router = createRouter({
             component: () => import('../views/userProfile/SexView.vue')
         },
         {
-          path: '/phone',
-          name: 'phone',
-          meta: {
-              title: '编辑手机号',
-          },
-          component: () => import('../views/userProfile/PhoneView.vue')
+            path: '/phone',
+            name: 'phone',
+            meta: {
+                title: '编辑手机号',
+            },
+            component: () => import('../views/userProfile/PhoneView.vue')
         },
         {
             path: '/email',
@@ -153,14 +154,15 @@ const router = createRouter({
             component: () => import('../views/userProfile/EmailView.vue')
         },
         {
-          path:'/petsProfile',
-          name: 'petsProfile',
-          meta: {
-              title: '宠物信息',
-          },
-          component: () => import('../views/petsProfile/PetsProfileView.vue')
-        },{
-        path: '/petInfo/:id',
+            path: '/petsProfile',
+            name: 'petsProfile',
+            meta: {
+                title: '宠物信息',
+            },
+            component: () => import('../views/petsProfile/PetsProfileView.vue')
+        },
+        {
+            path: '/petInfo/:id',
             name: 'petInfo',
             meta: {
                 title: '宠物详情',
@@ -183,6 +185,53 @@ const router = createRouter({
             },
             component: () => import('../views/petsProfile/PetsProfileAddView.vue')
         },
+        //     主要业务路由视图(预约--->医疗服务/寄养服务;
+        //     医疗服务--->疫苗接种/疾病诊疗
+        //     疫苗接种--->医生--->疫苗服务--->疫苗详情--->立即预约--->选择宠物--->下单--->支付--->成功/失败
+        //
+        //
+        //
+        //     )
+        {
+            path: '/medical',
+            name: 'medical',
+            meta: {
+                title: '医疗',
+            },
+            component: () => import('../views/petService/booking/medical/MedicalHomeView.vue'),
+        },
+        {
+            path: '/veterinarian/:roleSpecialty',
+            name: 'veterinarian',
+            meta: {
+                title: '预约医生',
+            },
+            component: () => import('../views/petService/booking/VeterinarianView.vue'),
+        },
+        {
+            path: '/vaccine/:vetId',
+            name: 'vaccine',
+            meta: {
+                title: '疫苗服务',
+            },
+            component: () => import('../views/petService/booking/medical/vaccineHome/VaccineHomeView.vue'),
+        },
+        {
+            path: '/vaccineInfo/:vetId/:serviceId',
+            name: 'vaccineInfo',
+            meta: {
+                title: '疫苗服务详情',
+            },
+            component: () => import('../views/petService/booking/medical/vaccineHome/vaccineInfoView.vue'),
+        },
+        {
+            path: '/bookingNow/:vetId/:serviceId',
+            name: 'bookingNow',
+            meta: {
+                title: '预约信息',
+            },
+            component: () => import('../views/petService/booking/bookingNowView.vue'),
+        },
 
     ],
 })
@@ -195,7 +244,15 @@ const whiteList = [
     '/phoneLogin',
     '/petLogin',
     '/register',
+    // 导航路由
     '/home',
+    '/booking',
+    '/consultation',
+    // 服务相关路由
+    '/medical',
+    '/veterinarian/:roleSpecialty',
+    '/vaccine/:vetId',
+    '/vaccineInfo/:vetId/:serviceId',
     '/', // 根路径
     '/404',
     '/:pathMatch(.*)*'
