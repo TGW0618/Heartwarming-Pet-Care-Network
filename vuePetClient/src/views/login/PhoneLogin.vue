@@ -68,7 +68,7 @@ const onSubmit = (values) => {
       userInfoStore.setUserInfo(res.data.user);
       userInfoStore.setToken(res.data.token);
       setTimeout(function () {
-        router.replace("/userinfo"); // 统一跳转到个人中心
+        router.replace("/"); // 统一跳转到个人中心
       }, 500)
     } else {
       showFailToast(res.message);

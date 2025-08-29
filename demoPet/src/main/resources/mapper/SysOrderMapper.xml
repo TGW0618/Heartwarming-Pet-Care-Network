@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  XML版本声明，定义文档的版本号和字符编码，确保文档在不同系统中被正确处理。
--->
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--
-  DOCTYPE声明，关联MyBatis的文档类型定义（DTD），确保mapper配置文件遵循MyBatis的规范。
-  这使得文档的结构和元素可以被正确地验证和解析。
--->
 
 <mapper namespace="com.tgwei.demopet.demos.web.mapper.SysOrderMapper">
     <resultMap id="OrderListMap" type="com.tgwei.demopet.demos.web.entity.SysOrder">
@@ -30,20 +23,45 @@
         <result column="支付状态" property="paymentStatus"/>
         <result column="支付方式" property="paymentMethod"/>
     </resultMap>
+
     <insert id="createSysOrder">
         INSERT INTO service_order (order_no, user_id, pet_id, service_id, service_type, appointment_start_time,
-                                  actual_start_time, actual_end_time, amount, status, payment_status, payment_method,
-                                  payment_time, transaction_id, remark, create_time, update_time)
+                                   actual_start_time, actual_end_time, amount, status, payment_status, payment_method,
+                                   payment_time, transaction_id, remark, create_time, update_time)
         VALUES (#{orderNo}, #{userId}, #{petId}, #{serviceId}, #{serviceType}, #{appointmentStartTime},
                 #{actualStartTime}, #{actualEndTime}, #{amount}, #{status}, #{paymentStatus},
-                #{paymentMethod}, #{paymentTime}, #{transactionId}, #{remark}, #{createTime}, #{updateTime}
-        )
+                #{paymentMethod}, #{paymentTime}, #{transactionId}, #{remark}, #{createTime}, #{updateTime})
     </insert>
+    <update id="updateSysOrder">
+        UPDATE service_order
+        <set>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="serviceId != null">service_id = #{serviceId},</if>
+            <if test="serviceType != null and serviceType != ''">service_type = #{serviceType},</if>
+            <if test="appointmentStartTime != null">appointment_start_time = #{appointmentStartTime},</if>
+            <if test="appointmentEndTime != null">appointment_end_time = #{appointmentEndTime},</if>
+            <if test="actualStartTime != null">actual_start_time = #{actualStartTime},</if>
+            <if test="actualEndTime != null">actual_end_time = #{actualEndTime},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="paymentStatus != null">payment_status = #{paymentStatus},</if>
+            <if test="paymentMethod != null and paymentMethod != ''">payment_method = #{paymentMethod},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="transactionId != null and transactionId != ''">transaction_id = #{transactionId},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            update_time = NOW() <!-- 始终更新时间 -->
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
     <select id="getAllSysOrder" resultMap="OrderListMap">
         SELECT so.id                     AS 'id',
                so.order_no               AS '订单编号',
-               so.Status                 AS '订单状态',
-               so.Amount                 AS '订单金额',
+               so.status                 AS '订单状态',
+               so.amount                 AS '订单金额',
                u.real_name               AS '客户姓名',
                u.username                AS '客户账号',
                p.pet_name                AS '宠物名称',
@@ -60,8 +78,190 @@
         FROM service_order so
                  LEFT JOIN sys_user u ON so.user_id = u.id
                  LEFT JOIN pet_info p ON so.pet_id = p.id
-                 LEFT JOIN service_item si ON so.service_id = si.Id
+                 LEFT JOIN service_item si ON so.service_id = si.id
         ORDER BY so.create_time DESC
         LIMIT 100
     </select>
+
+    <select id="getSysOrderByUserId" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+        so.order_no,
+        so.service_type,
+        so.appointment_start_time,
+        so.appointment_end_time,
+        so.actual_start_time,
+        so.actual_end_time,
+        so.amount,
+        so.status,
+        so.payment_status,
+        so.payment_method,
+        so.payment_time,
+        so.transaction_id,
+        so.remark,
+        so.create_time,
+        so.update_time,
+        su.id as userId,
+        su.username,
+        su.real_name,
+        su.phone,
+        su.avatar as userAvatar,
+        su.sex as userSex,
+        su.email as userEmail,
+        su.role as userRole,
+        pi.id as petId,
+        pi.pet_name as petName,
+        pi.pet_type as petType,
+        pi.breed as petBreed,
+        pi.avatar as petImage,
+        pi.gender as petGender,
+        pi.birth_date as petBirthDate,
+        pi.weight as petWeight,
+        pi.health_status as petHealthStatus,
+        pi.allergies as petAllergies,
+        TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+        si.id as serviceId,
+        si.service_name as serviceName,
+        si.medical_type,
+        si.category as serviceCategory,
+        si.description as serviceDescription,
+        si.image_url as serviceImage,
+        si.price as servicePrice,
+        si.duration as serviceDuration,
+        si.status as serviceStatus
+        FROM service_order so
+        LEFT JOIN sys_user su ON so.user_id = su.id
+        LEFT JOIN pet_info pi ON so.pet_id = pi.id
+        LEFT JOIN service_item si ON so.service_id = si.id
+        <where>
+            su.id = #{userId}
+            <if test="status != null and status != ''">
+                AND so.status = #{status}
+            </if>
+            <if test="paymentStatus != null and paymentStatus != ''">
+                AND so.payment_status = #{paymentStatus}
+            </if>
+        </where>
+        ORDER BY so.create_time DESC
+    </select>
+
+    <select id="getSysOrderById" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+               so.order_no,
+               so.service_type,
+               so.appointment_start_time,
+               so.appointment_end_time,
+               so.actual_start_time,
+               so.actual_end_time,
+               so.amount,
+               so.status,
+               so.payment_status,
+               so.payment_method,
+               so.payment_time,
+               so.transaction_id,
+               so.remark,
+               so.create_time,
+               so.update_time,
+               su.id                                         as userId,
+               su.username,
+               su.real_name,
+               su.phone,
+               su.avatar                                     as userAvatar,
+               su.sex                                        as userSex,
+               su.email                                      as userEmail,
+               su.role                                       as userRole,
+               pi.id                                         as petId,
+               pi.pet_name                                   as petName,
+               pi.pet_type                                   as petType,
+               pi.breed                                      as petBreed,
+               pi.avatar                                     as petImage,
+               pi.gender                                     as petGender,
+               pi.birth_date                                 as petBirthDate,
+               pi.weight                                     as petWeight,
+               pi.health_status                              as petHealthStatus,
+               pi.allergies                                  as petAllergies,
+               TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+               si.id                                         as serviceId,
+               si.service_name                               as serviceName,
+               si.medical_type,
+               si.category                                   as serviceCategory,
+               si.description                                as serviceDescription,
+               si.image_url                                  as serviceImage,
+               si.price                                      as servicePrice,
+               si.duration                                   as serviceDuration,
+               si.status                                     as serviceStatus
+        FROM service_order so
+                 LEFT JOIN sys_user su ON so.user_id = su.id
+                 LEFT JOIN pet_info pi ON so.pet_id = pi.id
+                 LEFT JOIN service_item si ON so.service_id = si.id
+        WHERE so.id = #{orderId}
+    </select>
+
+    <!-- 模糊搜索订单 -->
+    <select id="searchOrders" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+        so.order_no,
+        so.service_type,
+        so.appointment_start_time,
+        so.appointment_end_time,
+        so.actual_start_time,
+        so.actual_end_time,
+        so.amount,
+        so.status,
+        so.payment_status,
+        so.payment_method,
+        so.payment_time,
+        so.transaction_id,
+        so.remark,
+        so.create_time,
+        so.update_time,
+        su.id as userId,
+        su.username,
+        su.real_name,
+        su.phone,
+        su.avatar as userAvatar,
+        su.sex as userSex,
+        su.email as userEmail,
+        su.role as userRole,
+        pi.id as petId,
+        pi.pet_name as petName,
+        pi.pet_type as petType,
+        pi.breed as petBreed,
+        pi.avatar as petImage,
+        pi.gender as petGender,
+        pi.birth_date as petBirthDate,
+        pi.weight as petWeight,
+        pi.health_status as petHealthStatus,
+        pi.allergies as petAllergies,
+        TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+        si.id as serviceId,
+        si.service_name as serviceName,
+        si.medical_type,
+        si.category as serviceCategory,
+        si.description as serviceDescription,
+        si.image_url as serviceImage,
+        si.price as servicePrice,
+        si.duration as serviceDuration,
+        si.status as serviceStatus
+        FROM service_order so
+        LEFT JOIN sys_user su ON so.user_id = su.id
+        LEFT JOIN pet_info pi ON so.pet_id = pi.id
+        LEFT JOIN service_item si ON so.service_id = si.id
+        <where>
+            su.id = #{userId}
+            AND (
+            so.order_no LIKE CONCAT('%', #{keyword}, '%')
+            OR si.service_name LIKE CONCAT('%', #{keyword}, '%')
+            OR pi.pet_name LIKE CONCAT('%', #{keyword}, '%')
+            OR si.category LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </where>
+        ORDER BY so.create_time DESC
+    </select>
+
+
+    <delete id="deleteSysOrder">
+        DELETE
+        FROM service_order
+        WHERE id = #{id}
+    </delete>
 </mapper>

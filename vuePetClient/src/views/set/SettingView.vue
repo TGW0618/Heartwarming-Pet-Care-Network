@@ -122,7 +122,7 @@ const logout = () => {
     className: 'pet-delete-dialog' // 添加自定义类名
   }).then(() => {
     userInfoStore.clearUserInfo();
-    router.push('/login');
+    window.location.href = '/login';
     showToast({
       message: '已退出登录',
       icon: 'success',

@@ -25,6 +25,52 @@ const router = createRouter({
                         title: '预约',
                     },
                     component: () => import('../views/petViews/booking.vue'),
+                    children: [
+                        {
+                            path: 'bookingHome',
+                            name: 'bookingHome',
+                            meta: {
+                                title: '预约',
+                            },
+                            component: () => import('../views/petViews/booking/bookingHome.vue'),
+                        },
+                        {
+                            path: 'bookingsMedical',
+                            name: 'bookingsMedical',
+                            meta: {
+                                title: '预约医生',
+                            },
+                            component: () => import('../views/petViews/booking/bookingsMedical.vue'),
+                        },
+                        // 寄养服务列表页
+                        {
+                            path: 'fosterServiceList',
+                            name: 'fosterServiceList',
+                            meta: {
+                                title: '寄养服务列表',
+                            },
+                            component: () => import('../views/petViews/booking/fosterServiceList.vue'),
+                        },
+                        //     服务详细信息页
+                        {
+                            path: 'serviceDetail/:id',
+                            name: 'serviceDetail',
+                            meta: {
+                                title: '服务详细信息',
+                            },
+                            component: () => import('../views/petViews/booking/serviceDetail.vue'),
+                        },
+                        //     服务预约
+                         {
+                             path: 'serviceBooking/:id',
+                             name: 'serviceBooking',
+                             meta: {
+                                 title: '服务预约',
+                             },
+                              component: () => import('@/views/petViews/booking/serviceBooking.vue'),
+
+                         },
+                    ]
                 },
 
                 {
@@ -36,10 +82,44 @@ const router = createRouter({
                     component: () => import('../views/petViews/consultation.vue'),
                 },
                 {
+                    path: 'orders',
+                    name: 'orders',
+                    meta: {
+                        title: '订单',
+                    },
+                    component: () => import('../views/petViews/orders.vue'),
+                    children: [
+                        {
+                            path: 'orderList',
+                            name: 'orderList',
+                            meta: {
+                                title: '订单列表',
+                            },
+                            component: () => import('../views/petViews/orders/orderList.vue'),
+                        },
+                        {
+                            path: 'orderDetail/:id',
+                            name: 'orderDetail',
+                            meta: {
+                                title: '订单详情',
+                            },
+                            component: () => import('../views/petViews/orders/orderDetail.vue'),
+                        },
+                        {
+                            path: 'orderSelect',
+                            name: 'orderSelect',
+                            meta: {
+                                title: '订单搜索',
+                            },
+                            component: () => import('../views/petViews/orders/orderSelect.vue'),
+                        }
+                    ]
+                },
+                {
                     path: 'userinfo',
                     name: 'userinfo',
                     meta: {
-                        title: 'userinfo',
+                        title: '用户中心',
                     },
                     component: () => import('../views/petViews/UserInfo.vue'),
                 },
@@ -198,7 +278,7 @@ const router = createRouter({
             meta: {
                 title: '医疗',
             },
-            component: () => import('../views/petService/booking/medical/MedicalHomeView.vue'),
+            component: () => import('../views/petViews/bookings/medical/MedicalHomeView.vue'),
         },
         {
             path: '/veterinarian/:roleSpecialty',
@@ -206,7 +286,7 @@ const router = createRouter({
             meta: {
                 title: '预约医生',
             },
-            component: () => import('../views/petService/booking/VeterinarianView.vue'),
+            component: () => import('../views/petViews/bookings/VeterinarianView.vue'),
         },
         {
             path: '/vaccine/:vetId',
@@ -214,7 +294,7 @@ const router = createRouter({
             meta: {
                 title: '疫苗服务',
             },
-            component: () => import('../views/petService/booking/medical/vaccineHome/VaccineHomeView.vue'),
+            component: () => import('../views/petViews/bookings/medical/vaccineHome/VaccineHomeView.vue'),
         },
         {
             path: '/vaccineInfo/:vetId/:serviceId',
@@ -222,7 +302,7 @@ const router = createRouter({
             meta: {
                 title: '疫苗服务详情',
             },
-            component: () => import('../views/petService/booking/medical/vaccineHome/vaccineInfoView.vue'),
+            component: () => import('../views/petViews/bookings/medical/vaccineHome/vaccineInfoView.vue'),
         },
         {
             path: '/bookingNow/:vetId/:serviceId',
@@ -230,7 +310,7 @@ const router = createRouter({
             meta: {
                 title: '预约信息',
             },
-            component: () => import('../views/petService/booking/bookingNowView.vue'),
+            component: () => import('../views/petViews/bookings/bookingNowView.vue'),
         },
 
     ],
@@ -248,6 +328,7 @@ const whiteList = [
     '/home',
     '/booking',
     '/consultation',
+    '/orders',
     // 服务相关路由
     '/medical',
     '/veterinarian/:roleSpecialty',
@@ -261,8 +342,19 @@ const whiteList = [
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '宠物管家系统'
 
+
+    // 检查是否在白名单中（支持路由参数）
+    const isWhitelisted = whiteList.some(path => {
+        // 处理带参数的路由匹配
+        if (path.includes('/:')) {
+            const basePath = path.split('/:')[0];
+            return to.path.startsWith(basePath);
+        }
+        return path === to.path || path === '/';
+    });
+
     // 如果访问的页面在白名单中，直接放行
-    if (whiteList.includes(to.path)) {
+    if (isWhitelisted) {
         next()
         return
     }

@@ -38,6 +38,7 @@ public class SysOrder {
 
     @Schema(description = "服务项目", example = "基础洗澡")
     private String serviceName;
+
     @Schema(description = "服务类型", example = "foster")
     private String serviceType;
 
@@ -63,6 +64,4 @@ public class SysOrder {
 
     @Schema(description = "支付方式", example = "微信支付")
     private String paymentMethod;
-
-
 }

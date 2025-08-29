@@ -3,11 +3,11 @@ package com.tgwei.demopet.demos.web.controller;
 import com.tgwei.demopet.demos.web.common.Result;
 import com.tgwei.demopet.demos.web.entity.ServiceItem;
 import com.tgwei.demopet.demos.web.entity.ServiceOrder;
+import com.tgwei.demopet.demos.web.entity.ServiceOrderVO;
 import com.tgwei.demopet.demos.web.entity.SysOrder;
 import com.tgwei.demopet.demos.web.service.ServiceItemService;
 import com.tgwei.demopet.demos.web.service.SysOrderService;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,69 +18,146 @@ import java.util.List;
 @RequestMapping("/sysOrder")
 public class SysOrderController {
 
-    @Autowired
+    @Resource
     private SysOrderService sysOrderService;
 
     @Resource
     private ServiceItemService serviceItemService;
 
-    //    获取所有订单信息(管理端用)
+    // 获取所有订单信息(管理端用)
     @GetMapping("/getAllSysOrder")
     public Result getAllSysOrder() {
-        List<SysOrder> sysOrders = sysOrderService.getAllSysOrder();
-        return Result.success(sysOrders);
-
+        try {
+            List<SysOrder> sysOrders = sysOrderService.getAllSysOrder();
+            return Result.success(sysOrders);
+        } catch (Exception e) {
+            return Result.error(500, "查询订单列表失败: " + e.getMessage());
+        }
     }
 
     /*
-     * 根据用户id获取订单信息（供客户端用户使用）
-     *
+     * 根据订单id获取订单相关信息（连表查询）
      * */
-    @GetMapping("/getSysOrderByUserId")
-    public Result getSysOrderByUserId(HttpServletRequest request) {
-        Claims claims = (Claims) request.getAttribute("claims");
-        Long tokenUserId = (Long) request.getAttribute("userId");
-        if (claims == null || tokenUserId == null) {
-            return Result.error(401, "未授权访问");
+    @GetMapping("/getSysOrderById/{id}")
+    public Result getSysOrderById(@PathVariable Integer id) {
+        try {
+            ServiceOrderVO order = sysOrderService.getSysOrderById(id);
+            if (order == null) {
+                return Result.error(404, "未找到订单信息");
+            }
+            return Result.success(order);
+        } catch (IllegalArgumentException e) {
+            return Result.error(400, e.getMessage());
+        } catch (Exception e) {
+            return Result.error(500, "查询订单详情失败: " + e.getMessage());
         }
-        return Result.success(sysOrderService.getSysOrderByUserId(tokenUserId));
-
     }
 
-    //    根据订单id删除订单
+    /*
+     * 根据用户id获取订单信息
+     */
+    @GetMapping("/getSysOrderByUserId")
+    public Result getSysOrderByUserId(@RequestParam Integer userId,
+                                      @RequestParam(required = false) String status,
+                                      @RequestParam(required = false) String paymentStatus) {
+        try {
+            List<ServiceOrderVO> orders = sysOrderService.getSysOrderByUserId(userId, status, paymentStatus);
+            return Result.success(orders);
+        } catch (IllegalArgumentException e) {
+            return Result.error(400, e.getMessage());
+        } catch (Exception e) {
+            return Result.error(500, "查询订单失败: " + e.getMessage());
+        }
+    }
+
+
+    //  模糊搜索订单
+    @GetMapping("/searchOrders")
+    public Result searchOrders(@RequestParam Integer userId,
+                               @RequestParam String keyword) {
+        try {
+            List<ServiceOrderVO> orders = sysOrderService.searchOrders(userId, keyword);
+            return Result.success(orders);
+        } catch (Exception e) {
+            return Result.error(500, "搜索订单失败: " + e.getMessage());
+        }
+    }
+
+
+    // 根据订单id删除订单
     @DeleteMapping("/deleteSysOrder/{id}")
     public Result deleteSysOrder(@PathVariable Integer id) {
-        boolean result = sysOrderService.deleteSysOrder(id);
-        if (result) {
-            return Result.success("删除成功");
-        } else {
-            return Result.error();
+        try {
+            boolean result = sysOrderService.deleteSysOrder(id);
+            if (result) {
+                return Result.success("删除成功");
+            } else {
+                return Result.error(500, "删除失败");
+            }
+        } catch (IllegalArgumentException e) {
+            return Result.error(400, e.getMessage());
+        } catch (Exception e) {
+            return Result.error(500, "删除订单失败: " + e.getMessage());
         }
     }
 
-    //    创建订单(新增)
+
+    // 根据订单id修改订单信息
+    @PutMapping("/updateSysOrder/{id}")
+    public Result updateSysOrder(@PathVariable Long id, @RequestBody ServiceOrder serviceOrder) {
+        try {
+            // 确保ID一致
+            if (!id.equals(serviceOrder.getId())) {
+                return Result.error(400, "路径中的ID与请求体中的ID不匹配");
+            }
+
+            boolean result = sysOrderService.updateSysOrder(serviceOrder);
+            if (result) {
+                return Result.success("订单更新成功");
+            } else {
+                return Result.error(500, "订单更新失败");
+            }
+        } catch (IllegalArgumentException e) {
+            return Result.error(400, e.getMessage());
+        } catch (Exception e) {
+            return Result.error(500, "更新订单失败: " + e.getMessage());
+        }
+    }
+
+
+    // 创建订单(新增)
     @PostMapping("/createSysOrder")
     public Result createSysOrder(HttpServletRequest request, @RequestBody ServiceOrder serviceOrder) {
-        Claims claims = (Claims) request.getAttribute("claims");
-        Long tokenUserId = (Long) request.getAttribute("userId");
+        try {
+            Claims claims = (Claims) request.getAttribute("claims");
+            Long tokenUserId = (Long) request.getAttribute("userId");
 
-        if (claims == null || tokenUserId == null) {
-            return Result.error(401, "未授权访问");
-        }
+            System.out.print("claims: " + claims + " tokenUserId: " + tokenUserId);
 
-        serviceOrder.setUserId(tokenUserId);
+            if (claims == null || tokenUserId == null) {
+                return Result.error(401, "未授权访问");
+            }
 
-        ServiceItem serviceItem = serviceItemService.getServiceItemById(serviceOrder.getServiceId());
-        serviceOrder.setServiceType(String.valueOf(serviceItem.getServiceType()));
+            serviceOrder.setUserId(tokenUserId);
 
-        boolean result = sysOrderService.createSysOrder(serviceOrder);
-        if (result) {
-            return Result.success("订单创建成功");
-        } else {
-            return Result.error();
+            // 获取服务项目信息
+            ServiceItem serviceItem = serviceItemService.getServiceItemById(serviceOrder.getServiceId());
+            if (serviceItem == null) {
+                return Result.error(400, "服务项目不存在");
+            }
+
+            serviceOrder.setServiceType(serviceItem.getServiceType().toString());
+            // 设置订单金额为服务项目价格
+            serviceOrder.setAmount(serviceItem.getPrice());
+
+            boolean result = sysOrderService.createSysOrder(serviceOrder);
+            if (result) {
+                return Result.success("订单创建成功");
+            } else {
+                return Result.error(500, "订单创建失败");
+            }
+        } catch (Exception e) {
+            return Result.error(500, "创建订单失败: " + e.getMessage());
         }
     }
-
-
-//    模拟支付接口(根据订单id修改订单支付方式及支付状态)[正式开发是调用各方的支付接口]
 }

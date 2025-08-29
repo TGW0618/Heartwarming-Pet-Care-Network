@@ -6,6 +6,15 @@
   <!--  背景结束-->
   <div style="position: relative;min-height: 100vh;">
     <!--    内容开始-->
+    <div>
+      <navBarTop title="登录">
+        <template #left>
+          <slot name="left">
+            <van-icon name="arrow-left" @click="()=>{router.push('/')}"></van-icon>
+          </slot>
+        </template>
+      </navBarTop>
+    </div>
     <div
         style="height:auto;color: #ffffff;padding-left: 1rem;padding-right: 1rem;">
       <div style="padding-top: 8.8rem;">
@@ -37,6 +46,8 @@
 <script setup>
 
 
+import router from "@/router/index.js";
+import NavBarTop from "@/components/navBarTop.vue";
 </script>
 
 

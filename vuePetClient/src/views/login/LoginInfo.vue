@@ -1,6 +1,12 @@
 <template>
   <div>
-    <navBarTop :title="navBarTopTitle"/>
+    <navBarTop :title="navBarTopTitle">
+      <template #left>
+        <slot name="left">
+          <van-icon name="arrow-left" @click="()=>{router.push('/')}"></van-icon>
+        </slot>
+      </template>
+    </navBarTop>
   </div>
   <div class="login-container">
     <div class="logo-container">
