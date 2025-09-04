@@ -14,6 +14,9 @@ public interface SysOrderMapper {
     //获取所有订单信息
     List<SysOrder> getAllSysOrder();
 
+    //    获取预约订单（根据订单状态判断）
+    List<ServiceOrderVO> getSysOrderByStatus(@Param("status") String confirmed);
+
     //根据用户id获取订单信息
     List<ServiceOrderVO> getSysOrderByUserId(@Param("userId") Integer userId,
                                              @Param("status") String status,
@@ -33,21 +36,9 @@ public interface SysOrderMapper {
     //    根据订单id修改订单信息
     boolean updateSysOrder(ServiceOrder serviceOrder);
 
-// 模糊搜索订单
-List<ServiceOrderVO> searchOrders(@Param("userId") Integer userId, @Param("keyword") String keyword);
+    // 模糊搜索订单
+    List<ServiceOrderVO> searchOrders(@Param("userId") Integer userId, @Param("keyword") String keyword);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //    获取医疗预约订单（根据员工id查询订单后根据订单状态判断）
+    List<ServiceOrderVO> getSysOrderByEmployeeId(Long employeeId);
 }

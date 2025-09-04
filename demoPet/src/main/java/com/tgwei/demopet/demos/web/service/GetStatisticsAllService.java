@@ -16,4 +16,8 @@ public class GetStatisticsAllService {
     public List<GetStatistics> getStatisticsAll() {
         return getStatisticsAllMapper.getStatisticsAll();
     }
+
+    public List<GetStatistics> getStatisticsRooms() {
+        return getStatisticsAllMapper.getStatisticsRooms();
+    }
 }

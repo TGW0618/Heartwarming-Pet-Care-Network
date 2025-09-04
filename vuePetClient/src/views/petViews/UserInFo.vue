@@ -1,7 +1,7 @@
 <!--个人中心-->
 <template>
   <div>
-    <div class="user-info-bg"></div>
+<!--    <div class="user-info-bg"></div>-->
     <div class="user-info">
       <!--        顶部盒子开始-->
       <div class="top-box-wrapper">

@@ -23,6 +23,13 @@ public class SysOrderService {
         return sysOrderMapper.getAllSysOrder();
     }
 
+    //    获取预约订单（根据订单状态判断）
+    public List<ServiceOrderVO> getSysOrderByStatus() {
+        return sysOrderMapper.getSysOrderByStatus("confirmed");
+
+    }
+
+
     //根据用户id获取订单信息
     public List<ServiceOrderVO> getSysOrderByUserId(Integer userId, String status, String paymentStatus) {
         if (userId == null) {
@@ -88,15 +95,19 @@ public class SysOrderService {
         return sysOrderMapper.updateSysOrder(serviceOrder);
     }
 
-// 模糊搜索订单
-public List<ServiceOrderVO> searchOrders(Integer userId, String keyword) {
-    if (userId == null) {
-        throw new IllegalArgumentException("用户ID不能为空");
+    // 模糊搜索订单
+    public List<ServiceOrderVO> searchOrders(Integer userId, String keyword) {
+        if (userId == null) {
+            throw new IllegalArgumentException("用户ID不能为空");
+        }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new IllegalArgumentException("搜索关键词不能为空");
+        }
+        return sysOrderMapper.searchOrders(userId, keyword.trim());
     }
-    if (keyword == null || keyword.trim().isEmpty()) {
-        throw new IllegalArgumentException("搜索关键词不能为空");
-    }
-    return sysOrderMapper.searchOrders(userId, keyword.trim());
-}
 
+    //    获取医疗预约订单（根据员工id查询订单后根据订单状态判断）
+    public List<ServiceOrderVO> getSysOrderByEmployeeId(Long employeeId) {
+        return sysOrderMapper.getSysOrderByEmployeeId(employeeId);
+    }
 }

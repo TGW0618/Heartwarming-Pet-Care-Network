@@ -25,10 +25,13 @@
     </resultMap>
 
     <insert id="createSysOrder">
-        INSERT INTO service_order (order_no, user_id, pet_id, service_id, service_type, appointment_start_time,
+        INSERT INTO service_order (order_no, user_id, employee_id, pet_id, service_id, service_type,
+                                   appointment_start_time,
+                                   appointment_end_time,
                                    actual_start_time, actual_end_time, amount, status, payment_status, payment_method,
                                    payment_time, transaction_id, remark, create_time, update_time)
-        VALUES (#{orderNo}, #{userId}, #{petId}, #{serviceId}, #{serviceType}, #{appointmentStartTime},
+        VALUES (#{orderNo}, #{userId}, #{employeeId}, #{petId}, #{serviceId}, #{serviceType}, #{appointmentStartTime},
+                #{appointmentEndTime},
                 #{actualStartTime}, #{actualEndTime}, #{amount}, #{status}, #{paymentStatus},
                 #{paymentMethod}, #{paymentTime}, #{transactionId}, #{remark}, #{createTime}, #{updateTime})
     </insert>
@@ -256,6 +259,113 @@
             )
         </where>
         ORDER BY so.create_time DESC
+    </select>
+
+    <!--    根据订单状态查询预约的订单-->
+    <select id="getSysOrderByStatus" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+               so.order_no,
+               so.service_type,
+               so.appointment_start_time,
+               so.appointment_end_time,
+               so.actual_start_time,
+               so.actual_end_time,
+               so.amount,
+               so.status,
+               so.payment_status,
+               so.payment_method,
+               so.payment_time,
+               so.transaction_id,
+               so.remark,
+               so.create_time,
+               so.update_time,
+               su.id                                         as userId,
+               su.username,
+               su.real_name,
+               su.phone,
+               su.avatar                                     as userAvatar,
+               su.sex                                        as userSex,
+               su.email                                      as userEmail,
+               su.role                                       as userRole,
+               pi.id                                         as petId,
+               pi.pet_name                                   as petName,
+               pi.pet_type                                   as petType,
+               pi.breed                                      as petBreed,
+               pi.avatar                                     as petImage,
+               pi.gender                                     as petGender,
+               pi.birth_date                                 as petBirthDate,
+               pi.weight                                     as petWeight,
+               pi.health_status                              as petHealthStatus,
+               pi.allergies                                  as petAllergies,
+               TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+               si.id                                         as serviceId,
+               si.service_name                               as serviceName,
+               si.medical_type,
+               si.category                                   as serviceCategory,
+               si.description                                as serviceDescription,
+               si.image_url                                  as serviceImage,
+               si.price                                      as servicePrice,
+               si.duration                                   as serviceDuration,
+               si.status                                     as serviceStatus
+        FROM service_order so
+                 LEFT JOIN sys_user su ON so.user_id = su.id
+                 LEFT JOIN pet_info pi ON so.pet_id = pi.id
+                 LEFT JOIN service_item si ON so.service_id = si.id
+        WHERE so.status = #{status}
+           or so.status = 'processing'
+    </select>
+    <select id="getSysOrderByEmployeeId" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+               so.order_no,
+               so.service_type,
+               so.appointment_start_time,
+               so.appointment_end_time,
+               so.actual_start_time,
+               so.actual_end_time,
+               so.amount,
+               so.status,
+               so.payment_status,
+               so.payment_method,
+               so.payment_time,
+               so.transaction_id,
+               so.remark,
+               so.create_time,
+               so.update_time,
+               su.id                                         as userId,
+               su.username,
+               su.real_name,
+               su.phone,
+               su.avatar                                     as userAvatar,
+               su.sex                                        as userSex,
+               su.email                                      as userEmail,
+               su.role                                       as userRole,
+               pi.id                                         as petId,
+               pi.pet_name                                   as petName,
+               pi.pet_type                                   as petType,
+               pi.breed                                      as petBreed,
+               pi.avatar                                     as petImage,
+               pi.gender                                     as petGender,
+               pi.birth_date                                 as petBirthDate,
+               pi.weight                                     as petWeight,
+               pi.health_status                              as petHealthStatus,
+               pi.allergies                                  as petAllergies,
+               TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+               si.id                                         as serviceId,
+               si.service_name                               as serviceName,
+               si.medical_type,
+               si.category                                   as serviceCategory,
+               si.description                                as serviceDescription,
+               si.image_url                                  as serviceImage,
+               si.price                                      as servicePrice,
+               si.duration                                   as serviceDuration,
+               si.status                                     as serviceStatus
+        FROM service_order so
+                 LEFT JOIN sys_user su ON so.user_id = su.id
+                 LEFT JOIN pet_info pi ON so.pet_id = pi.id
+                 LEFT JOIN service_item si ON so.service_id = si.id
+        WHERE so.employee_Id = #{employeeId}
+          and (so.status = 'confirmed' or so.status = 'processing')
+
     </select>
 
 

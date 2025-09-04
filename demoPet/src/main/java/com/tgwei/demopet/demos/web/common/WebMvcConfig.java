@@ -19,7 +19,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         "/ClientUserInfo/**",
                         "/petsInfo/**",
-                        "/sysOrder/createSysOrder")
+                        "/sysOrder/createSysOrder",
+                        "/addFosterRecord",
+                        "/sysOrder/getSysOrderByEmployeeId")
                 // 排除接口
                 .excludePathPatterns("/client/login",
                         "/admin/login");

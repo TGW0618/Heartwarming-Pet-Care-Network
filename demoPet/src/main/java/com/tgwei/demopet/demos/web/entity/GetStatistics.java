@@ -23,4 +23,21 @@ public class GetStatistics implements Serializable {
     private Double totalMedicalIncome;//医疗收入
     private Double totalFosterIncome;//寄养收入
 
+//    房间统计
+
+    /**
+     * 总房间数
+     */
+    private Integer totalRooms;
+
+    /**
+     * 可用房间数
+     */
+    private Integer availableRooms;
+
+    /**
+     * 已用房间数
+     */
+    private Integer occupiedRooms;
+
 }

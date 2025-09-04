@@ -24,12 +24,14 @@ public class LoginController {
     private JwtUtil jwtUtil;
 
 
-
     //    后台管理系统登录接口
     @PostMapping("/admin/login")
     public Result adminLogin(@RequestBody SysUser sysUser) {
-        SysUser dbSysUser = loginService.adminLogin(sysUser);
-        return Result.success(dbSysUser);
+//        SysUser dbSysUser = loginService.adminLogin(sysUser);
+//        return Result.success(dbSysUser);
+
+        return this.clientLogin(sysUser);
+
     }
 
     //    客户端登录接口

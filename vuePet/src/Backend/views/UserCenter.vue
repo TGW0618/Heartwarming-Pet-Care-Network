@@ -214,7 +214,7 @@
         <el-form-item label="头像" class="avatar-form-item">
           <el-upload
               class="avatar-uploader"
-              action="http://localhost:8083/files/upload"
+              action="http://localhost:8083"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
           >
@@ -273,7 +273,7 @@ import {
   Lock,
   Male,
   Message,
-  Phone,
+  Phone, Plus,
   SuccessFilled,
   SwitchButton,
   Timer,

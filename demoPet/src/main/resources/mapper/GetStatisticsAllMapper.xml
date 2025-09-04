@@ -16,4 +16,9 @@
                (SELECT SUM(amount) FROM service_order WHERE service_type = 'MEDICAL') AS totalMedicalIncome,# 医疗收入
                (SELECT SUM(amount) FROM service_order WHERE service_type = 'FOSTER')  AS totalFosterIncome# 寄养收入
     </select>
+    <select id="getStatisticsRooms" resultType="com.tgwei.demopet.demos.web.entity.GetStatistics">
+        SELECT (SELECT COUNT(*) FROM rooms)                                            AS totalRooms,# 房间数
+               (SELECT COUNT(*) FROM rooms WHERE status = 'available')                AS availableRooms,# 可用房间数
+               (SELECT COUNT(*) FROM rooms WHERE status = 'occupied')                 AS occupiedRooms# 占用房间数
+    </select>
 </mapper>

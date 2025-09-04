@@ -3,12 +3,12 @@ package com.tgwei.demopet.demos.web.controller;
 import com.tgwei.demopet.demos.web.common.Result;
 import com.tgwei.demopet.demos.web.entity.GetStatistics;
 import com.tgwei.demopet.demos.web.service.GetStatisticsAllService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("/getStatistics")
 public class GetStatisticsController {
 
-    @Autowired
+    @Resource
     private GetStatisticsAllService getStatisticsAllService;
 
-    @Autowired
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     @GetMapping("/getStatisticsAll")
@@ -33,5 +33,10 @@ public class GetStatisticsController {
 
     }
 
+    @GetMapping("/getStatisticsRooms")
+    public Result getStatisticsRooms() {
+        List<GetStatistics> StatisticsRooms = getStatisticsAllService.getStatisticsRooms();
 
+        return Result.success(StatisticsRooms);
+    }
 }

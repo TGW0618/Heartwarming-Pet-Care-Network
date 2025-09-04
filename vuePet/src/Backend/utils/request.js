@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import {ElMessage} from "element-plus";
 
 // 创建一个 axios 实例，配置基础 URL 和请求超时时间
 const request = axios.create({
@@ -12,6 +12,15 @@ request.interceptors.request.use(
     config => {
         // 设置请求头，指定内容类型
         config.headers['Content-Type'] = 'application/json;charset=utf-8';
+
+        // 添加 JWT Token 到请求头
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+
+
         return config;
     },
     error => {

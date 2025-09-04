@@ -10,4 +10,6 @@ public interface GetStatisticsAllMapper {
 
 
     List<GetStatistics> getStatisticsAll();
+
+    List<GetStatistics> getStatisticsRooms();
 }

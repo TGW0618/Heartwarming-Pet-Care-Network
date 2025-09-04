@@ -35,6 +35,38 @@ public class SysOrderController {
         }
     }
 
+    //    获取预约订单（根据订单状态判断）
+    @GetMapping("/getSysOrderByStatus")
+    public Result getSysOrderByStatus() {
+        try {
+            List<ServiceOrderVO> sysOrders = sysOrderService.getSysOrderByStatus();
+            return Result.success(sysOrders);
+        } catch (Exception e) {
+            return Result.error(500, "查询订单列表失败: " + e.getMessage());
+        }
+
+    }
+
+    //    获取医疗预约订单（根据员工id查询订单后根据订单状态判断）
+    @GetMapping("/getSysOrderByEmployeeId")
+    public Result getSysOrderByEmployeeId(HttpServletRequest request) {
+        try {
+            Claims claims = (Claims) request.getAttribute("claims");
+            Long tokenUserId = (Long) request.getAttribute("userId");
+
+            System.out.print("claims: " + claims + " tokenUserId: " + tokenUserId);
+
+            if (claims == null || tokenUserId == null) {
+                return Result.error(401, "未授权访问");
+            }
+
+            List<ServiceOrderVO> sysOrders = sysOrderService.getSysOrderByEmployeeId(tokenUserId);
+            return Result.success(sysOrders);
+        } catch (Exception e) {
+            return Result.error(500, "查询订单列表失败: " + e.getMessage());
+        }
+    }
+
     /*
      * 根据订单id获取订单相关信息（连表查询）
      * */
@@ -104,13 +136,9 @@ public class SysOrderController {
 
     // 根据订单id修改订单信息
     @PutMapping("/updateSysOrder/{id}")
-    public Result updateSysOrder(@PathVariable Long id, @RequestBody ServiceOrder serviceOrder) {
+    public Result updateSysOrder(@PathVariable long id, @RequestBody ServiceOrder serviceOrder) {
         try {
-            // 确保ID一致
-            if (!id.equals(serviceOrder.getId())) {
-                return Result.error(400, "路径中的ID与请求体中的ID不匹配");
-            }
-
+            serviceOrder.setId(id);
             boolean result = sysOrderService.updateSysOrder(serviceOrder);
             if (result) {
                 return Result.success("订单更新成功");
@@ -123,6 +151,9 @@ public class SysOrderController {
             return Result.error(500, "更新订单失败: " + e.getMessage());
         }
     }
+
+
+    //    根据订单id修改订单状态(订单处理)
 
 
     // 创建订单(新增)

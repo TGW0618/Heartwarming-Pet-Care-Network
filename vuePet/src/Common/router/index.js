@@ -36,12 +36,24 @@ const router = createRouter({
                     component: () => import('../../Backend/views/Home.vue'),
                 },
                 {
-                    path: 'Appointment',
-                    name: 'Appointment',
+                    path: 'bookingsHome',
+                    name: 'bookingsHome',
                     meta: {
                         title: '预约管理',
                     },
-                    component: () => import('../../Backend/views/Appointment.vue'),
+                    component: () => import('../../Backend/views/bookingsHome.vue'),
+                    children: [
+                        {
+                            path: 'bookingsOrder',
+                            name: 'bookingsOrder',
+                            component: () => import('../../Backend/views/bookings/bookingsOrder.vue'),
+                        },
+                        {
+                            path: 'bookingDispose/:id',
+                            name: 'bookingDispose',
+                            component: () => import('../../Backend/views/bookings/bookingDispose.vue'),
+                        }
+                    ]
                 },
                 {
                     path: 'order',
@@ -87,26 +99,17 @@ const router = createRouter({
                         roles: ['admin'],
                     },
                     component: () => import('../../Backend/views/Users.vue'),
-                }
-                //     系统
-
-            ]
-        },
-        // 客户端路由
-        {
-            path: '/pet',
-            name: 'pet',
-            redirect: '/pet/home',
-            component: () => import('../../Client/ClientApp.vue'),
-            children: [
-                {
-                    path: 'home',
-                    name: 'petHome',
-                    meta: {
-                        title: '首页',
-                    },
-                    component: () => import('../../Client/views/Home.vue'),
                 },
+                // 宠物房间管理
+                 {
+                     path: 'roomsHome',
+                     name: 'roomsHome',
+                     meta: {
+                         title: '宠物房间管理',
+                     },
+                     component: () => import('../../Backend/views/roomsHome.vue'),
+                 },
+                //     系统
 
             ]
         },
@@ -125,14 +128,14 @@ const router = createRouter({
 })
 
 const data = reactive({
-    user: null
+   token: null
 })
 
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '宠物管家系统'
 
-    const user = JSON.parse(localStorage.getItem("petSysUser"))
+    const token = localStorage.getItem('token')
 
     // 如果访问的是登录页面，直接放行
     if (to.path === '/admin/login') {
@@ -141,11 +144,11 @@ router.beforeEach((to, from, next) => {
     }
 
     // 检查是否已登录
-    if (!user) {
+    if (!token) {
         ElMessage.error("请先登录")
         next('/admin/login')
     } else {
-        data.user = user
+        data.user = token
         // 权限校验
         const requiredRoles = to.meta.roles
         if (requiredRoles && !requiredRoles.includes(user.role)) {

@@ -27,14 +27,13 @@
             >
               <!-- 主要 -->
               <div class="menu-section">
-                <!--                <p class="menu-title">主要</p>-->
                 <el-menu-item index="/admin/home">
                   <el-icon>
                     <House/>
                   </el-icon>
                   <span>首页</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/Appointment">
+                <el-menu-item index="/admin/bookingsHome/bookingsOrder">
                   <el-icon>
                     <Timer/>
                   </el-icon>
@@ -50,7 +49,6 @@
 
               <!-- 业务 -->
               <div class="menu-section">
-                <!--                <p class="menu-title">业务</p>-->
                 <el-menu-item
                     index="/admin/foster"
                     v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
@@ -80,32 +78,12 @@
                 </el-menu-item>
               </div>
 
-              <!-- 系统 -->
-              <div class="menu-section" v-if="data.user.role === 'admin'">
-                <!--                <p class="menu-title">系统</p>-->
-                <el-menu-item index="/admin/system">
-                  <el-icon>
-                    <Tools/>
-                  </el-icon>
-                  <span>宠物管理</span>
-                </el-menu-item>
-                <el-menu-item index="/admin/system">
+              <div class="menu-section" v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'">
+                <el-menu-item index="/admin/roomsHome">
                   <el-icon>
                     <Tools/>
                   </el-icon>
                   <span>宠舍管理</span>
-                </el-menu-item>
-                <el-menu-item index="/admin/system">
-                  <el-icon>
-                    <Tools/>
-                  </el-icon>
-                  <span>系统管理</span>
-                </el-menu-item>
-                <el-menu-item index="/admin/statistics">
-                  <el-icon>
-                    <TrendCharts/>
-                  </el-icon>
-                  <span>数据统计</span>
                 </el-menu-item>
               </div>
             </el-menu>

@@ -49,6 +49,7 @@ public class LoginService {
     }
 
     public SysUser clientLogin(SysUser sysUser) {
+        System.out.println("登录:"+sysUser);
         String username = sysUser.getUsername();
         String phone = sysUser.getPhone();
         SysUser dbSysUser = loginMapper.getSysUserByPetUsername(username, phone);

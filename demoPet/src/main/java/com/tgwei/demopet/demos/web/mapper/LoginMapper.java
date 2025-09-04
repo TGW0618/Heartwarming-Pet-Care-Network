@@ -12,8 +12,9 @@ public interface LoginMapper {
     @Select("select * from sys_user where username = #{username} and role!='owner'")
     SysUser getSysUserByAdminUsername(String username);
 
-    @Select("select * from sys_user where (username = #{username} or phone = #{phone}) and role='owner'")
-    SysUser getSysUserByPetUsername(@Param("username") String username, @Param("phone") String phone);
+//    @Select("select * from sys_user where (username = #{username} or phone = #{phone}) and role='owner'")
+@Select("select * from sys_user where (username = #{username} or phone = #{phone})")
+SysUser getSysUserByPetUsername(@Param("username") String username, @Param("phone") String phone);
 
 
 }

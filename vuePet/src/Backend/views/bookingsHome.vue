@@ -1,5 +1,7 @@
 <template>
-  <p>预约管理</p>
+  <div>
+    <router-view></router-view>
+  </div>
 
 </template>
 

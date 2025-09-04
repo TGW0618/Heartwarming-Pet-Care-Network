@@ -113,9 +113,10 @@ const handleLogin = () => {
     if (valid) {
       // 登录请求(后台管理系统)
       request.post('/admin/login', data.loginForm).then(res => {
+        console.log( res)
         if (res.code === 200) {
-
-          localStorage.setItem('petSysUser', JSON.stringify(res.data))// 把数据转为json字符串存储用户数据，
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('petSysUser', JSON.stringify(res.data.user))// 把数据转为json字符串存储用户数据，
           ElMessage.success("登陆成功")
           //   跳转后台管理系统
           router.replace('/admin/home')
