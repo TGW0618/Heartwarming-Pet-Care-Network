@@ -1,67 +1,63 @@
 import {defineStore} from 'pinia'
 import request from "@/Backend/utils/request.js"
-import {ElMessage, ElMessageBox} from "element-plus"
+import {ElMessage} from "element-plus"
 
 
 export const useOrderStore = defineStore('order', {
     state: () => ({
-        allOrders: [],
-        medicalOrders: [],
-        fosterOrders: [],
-        loading: false
+        orderData: null,
     }),
 
     getters: {
-        // 计算属性
-        getOrderByNo: (state) => (orderNo) => {
-            return state.allOrders.find(order => order.orderNo === orderNo)
-        }
+        getOrderData() {
+            return this.orderData
+        },
     },
 
     actions: {
-        // 获取所有订单
-        async fetchAllOrders() {
-            this.loading = true
-            try {
-                const res = await request.get("/sysOrder/getAllSysOrder")
+        /*
+        * 获取订单数据
+        * */
+        async getOrderAll(currentPag = 1, pageSize = 5) {
+            // 传递分页参数给后端
+            await request.get(`/sysOrder/getOrderAll?pageNum=${currentPag}&pageSize=${pageSize}`).then(res => {
                 if (res.code === 200) {
-                    this.allOrders = res.data
-                    this.medicalOrders = this.allOrders.filter(item => item.serviceType === "medical")
-                    this.fosterOrders = this.allOrders.filter(item => item.serviceType === "foster")
+                    this.orderData = res.data
+                    console.log(res.data)
                 } else {
-                    ElMessage.error('获取订单数据失败: ' + res.message)
+                    ElMessage.error(res.message)
                 }
-            } catch (error) {
-                ElMessage.error('网络错误，请稍后重试')
+            }).catch(error => {
                 console.error(error)
-            } finally {
-                this.loading = false
-            }
+            })
+        },
+
+        /*
+        * 修改订单
+        * */
+        async updateSysOrder(order) {
+            request.put(`/sysOrder/updateSysOrder/${order.id}`, order).then(res => {
+                if (res.code === 200) {
+                    ElMessage.success(res.message)
+                    window.location.reload()
+                } else {
+                    ElMessage.error(res.message)
+                }
+            }).catch(err => {
+                ElMessage.error(err.message)
+            })
         },
 
         // 删除订单
         async deleteOrder(id) {
             console.log("删除订单:" + id)
-            await ElMessageBox.confirm(
-                '确定要删除此订单吗？此操作不可恢复！',
-                '删除确认',
-                {
-                    confirmButtonText: '确定删除',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                    confirmButtonClass: 'el-button--danger'
+            await request.delete("/sysOrder/deleteSysOrder/" + id).then(res => {
+                if (res.code === 200) {
+                    ElMessage.success('删除成功')
+                    window.location.reload()
+                } else {
+                    ElMessage.error('删除失败: ' + res.message)
                 }
-            ).then(async () => {
-                await request.delete("/sysOrder/deleteSysOrder/" + id).then(res => {
-                    if (res.code === 200) {
-                        ElMessage.success('删除成功')
-                        this.fetchAllOrders()
-                    } else {
-                        ElMessage.error('删除失败: ' + res.message)
-                    }
-                })
-            }).catch(() => {
-                ElMessage.info('已取消删除')
             })
         }
     }

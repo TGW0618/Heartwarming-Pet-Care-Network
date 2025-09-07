@@ -17,5 +17,15 @@ export default defineConfig({
     },
     server: {
         port: 8086,
+        host: '0.0.0.0',// 允许外部访问
+        // 添加代理配置
+        proxy: {
+            '/files': {
+                target: 'http://localhost:8083', // 后端服务地址
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/files/, '/files')
+            }
+        }
     }
 })
+

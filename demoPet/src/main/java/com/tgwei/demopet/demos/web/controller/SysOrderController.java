@@ -24,7 +24,30 @@ public class SysOrderController {
     @Resource
     private ServiceItemService serviceItemService;
 
-    // 获取所有订单信息(管理端用)
+
+    //    获取订单(根据角色，订单类型（可为空），角色id（可为空）获取订单信息)[ok]
+    @GetMapping("/getOrderAll")
+    public Result getOrderAll(HttpServletRequest request,
+                              @RequestParam(defaultValue = "1") Integer pageNum,
+                              @RequestParam(defaultValue = "10") Integer pageSize
+    ) {
+        try {
+            // 创建分页对象
+            com.github.pagehelper.PageInfo<ServiceOrderVO> pageInfoOrderList = sysOrderService.getOrderAll(request, pageNum, pageSize);
+            return Result.success(pageInfoOrderList);
+        } catch (Exception e) {
+            return Result.error(500, "查询订单列表失败: " + e.getMessage());
+        }
+    }
+
+    //    根据订单id获取记录相关信息(医疗记录、寄养记录)
+    @GetMapping("/getRecordByOrderId/{orderId}")
+    public Result getRecordByOrderId(HttpServletRequest request, @PathVariable Integer orderId) {
+        return sysOrderService.getRecordByOrderId(request, orderId);
+    }
+
+
+    // 获取所有订单信息
     @GetMapping("/getAllSysOrder")
     public Result getAllSysOrder() {
         try {
@@ -34,6 +57,7 @@ public class SysOrderController {
             return Result.error(500, "查询订单列表失败: " + e.getMessage());
         }
     }
+
 
     //    获取预约订单（根据订单状态判断）
     @GetMapping("/getSysOrderByStatus")

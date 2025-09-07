@@ -87,7 +87,7 @@ import {reactive, ref} from 'vue'
 import {Avatar, Cellphone, Message} from '@element-plus/icons-vue'
 import request from "@/Backend/utils/request.js";
 import {ElMessage} from "element-plus";
-import router from "@/Common/router/index.js";
+import router from "@/Backend/router/index.js";
 
 const loginFormRef = ref(null)
 const rememberMe = ref(false)

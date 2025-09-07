@@ -21,6 +21,13 @@ public interface SysUserMapper {
     @Select("select * from sys_user where id=#{id}")
     SysUser getSysUserById(Integer id);
 
+    //    根据手机号查询用户信息
+    @Select("select * from sys_user where phone= #{phone}")
+    SysUser selectByPhone(String phone);
+    //    根据用户名查询用户信息
+    @Select("select * from sys_user where username= #{username}")
+    SysUser selectByUsername(String username);
+
     //    根据id修改用户信息
     @Select("update sys_user set username=#{username},real_name=#{realName},sex=#{sex},phone=#{phone},email=#{email},avatar=#{avatar},status=#{status},role=#{role} where id=#{id}")
     void updateSysUsers(SysUser sysUser);
@@ -31,7 +38,7 @@ public interface SysUserMapper {
 
     //新增用户
     @Insert("insert into sys_user(username,password,real_name,sex,phone,email,avatar,role,status) values(#{username},sha2(concat(#{password},'Pet@2025Sys'),256),#{realName},#{sex},#{phone},#{email},#{avatar},#{role},#{status})")
-    void addSysUsers(SysUser sysUser);
+    int addSysUsers(SysUser sysUser);
 
     //    删除用户
     @Delete("delete from sys_user where id=#{id}")
@@ -40,4 +47,7 @@ public interface SysUserMapper {
     //    修改状态
     @Select("update sys_user set status=#{status} where id=#{id}")
     void updateSysUserStatus(SysUser sysUser);
+
+
+
 }

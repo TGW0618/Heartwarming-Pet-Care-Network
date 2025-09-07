@@ -250,6 +250,7 @@ import {HomeFilled,} from '@element-plus/icons-vue'
 .password-btn {
   background: linear-gradient(135deg, #272527, #8e44ad);
   color: white;
+  border-radius: 16px;
 }
 
 .password-btn:hover {

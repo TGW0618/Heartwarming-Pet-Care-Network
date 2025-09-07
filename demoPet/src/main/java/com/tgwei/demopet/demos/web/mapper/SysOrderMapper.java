@@ -5,6 +5,7 @@ import com.tgwei.demopet.demos.web.entity.ServiceOrderVO;
 import com.tgwei.demopet.demos.web.entity.SysOrder;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,6 +23,15 @@ public interface SysOrderMapper {
                                              @Param("status") String status,
 
                                              @Param("paymentStatus") String paymentStatus);
+
+    @Select("select service_order.service_type from service_order where id = #{orderId}")
+    String getOrderTypeById(Integer orderId);
+
+
+
+
+
+
 
     // 根据订单id删除订单
     boolean deleteSysOrder(Integer id);
@@ -41,4 +51,9 @@ public interface SysOrderMapper {
 
     //    获取医疗预约订单（根据员工id查询订单后根据订单状态判断）
     List<ServiceOrderVO> getSysOrderByEmployeeId(Long employeeId);
+
+    //    获取订单(根据角色，订单类型（可为空），角色id（可为空）获取订单信息)
+    List<ServiceOrderVO> getOrderAll(@Param("userId") Long userId, @Param("orderType") String orderType, @Param("employeeId") Long employeeId);
+
+
 }

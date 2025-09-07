@@ -1,5 +1,6 @@
 package com.tgwei.demopet.demos.web.service;
 
+import com.tgwei.demopet.demos.web.common.Result;
 import com.tgwei.demopet.demos.web.entity.SysUser;
 import com.tgwei.demopet.demos.web.mapper.SysUserMapper;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,16 @@ public class SysUserService {
     }
 
     //新增用户
-    public void addSysUsers(SysUser sysUser) {
+    public Result addSysUsers(SysUser sysUser) {
+        SysUser existingUser = sysUserMapper.selectByUsername(sysUser.getUsername());
+        SysUser existingPhone = sysUserMapper.selectByPhone(sysUser.getPhone());
+        if (existingUser != null) {
+            return Result.error(401, "该用户已存在");
+        }
+        if (existingPhone != null) {
+            return Result.error(401, "该手机号已存在");
+        }
+
         if (sysUser.getRealName() == null) {
             sysUser.setRealName(sysUser.getUsername());
         }
@@ -56,7 +66,13 @@ public class SysUserService {
             sysUser.setStatus(1);
         }
 
-        sysUserMapper.addSysUsers(sysUser);
+        // 处理数据库插入操作的结果
+        int result = sysUserMapper.addSysUsers(sysUser);
+        if (result > 0) {
+            return Result.success("用户添加成功");
+        } else {
+            return Result.error(401, "用户添加失败");
+        }
     }
 
     //    删除用户

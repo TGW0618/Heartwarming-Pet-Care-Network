@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <!--    系统用户-->
+  <el-scrollbar height="80vh">
     <div>
-      <SystemUserStatistics
-          v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
-          :StatisticsData="data.StatisticsData"
-      />
+      <!--    系统用户-->
+      <div>
+        <SystemUserStatistics
+            v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
+            :StatisticsData="data.StatisticsData"
+        />
+      </div>
+      <!--    订单统计-->
+      <div>
+        <OrderStatistics
+            v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
+            :StatisticsData="data.StatisticsData"
+        />
+      </div>
+      <!--    收入统计-->
+      <div>
+        <RevenueStatistics
+            v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
+            :StatisticsData="data.StatisticsData"
+        />
+      </div>
     </div>
-    <!--    订单统计-->
-    <div>
-      <OrderStatistics
-          v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
-          :StatisticsData="data.StatisticsData"
-      />
-    </div>
-    <!--    收入统计-->
-    <div>
-      <RevenueStatistics
-          v-if="data.StatisticsData && Object.keys(data.StatisticsData).length > 0"
-          :StatisticsData="data.StatisticsData"
-      />
-    </div>
-  </div>
+  </el-scrollbar>
 </template>
 
 

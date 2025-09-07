@@ -53,8 +53,6 @@ public class FileController {
         } catch (IOException e) {
             return Result.error(500, "文件上传失败: " + e.getMessage());
         }
-//        String url = "http://localhost:8083/files/" + fileName;
-//        String url = "http://192.168.1.12:8083/files/" + fileName;
 
         String url = "/files/" + fileName;
 

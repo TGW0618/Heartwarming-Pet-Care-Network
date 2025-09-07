@@ -1,267 +1,265 @@
 <template>
-  <div class="user-profile-container">
-    <div class="user-profile">
-      <!-- 用户信息卡片开始 -->
-      <el-card class="user-card" shadow="hover">
-        <!-- 头像和信息区域开始 -->
-        <div class="user-info-container">
-          <!-- 头像区域 -->
-          <div class="avatar-section">
-            <div class="avatar-wrapper">
-              <el-avatar :src="data.user.avatar" :size="120" class="user-avatar">
-                <DefaultAvatar/>
-              </el-avatar>
-              <div class="avatar-badge">
-                <el-icon color="#67c23a">
-                  <SuccessFilled/>
-                </el-icon>
+  <el-scrollbar height="80vh">
+    <div class="user-profile-container">
+      <div class="user-profile">
+        <!-- 用户信息卡片开始 -->
+        <el-card class="user-card" shadow="hover">
+          <!-- 头像和信息区域开始 -->
+          <div class="user-info-container">
+            <!-- 头像区域 -->
+            <div class="avatar-section">
+              <div class="avatar-wrapper">
+                <el-avatar :src="data.user.avatar" :size="120" class="user-avatar">
+                  <DefaultAvatar/>
+                </el-avatar>
               </div>
+              <h3 class="user-name">{{ data.user.realName || data.user.username }}</h3>
+              <p class="user-role">
+                <el-tag :type="getRoleType(data.user.role)" effect="dark" size="small">
+                  {{ getRoleDisplayName(data.user.role) }}
+                </el-tag>
+              </p>
             </div>
-            <h3 class="user-name">{{ data.user.realName || data.user.username }}</h3>
-            <p class="user-role">
-              <el-tag :type="getRoleType(data.user.role)" effect="dark" size="small">
-                {{ getRoleDisplayName(data.user.role) }}
-              </el-tag>
-            </p>
-          </div>
 
-          <!-- 详细信息区域 -->
-          <div class="info-section">
-            <div class="info-grid">
-              <!--              账号-->
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <User/>
-                  </el-icon>
+            <!-- 详细信息区域 -->
+            <div class="info-section">
+              <div class="info-grid">
+                <!--              账号-->
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <User/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">账号</span>
+                    <span class="info-value">{{ data.user.username }}</span>
+                  </div>
                 </div>
-                <div class="info-content">
-                  <span class="info-label">账号</span>
-                  <span class="info-value">{{ data.user.username }}</span>
+                <!--密码-->
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Lock/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">密码</span>
+                    <span class="info-value">••••••</span>
+                  </div>
                 </div>
-              </div>
-              <!--密码-->
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Lock/>
-                  </el-icon>
+                <!--姓名-->
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <UserFilled/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">名字</span>
+                    <span class="info-value">{{ data.user.realName || '未设置' }}</span>
+                  </div>
                 </div>
-                <div class="info-content">
-                  <span class="info-label">密码</span>
-                  <span class="info-value">••••••</span>
+                <!--性别-->
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Male/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">性别</span>
+                    <span class="info-value">{{ getSexDisplayName(data.user.sex) }}</span>
+                  </div>
                 </div>
-              </div>
-              <!--姓名-->
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <UserFilled/>
-                  </el-icon>
-                </div>
-                <div class="info-content">
-                  <span class="info-label">名字</span>
-                  <span class="info-value">{{ data.user.realName || '未设置' }}</span>
-                </div>
-              </div>
-              <!--性别-->
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Male/>
-                  </el-icon>
-                </div>
-                <div class="info-content">
-                  <span class="info-label">性别</span>
-                  <span class="info-value">{{ getSexDisplayName(data.user.sex) }}</span>
-                </div>
-              </div>
 
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Phone/>
-                  </el-icon>
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Phone/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">手机号</span>
+                    <span class="info-value">{{ data.user.phone || '未设置' }}</span>
+                  </div>
                 </div>
-                <div class="info-content">
-                  <span class="info-label">手机号</span>
-                  <span class="info-value">{{ data.user.phone || '未设置' }}</span>
-                </div>
-              </div>
 
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Message/>
-                  </el-icon>
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Message/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">邮箱</span>
+                    <span class="info-value">{{ data.user.email || '未设置' }}</span>
+                  </div>
                 </div>
-                <div class="info-content">
-                  <span class="info-label">邮箱</span>
-                  <span class="info-value">{{ data.user.email || '未设置' }}</span>
-                </div>
-              </div>
 
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Calendar/>
-                  </el-icon>
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Calendar/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">创建时间</span>
+                    <span class="info-value">{{ formatDate(data.user.createTime) }}</span>
+                  </div>
                 </div>
-                <div class="info-content">
-                  <span class="info-label">创建时间</span>
-                  <span class="info-value">{{ formatDate(data.user.createTime) }}</span>
-                </div>
-              </div>
 
-              <div class="info-item">
-                <div class="info-icon">
-                  <el-icon>
-                    <Timer/>
-                  </el-icon>
-                </div>
-                <div class="info-content">
-                  <span class="info-label">更新时间</span>
-                  <span class="info-value">{{ formatDate(data.user.updateTime) || '首次登录' }}</span>
+                <div class="info-item">
+                  <div class="info-icon">
+                    <el-icon>
+                      <Timer/>
+                    </el-icon>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">更新时间</span>
+                    <span class="info-value">{{ formatDate(data.user.updateTime) || '首次登录' }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- 头像和信息区域结束 -->
-      </el-card>
-      <!-- 用户信息卡片结束 -->
+          <!-- 头像和信息区域结束 -->
+        </el-card>
+        <!-- 用户信息卡片结束 -->
+      </div>
+
+      <!-- 操作按钮区域开始 -->
+      <div class="action-buttons">
+        <el-button plain text bg
+                   round
+                   color="#007aff"
+                   @click="updatePasswordBtn"
+                   class="action-btn password-btn"
+        >
+          <el-icon class="btn-icon">
+            <EditPen/>
+          </el-icon>
+          <span class="btn-text">修改密码</span>
+
+        </el-button>
+
+        <el-button plain text bg
+                   round
+                   color="#af54c2"
+                   @click="EditProfileBtn"
+                   class="action-btn profile-btn"
+        >
+          <el-icon class="btn-icon">
+            <User/>
+          </el-icon>
+          <span class="btn-text">编辑资料</span>
+
+        </el-button>
+
+        <el-button plain text bg
+                   round
+                   color="#fa233b"
+                   @click="loginOut"
+                   class="action-btn logout-btn"
+        >
+          <el-icon class="btn-icon">
+            <SwitchButton/>
+          </el-icon>
+          <span class="btn-text">退出登录</span>
+        </el-button>
+      </div>
+      <!-- 操作按钮区域结束 -->
     </div>
+    <!--    表单开始-->
+    <div>
+      <!--修改密码开始-->
+      <el-dialog
+          v-model="data.dialogVisibleUpdatePassword"
+          title="修改密码"
+          width="38%"
 
-    <!-- 操作按钮区域开始 -->
-    <div class="action-buttons">
-      <el-button
-          type="primary"
-          @click="updatePasswordBtn"
-          class="action-btn password-btn"
       >
-        <el-icon class="btn-icon">
-          <EditPen/>
-        </el-icon>
-        <span class="btn-text">修改密码</span>
-        <span class="btn-hover-effect"></span>
-      </el-button>
-
-      <el-button
-          type="warning"
-          @click="EditProfileBtn"
-          class="action-btn profile-btn"
-      >
-        <el-icon class="btn-icon">
-          <User/>
-        </el-icon>
-        <span class="btn-text">编辑资料</span>
-        <span class="btn-hover-effect"></span>
-      </el-button>
-
-      <el-button
-          type="danger"
-          @click="loginOut"
-          class="action-btn logout-btn"
-      >
-        <el-icon class="btn-icon">
-          <SwitchButton/>
-        </el-icon>
-        <span class="btn-text">退出登录</span>
-        <span class="btn-hover-effect"></span>
-      </el-button>
-    </div>
-    <!-- 操作按钮区域结束 -->
-  </div>
-  <!--    表单开始-->
-  <div>
-    <!--修改密码开始-->
-    <el-dialog
-        v-model="data.dialogVisibleUpdatePassword"
-        title="修改密码"
-        width="38%"
-
-    >
-      <el-form :model="data.updatePasswordData" :rules="data.updatePasswordDataRules" ref="passwordFormRef">
-        <el-form-item label="账号">
-          <span class="el-form-item__label">{{ data.user.username }}</span>
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPassword">
-          <el-input type="password" v-model="data.updatePasswordData.newPassword"/>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input type="password" v-model="data.updatePasswordData.confirmPassword"/>
-        </el-form-item>
-      </el-form>
-      <template #footer>
+        <el-form :model="data.updatePasswordData" :rules="data.updatePasswordDataRules" ref="passwordFormRef">
+          <el-form-item label="账号">
+            <span class="el-form-item__label">{{ data.user.username }}</span>
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPassword">
+            <el-input type="password" v-model="data.updatePasswordData.newPassword"/>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="confirmPassword">
+            <el-input type="password" v-model="data.updatePasswordData.confirmPassword"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
       <span class="dialog-footer">
         <el-button @click="data.dialogVisibleUpdatePassword = false">关闭</el-button>
         <el-button type="primary" @click="savaUpdatePassword">
           保存
         </el-button>
       </span>
-      </template>
-    </el-dialog>
-    <!--    修改密码结束-->
-    <!--    编辑资料开始-->
+        </template>
+      </el-dialog>
+      <!--    修改密码结束-->
+      <!--    编辑资料开始-->
 
-    <el-dialog
-        v-model="data.dialogVisibleEditProfile"
-        title="个人信息"
-        width="38%"
+      <el-dialog
+          v-model="data.dialogVisibleEditProfile"
+          title="个人信息"
+          width="38%"
 
-    >
-      <el-form :model="data.form">
-        <el-form-item label="头像" class="avatar-form-item">
-          <el-upload
-              class="avatar-uploader"
-              action="http://localhost:8083"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-          >
-            <div class="avatar-preview">
-              <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar-image" alt="头像预览"/>
-              <el-icon v-else class="avatar-uploader-icon">
-                <Plus/>
-              </el-icon>
-            </div>
-          </el-upload>
-        </el-form-item>
+      >
+        <el-form :model="data.form">
+          <el-form-item label="头像" class="avatar-form-item">
+            <el-upload
+                class="avatar-uploader"
+                action="http://localhost:8083/files/upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+            >
+              <div class="avatar-preview">
+                <img v-if="data.form.avatar" :src="data.form.avatar" class="avatar-image" alt="头像预览"/>
+                <el-icon v-else class="avatar-uploader-icon">
+                  <Plus/>
+                </el-icon>
+              </div>
+            </el-upload>
+          </el-form-item>
 
-        <el-form-item label="名字">
-          <el-input v-model="data.form.realName"/>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-select
-              v-model="data.form.sex"
-              class="m-2"
-              placeholder="请选择性别"
-              style="width: 240px"
-          >
-            <el-option label="男" value="male"></el-option>
-            <el-option label="女" value="female"></el-option>
-            <el-option label="其他" value="other"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="data.form.phone"/>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="data.form.email"/>
-        </el-form-item>
-      </el-form>
-      <template #footer>
+          <el-form-item label="名字">
+            <el-input v-model="data.form.realName"/>
+          </el-form-item>
+          <el-form-item label="性别">
+            <el-select
+                v-model="data.form.sex"
+                class="m-2"
+                placeholder="请选择性别"
+                style="width: 240px"
+            >
+              <el-option label="男" value="male"></el-option>
+              <el-option label="女" value="female"></el-option>
+              <el-option label="其他" value="other"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="手机号">
+            <el-input v-model="data.form.phone"/>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="data.form.email"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
       <span class="dialog-footer">
         <el-button @click="data.dialogVisibleEditProfile = false">关闭</el-button>
         <el-button type="primary" @click="savaProfile">
           保存
         </el-button>
       </span>
-      </template>
-    </el-dialog>
-    <!--    编辑资料结束-->
-  </div>
-  <!--    表单结束-->
-
+        </template>
+      </el-dialog>
+      <!--    编辑资料结束-->
+    </div>
+    <!--    表单结束-->
+  </el-scrollbar>
 
 </template>
 
@@ -280,7 +278,7 @@ import {
   User,
   UserFilled
 } from '@element-plus/icons-vue'
-import router from "@/Common/router/index.js"
+import router from "@/Backend/router/index.js"
 import {reactive, ref} from "vue"
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue"
 import request from "@/Backend/utils/request.js";
@@ -448,8 +446,8 @@ const loginOut = () => {
         center: true
       }
   ).then(() => {
-    localStorage.removeItem("petSysUser")
     ElMessage.success("退出成功")
+    localStorage.clear()
     router.push("/admin/login")
   }).catch(() => {
     ElMessage.info("取消退出")
@@ -525,19 +523,6 @@ const handleAvatarSuccess = (res) => {
   box-shadow: 0 6px 16px rgba(175, 84, 194, 0.25);
 }
 
-.avatar-badge {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 30px;
-  height: 30px;
-  background: #67c23a;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white;
-}
 
 .user-name {
   margin: 15px 0 5px;

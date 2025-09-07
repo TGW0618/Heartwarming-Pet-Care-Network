@@ -25,65 +25,57 @@
                 router
                 :default-active="router.currentRoute.value.path"
             >
-              <!-- 主要 -->
               <div class="menu-section">
-                <el-menu-item index="/admin/home">
+                <el-menu-item index="/admin/home"
+
+                >
                   <el-icon>
                     <House/>
                   </el-icon>
                   <span>首页</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/bookingsHome/bookingsOrder">
+                <el-menu-item index="/admin/bookingsHome">
                   <el-icon>
                     <Timer/>
                   </el-icon>
-                  <span>预约管理</span>
+                  <span>预约处理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/order">
+                <el-menu-item index="/admin/orderHome">
                   <el-icon>
                     <Collection/>
                   </el-icon>
                   <span>订单管理</span>
                 </el-menu-item>
-              </div>
-
-              <!-- 业务 -->
-              <div class="menu-section">
-                <el-menu-item
-                    index="/admin/foster"
-                    v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'"
-                >
+                <el-menu-item index="/admin/serviceHome">
                   <el-icon>
                     <Notification/>
                   </el-icon>
-                  <span>宠物寄养</span>
+                  <span>服务管理</span>
                 </el-menu-item>
-                <el-menu-item
-                    index="/admin/vet"
-                    v-if="data.user.role === 'admin' || data.user.role === 'veterinarian'"
-                >
+                <el-menu-item index="/admin/roomsHome"
+                              v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'">
                   <el-icon>
-                    <Phone/>
+                    <OfficeBuilding/>
                   </el-icon>
-                  <span>医疗服务</span>
+                  <span>宠舍管理</span>
                 </el-menu-item>
-                <el-menu-item
-                    index="/admin/users"
-                    v-if="data.user.role === 'admin'"
+              </div>
+              <div class="menu-section">
+                <el-menu-item index="/admin/users"
+                              v-if="data.user.role === 'admin'"
                 >
                   <el-icon>
                     <UserFilled/>
                   </el-icon>
                   <span>用户管理</span>
                 </el-menu-item>
-              </div>
-
-              <div class="menu-section" v-if="data.user.role === 'admin' || data.user.role === 'foster_staff'">
-                <el-menu-item index="/admin/roomsHome">
+                <el-menu-item index="/admin/statisticsHome"
+                              v-if="data.user.role === 'admin'"
+                >
                   <el-icon>
-                    <Tools/>
+                    <List/>
                   </el-icon>
-                  <span>宠舍管理</span>
+                  <span>数据统计</span>
                 </el-menu-item>
               </div>
             </el-menu>
@@ -101,6 +93,8 @@
             <div class="page-title">{{ $route.meta.title }}</div>
             <div class="search-bar">
               <el-input
+                  v-model="searchText"
+                  @keyup.enter="searchInfo"
                   :prefix-icon="Search"
                   class="search-input"
                   type="text"
@@ -109,12 +103,12 @@
             </div>
             <div class="user-info">
               <div class="notification-icon">
-                <el-icon>
+                <el-icon @click="toUserMessage">
                   <Bell/>
                 </el-icon>
               </div>
               <div class="message-icon">
-                <el-icon>
+                <el-icon @click="toUserMail">
                   <Message/>
                 </el-icon>
               </div>
@@ -147,23 +141,24 @@
 </template>
 
 <script setup>
-import router from "@/Common/router/index.js";
+import router from "@/Backend/router/index.js";
 import {
-  Bell,
-  Collection,
-  House,
+  Bell, BellFilled, Box, Coin,
+  Collection, DataLine, Film, HomeFilled,
+  House, List,
   Message,
-  Notification,
+  Notification, OfficeBuilding,
   Phone,
-  Search,
+  Search, SwitchFilled, TakeawayBox,
   Timer,
   Tools,
-  TrendCharts,
+  TrendCharts, User,
   UserFilled
 } from "@element-plus/icons-vue";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import DefaultAvatar from "@/Common/components/DefaultAvatar.vue";
 import {useUserStore} from "@/Backend/stores/userStore.js";
+import {ElMessage} from "element-plus";
 
 const userStore = useUserStore()
 
@@ -171,6 +166,23 @@ const userStore = useUserStore()
 const data = reactive({
   user: JSON.parse(localStorage.getItem("petSysUser"))
 })
+
+const searchText = ref("")
+const searchInfo = () => {
+  if (searchText.value.trim()) {
+    ElMessage.info("搜索功能开发中:" + searchText.value)
+  } else {
+    ElMessage.warning("请输入搜索内容")
+  }
+
+};
+
+const toUserMessage = () => {
+  ElMessage.info("通知功能开发中")
+};
+const toUserMail = () => {
+  ElMessage.info("邮箱功能开发中")
+};
 
 const toUserCenter = () => {
   router.push("/admin/userCenter");

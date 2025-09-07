@@ -48,6 +48,13 @@ jwt:
   expiration: 86400 # Token过期时间(秒) 24小时
 
 
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+
 
 
 

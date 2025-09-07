@@ -367,6 +367,78 @@
           and (so.status = 'confirmed' or so.status = 'processing')
 
     </select>
+    <select id="getOrderAll" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrderVO">
+        SELECT so.id,
+        so.order_no,
+        so.service_type,
+        so.appointment_start_time,
+        so.appointment_end_time,
+        so.actual_start_time,
+        so.actual_end_time,
+        so.amount,
+        so.status,
+        so.payment_status,
+        so.payment_method,
+        so.payment_time,
+        so.transaction_id,
+        so.remark,
+        so.create_time,
+        so.update_time,
+        -- 用户信息
+        su.id as userId,
+        su.username,
+        su.real_name,
+        su.phone,
+        su.avatar as userAvatar,
+        su.sex as userSex,
+        su.email as userEmail,
+        su.role as userRole,
+        -- 宠物信息
+        pi.id as petId,
+        pi.pet_name as petName,
+        pi.pet_type as petType,
+        pi.breed as petBreed,
+        pi.avatar as petImage,
+        pi.gender as petGender,
+        pi.birth_date as petBirthDate,
+        pi.weight as petWeight,
+        pi.health_status as petHealthStatus,
+        pi.allergies as petAllergies,
+        TIMESTAMPDIFF(YEAR, pi.birth_date, CURDATE()) as petAge,
+        -- 服务信息
+        si.id as serviceId,
+        si.service_name as serviceName,
+        si.medical_type,
+        si.category as serviceCategory,
+        si.description as serviceDescription,
+        si.image_url as serviceImage,
+        si.price as servicePrice,
+        si.duration as serviceDuration,
+        si.status as serviceStatus,
+        -- 员工信息
+        emp.username as employeeUsername,
+        emp.real_name as employeeRealName,
+        emp.avatar as employeeAvatar
+        FROM service_order so
+        -- 连接用户表获取用户信息
+        LEFT JOIN sys_user su ON so.user_id = su.id
+        -- 连接用户表获取员工信息
+        LEFT JOIN sys_user emp ON so.employee_id = emp.id
+        LEFT JOIN pet_info pi ON so.pet_id = pi.id
+        LEFT JOIN service_item si ON so.service_id = si.id
+        <where>
+            <if test="userId != null">
+                su.id = #{userId}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND so.service_type = #{orderType}
+            </if>
+            <if test="employeeId != null">
+                AND emp.id = #{employeeId}
+            </if>
+        </where>
+        ORDER BY so.create_time DESC
+    </select>
 
 
     <delete id="deleteSysOrder">

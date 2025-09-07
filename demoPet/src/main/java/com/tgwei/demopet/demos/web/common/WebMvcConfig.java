@@ -21,7 +21,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/petsInfo/**",
                         "/sysOrder/createSysOrder",
                         "/addFosterRecord",
-                        "/sysOrder/getSysOrderByEmployeeId")
+                        "/sysOrder/getSysOrderByEmployeeId",
+                        "/addMedicalRecord",
+                        "/sysOrder/getOrderAll",
+                        "/sysOrder/getRecordByOrderId/{orderId}",
+                        "/serviceItems/getServiceItemAll",
+                        "/serviceItems/addServiceItem",
+                        "/serviceItems/updateServiceItem",
+                        "/serviceItems/deleteServiceItem/{id}")
                 // 排除接口
                 .excludePathPatterns("/client/login",
                         "/admin/login");

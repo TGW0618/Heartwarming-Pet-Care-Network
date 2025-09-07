@@ -57,7 +57,7 @@ const onSubmit = (values) => {
       showToast("注册成功");
       router.replace("/login");
     } else {
-      showFailToast(res.data.message);
+      showFailToast(res.message);
     }
   })
 }

@@ -1,157 +1,158 @@
 <template>
-  <div class="user-management-container">
-    <!-- 顶部操作栏 -->
-    <div class="action-bar">
-<!--      新增用户按钮开始-->
-      <el-button
-          type="primary"
-          @click="addSysUsersBtn"
-          class="add-user-btn"
+  <el-scrollbar height="80vh">
+    <div class="user-management-container">
+      <!-- 顶部操作栏 -->
+      <div class="action-bar">
+        <!--      新增用户按钮开始-->
+        <el-button
+            type="primary"
+            @click="addSysUsersBtn"
+            class="add-user-btn"
+        >
+          <el-icon>
+            <Plus/>
+          </el-icon>
+          新增用户
+        </el-button>
+        <!--      新增用户按钮结束-->
+
+      </div>
+
+      <!-- 用户分类标签页 -->
+      <el-tabs v-model="activeTab" class="user-tabs">
+        <el-tab-pane label="客户管理" name="owners">
+          <Owners/>
+        </el-tab-pane>
+        <el-tab-pane label="员工管理" name="employees">
+          <Employees/>
+        </el-tab-pane>
+      </el-tabs>
+
+      <!-- 新增用户对话框 -->
+      <el-dialog
+          v-model="data.dialogVisible"
+          title="新增用户"
+          width="600px"
+          class="add-user-dialog"
       >
-        <el-icon>
-          <Plus/>
-        </el-icon>
-        新增用户
-      </el-button>
-      <!--      新增用户按钮结束-->
-
-    </div>
-
-    <!-- 用户分类标签页 -->
-    <el-tabs v-model="activeTab" class="user-tabs">
-      <el-tab-pane label="客户管理" name="owners">
-        <Owners class="user-table"/>
-      </el-tab-pane>
-      <el-tab-pane label="员工管理" name="employees">
-        <Employees class="user-table"/>
-      </el-tab-pane>
-    </el-tabs>
-
-    <!-- 新增用户对话框 -->
-    <el-dialog
-        v-model="data.dialogVisible"
-        title="新增用户"
-        width="600px"
-        class="add-user-dialog"
-    >
-      <el-form
-          :model="data.addSysUsersForm"
-          :rules="addSysUsersFormRules"
-          ref="addSysUsersFormRef"
-          label-width="100px"
-          label-position="left"
-      >
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="账号" prop="username">
-              <el-input
-                  v-model="data.addSysUsersForm.username"
-                  placeholder="请输入6-16位用户名"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input
-                  v-model="data.addSysUsersForm.password"
-                  type="password"
-                  placeholder="请输入6-16位密码"
-                  show-password
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="昵称" prop="realName">
-              <el-input
-                  v-model="data.addSysUsersForm.realName"
-                  placeholder="请输入2-16位昵称"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="性别" prop="sex">
-              <el-select
-                  v-model="data.addSysUsersForm.sex"
-                  placeholder="请选择性别"
-                  class="w-full"
-              >
-                <el-option label="男" value="male"/>
-                <el-option label="女" value="female"/>
-                <el-option label="其他" value="other"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="手机号" prop="phone">
-              <el-input
-                  v-model="data.addSysUsersForm.phone"
-                  placeholder="请输入手机号"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input
-                  v-model="data.addSysUsersForm.email"
-                  placeholder="请输入邮箱"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="角色" prop="role">
-              <el-select
-                  v-model="data.addSysUsersForm.role"
-                  placeholder="选择角色"
-                  class="w-full"
-              >
-                <el-option
-                    v-for="item in optionsRole"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+        <el-form
+            :model="data.addSysUsersForm"
+            :rules="addSysUsersFormRules"
+            ref="addSysUsersFormRef"
+            label-width="100px"
+            label-position="left"
+        >
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="账号" prop="username">
+                <el-input
+                    v-model="data.addSysUsersForm.username"
+                    placeholder="请输入6-16位用户名"
                 />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="状态" prop="status">
-              <el-select
-                  v-model="data.addSysUsersForm.status"
-                  placeholder="请选择状态"
-                  class="w-full"
-              >
-                <el-option label="启用" value="1"/>
-                <el-option label="禁用" value="0"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="密码" prop="password">
+                <el-input
+                    v-model="data.addSysUsersForm.password"
+                    type="password"
+                    placeholder="请输入6-16位密码"
+                    show-password
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="data.dialogVisible = false">取消</el-button>
-          <el-button
-              type="primary"
-              @click="handleAddUser"
-              :loading="loading"
-          >
-            确认添加
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
-  </div>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="昵称" prop="realName">
+                <el-input
+                    v-model="data.addSysUsersForm.realName"
+                    placeholder="请输入2-16位昵称"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="性别" prop="sex">
+                <el-select
+                    v-model="data.addSysUsersForm.sex"
+                    placeholder="请选择性别"
+                    class="w-full"
+                >
+                  <el-option label="男" value="male"/>
+                  <el-option label="女" value="female"/>
+                  <el-option label="其他" value="other"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="手机号" prop="phone">
+                <el-input
+                    v-model="data.addSysUsersForm.phone"
+                    placeholder="请输入手机号"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="邮箱" prop="email">
+                <el-input
+                    v-model="data.addSysUsersForm.email"
+                    placeholder="请输入邮箱"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="角色" prop="role">
+                <el-select
+                    v-model="data.addSysUsersForm.role"
+                    placeholder="选择角色"
+                    class="w-full"
+                >
+                  <el-option
+                      v-for="item in optionsRole"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="状态" prop="status">
+                <el-select
+                    v-model="data.addSysUsersForm.status"
+                    placeholder="请选择状态"
+                    class="w-full"
+                >
+                  <el-option label="启用" value="1"/>
+                  <el-option label="禁用" value="0"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="data.dialogVisible = false">取消</el-button>
+            <el-button
+                type="primary"
+                @click="handleAddUser"
+                :loading="loading"
+            >
+              确认添加
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
+    </div>
+  </el-scrollbar>
 </template>
 
 <script setup>
@@ -274,9 +275,6 @@ const handleAddUser = () => {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.user-table {
-  margin-top: 20px;
-}
 
 .add-user-dialog :deep(.el-dialog__body) {
   padding: 20px 25px;
