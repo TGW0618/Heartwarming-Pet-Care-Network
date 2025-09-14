@@ -24,8 +24,9 @@ public class SysUserController {
     //    查询全部员工信息
     @GetMapping("/getAllSysUserEmployee")
     public Result getAllSysUserEmployee(@RequestParam(required = false) String roleSpecialty,
-                                        @RequestParam(required = false) String role) {
-        List<SysUser> sysUser = sysUserService.getAllSysUserEmployee(roleSpecialty, role);
+                                        @RequestParam(required = false) String role,
+                                        @RequestParam(required = false) Integer status) {
+        List<SysUser> sysUser = sysUserService.getAllSysUserEmployee(roleSpecialty, role, status);
         return Result.success(sysUser);
     }
 

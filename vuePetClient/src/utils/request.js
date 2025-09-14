@@ -1,3 +1,4 @@
+// utils/request.js
 import axios from "axios";
 import {showFailToast} from "vant";
 import router from "@/router/index.js";
@@ -53,9 +54,18 @@ request.interceptors.response.use(
         if (error.code === 'ERR_NETWORK') {
             showFailToast('网络连接失败，请确保后端服务正在运行');
         } else if (error.response) {
-            showFailToast(`服务器错误: ${error.response.status}`);
-            router.replace('/login')
-
+            // 对于401错误，只在特定情况下跳转登录页
+            if (error.response.status === 401) {
+                showFailToast('请先登录');
+                // 清除本地token
+                localStorage.removeItem('token');
+                // 延迟跳转，避免干扰当前操作
+                setTimeout(() => {
+                    router.push('/login');
+                }, 1000);
+            } else {
+                showFailToast(`服务器错误: ${error.response.status}`);
+            }
         } else {
             showFailToast('请求失败: ' + (error.message || '未知错误'));
         }

@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="订单状态" prop="status"  width="90">
+        <el-table-column sortable  label="订单状态" prop="status"  width="90">
           <template #default="scope">
             <el-tag :type="getOrderStatusType(scope.row.status)" size="small" effect="light">
               {{ getOrderStatusText(scope.row.status) }}
@@ -44,7 +44,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="支付状态" prop="paymentStatus"  width="90">
+        <el-table-column sortable label="支付状态" prop="paymentStatus"  width="90">
           <template #default="scope">
             <el-tag
                 :type="getPaymentStatusType(scope.row.paymentStatus)"
@@ -55,7 +55,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column  label="下单时间" prop="createTime" width="130">
+        <el-table-column  sortable  label="下单时间" prop="createTime" width="130">
           <template #default="scope">
             {{ formatDateTime(scope.row.createTime) }}
           </template>

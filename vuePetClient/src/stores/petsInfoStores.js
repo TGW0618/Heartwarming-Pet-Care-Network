@@ -1,13 +1,12 @@
 import {defineStore} from "pinia";
 import request from "@/utils/request.js";
 import {showToast} from "vant";
-import router from "@/router/index.js";
 
 const petsInfoStores = defineStore('petsInfo', {
     state: () => {
         return {
             petsInfoData: [],
-            petsInfoByIdData: null
+            petsInfoByIdData: null,
         }
     },
     getters: {
@@ -16,13 +15,16 @@ const petsInfoStores = defineStore('petsInfo', {
         },
 
 
+
     },
     actions: {
+        //  根据用户id查询该用户的所有宠物信息
         async getPetsInfoData() {
             request.get('/petsInfo/getAllPetsInfo').then(res => {
                 console.log(res)
                 if (res.code === 200) {
                     this.petsInfoData = res.data
+                    this.addOnButton = true
                 }
             })
         },
@@ -38,7 +40,6 @@ const petsInfoStores = defineStore('petsInfo', {
                     this.petsInfoByIdData = res.data
                 }else if (res.code === 404) {
                     showToast('暂无该宠物信息');
-                    router.replace('/petsProfile');
                 }
             })
         },
@@ -60,17 +61,14 @@ const petsInfoStores = defineStore('petsInfo', {
             await request.put("/petsInfo/updatePetsInfoById",values).then(res => {
                 if (res.code === 200) {
                     showToast('已修改');
-                    router.go(-1);
                 }
             })
         },
         //     添加宠物信息
         async addPetsInfo(values) {
-            console.log(values)
             await request.post("/petsInfo/addPetsInfo",values).then(res => {
                 if (res.code === 200) {
                     showToast('已添加');
-                    router.go(-1);
                 }
             })
         },

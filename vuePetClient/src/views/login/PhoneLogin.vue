@@ -12,6 +12,7 @@
               label="手机号"
               placeholder="手机号"
               autocomplete="current-phone"
+              type="digit"
               :rules="[{ required: true, message: '请填写手机号' }]"
           />
           <van-field

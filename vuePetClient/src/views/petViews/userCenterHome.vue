@@ -118,7 +118,7 @@
                 </template>
               </van-grid-item>
               <!--              寄养-->
-              <van-grid-item to="/foster">
+              <van-grid-item to="/fosterServiceList">
                 <template #icon>
                   <van-icon name="shop-collect-o"/>
                 </template>
@@ -129,7 +129,7 @@
                 </template>
               </van-grid-item>
               <!--              医疗-->
-              <van-grid-item to="/medical">
+              <van-grid-item to="/medicalServiceTypeItem">
                 <template #icon>
                   <van-icon name="shield-o"/>
                 </template>

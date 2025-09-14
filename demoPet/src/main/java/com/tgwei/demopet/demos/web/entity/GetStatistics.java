@@ -40,4 +40,5 @@ public class GetStatistics implements Serializable {
      */
     private Integer occupiedRooms;
 
+
 }

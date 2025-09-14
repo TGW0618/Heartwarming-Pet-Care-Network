@@ -34,7 +34,7 @@ public class LoginController {
 
     }
 
-    //    客户端登录接口
+    //    用户端登录接口
     @PostMapping("/client/login")
     @CrossOrigin(origins = "*")
     public Result clientLogin(@RequestBody SysUser sysUser) {

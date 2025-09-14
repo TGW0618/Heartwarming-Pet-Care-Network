@@ -12,4 +12,28 @@ public interface GetStatisticsAllMapper {
     List<GetStatistics> getStatisticsAll();
 
     List<GetStatistics> getStatisticsRooms();
+
+    int countTodayOrders();
+
+    int sumTodayRevenue();
+
+    int countTodayNewUsers();
+
+    int countYesterdayOrders();
+
+    int countYesterdayRevenue();
+
+    int countYesterdayNewUsers();
+
+    int countOrders();
+
+    int sumRevenue();
+
+    int countUsers();
+
+    int countPets();
+
+    Object countFosterOrders();
+
+    Object countMedicalOrders();
 }

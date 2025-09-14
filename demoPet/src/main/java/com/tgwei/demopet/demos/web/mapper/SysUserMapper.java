@@ -14,7 +14,7 @@ public interface SysUserMapper {
     List<SysUser> getAllSysUserOwner();
 
     // 查询全部员工信息（支持筛选）
-    List<SysUser> getAllSysUserEmployee(@Param("roleSpecialty") String roleSpecialty, @Param("role") String role);
+    List<SysUser> getAllSysUserEmployee(@Param("roleSpecialty") String roleSpecialty, @Param("role") String role, @Param("status") Integer status);
 
 
     //    根据id查询用户信息

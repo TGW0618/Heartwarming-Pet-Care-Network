@@ -190,7 +190,7 @@ public class SysOrderController {
             System.out.print("claims: " + claims + " tokenUserId: " + tokenUserId);
 
             if (claims == null || tokenUserId == null) {
-                return Result.error(401, "未授权访问");
+                return Result.error(401, "请先登录");
             }
 
             serviceOrder.setUserId(tokenUserId);
@@ -215,4 +215,39 @@ public class SysOrderController {
             return Result.error(500, "创建订单失败: " + e.getMessage());
         }
     }
+
+    //    创建预约医生订单
+    /*
+     * 预约医生
+     * 医生后台查看预约订单处理
+     * */
+    @PostMapping("/createSysOrderForVet")
+    public Result createSysOrderForVet(HttpServletRequest request, @RequestBody ServiceOrder serviceOrder) {
+        try {
+            Claims claims = (Claims) request.getAttribute("claims");
+            Long tokenUserId = (Long) request.getAttribute("userId");
+
+            System.out.print("claims: " + claims + " tokenUserId: " + tokenUserId);
+
+            if (claims == null || tokenUserId == null) {
+                return Result.error(401, "请先登录");
+            }
+
+            serviceOrder.setUserId(tokenUserId);
+            serviceOrder.setServiceType("medical");
+            serviceOrder.setAmount(serviceOrder.getPrice());
+
+
+            boolean result = sysOrderService.createSysOrder(serviceOrder);
+            if (result) {
+                return Result.success(true);
+
+            } else {
+                return Result.error(500, "订单创建失败");
+            }
+        } catch (Exception e) {
+            return Result.error(500, "创建订单失败: " + e.getMessage());
+        }
+    }
+
 }

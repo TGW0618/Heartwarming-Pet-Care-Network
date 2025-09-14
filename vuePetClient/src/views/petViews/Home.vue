@@ -2,32 +2,32 @@
 <template>
   <div class="home-container">
     <div class="header">
-      <h1 class="title">暖心宠物护理网络</h1>
+      <h1 class="title">宠物护理</h1>
       <p class="subtitle">为您提供专业、贴心的宠物服务</p>
     </div>
 
     <div class="quick-actions">
       <div class="feature-card">
-        <van-icon name="calendar-o" class="feature-icon" />
+        <van-icon name="calendar-o" class="feature-icon"/>
         <h2 class="feature-title">服务预约</h2>
         <p class="feature-desc">在线预约寄养、美容、医疗等服务</p>
         <van-button
-          to="/booking/bookingHome"
-          class="feature-button"
-          round
+            @click="goToBooking"
+            class="feature-button"
+            round
         >
           立即预约
         </van-button>
       </div>
 
       <div class="feature-card">
-        <van-icon name="service-o" class="feature-icon" />
+        <van-icon name="service-o" class="feature-icon"/>
         <h2 class="feature-title">在线咨询</h2>
         <p class="feature-desc">专业宠物医生在线解答疑问</p>
         <van-button
-          to="/consultation"
-          class="feature-button"
-          round
+            @click="goToConsultation"
+            class="feature-button"
+            round
         >
           在线咨询
         </van-button>
@@ -38,32 +38,32 @@
     <div class="services-section">
       <h2 class="section-title">我们的服务</h2>
       <div class="services-grid">
-        <div class="service-item" @click="$router.push('/booking/bookingHome')">
-          <van-icon name="home-o" class="service-icon" />
+        <div class="service-item" @click="router.push('/fosterServiceList')">
+          <van-icon class="service-icon" name="hotel-o" size="30"/>
           <div class="service-info">
             <h3 class="service-name">宠物寄养</h3>
             <p class="service-desc">专业舒适的寄养环境，让您放心出行</p>
           </div>
         </div>
 
-        <div class="service-item" @click="$router.push('/booking/bookingHome')">
-          <van-icon name="brush-o" class="service-icon" />
-          <div class="service-info">
-            <h3 class="service-name">美容护理</h3>
-            <p class="service-desc">专业美容师，让您的宠物焕然一新</p>
-          </div>
-        </div>
-
-        <div class="service-item" @click="$router.push('/booking/bookingHome')">
-          <van-icon name="hospital-o" class="service-icon" />
+        <div class="service-item" @click="router.push('/medicalServiceTypeItem')">
+          <van-icon class="service-icon" name="shield-o" size="30"/>
           <div class="service-info">
             <h3 class="service-name">医疗服务</h3>
             <p class="service-desc">专业兽医团队，全面健康保障</p>
           </div>
         </div>
 
-        <div class="service-item" @click="$router.push('/booking/bookingHome')">
-          <van-icon name="food-o" class="service-icon" />
+        <div class="service-item" @click="router.push('/bookingHome')">
+          <van-icon name="brush-o" class="service-icon"/>
+          <div class="service-info">
+            <h3 class="service-name">美容护理</h3>
+            <p class="service-desc">专业美容师，让您的宠物焕然一新</p>
+          </div>
+        </div>
+
+        <div class="service-item" @click="router.push('/bookingHome')">
+          <van-icon name="bulb-o" class="service-icon"/>
           <div class="service-info">
             <h3 class="service-name">营养咨询</h3>
             <p class="service-desc">科学饮食搭配，健康成长方案</p>
@@ -77,18 +77,19 @@
       <h2 class="section-title">热门服务推荐</h2>
       <div class="recommend-list">
         <div
-          class="recommend-item"
-          v-for="item in recommendServices"
-          :key="item.id"
-          @click="$router.push(`/service/${item.id}`)"
+            class="recommend-item"
+            v-for="item in data.hotServiceItemList"
+            :key="item.id"
+            @click="goToServiceDetail(item.id)"
         >
           <van-image
-            :src="item.image"
-            class="recommend-image"
-            radius="8"
+              :src="item.imageUrl"
+              class="recommend-image"
+              radius="8"
+              fit="cover"
           />
           <div class="recommend-info">
-            <h3 class="recommend-title">{{ item.name }}</h3>
+            <h3 class="recommend-title">{{ item.serviceName }}</h3>
             <p class="recommend-price">¥{{ item.price }}</p>
             <van-tag type="primary" class="recommend-tag">{{ item.category }}</van-tag>
           </div>
@@ -97,45 +98,50 @@
     </div>
 
     <div class="footer">
-      <p class="footer-text">© 2025 暖心宠物护理网络</p>
+      <p class="footer-text">© 2025 宠物护理</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {onMounted, reactive} from 'vue'
+import request from "@/utils/request.js";
+import router from "@/router/index.js";
 
-// 模拟热门服务数据
-const recommendServices = ref([
-  {
-    id: 1,
-    name: '基础美容套餐',
-    price: '88.00',
-    category: '美容',
-    image: '/img/beauty-basic.jpg'
-  },
-  {
-    id: 2,
-    name: '全面体检服务',
-    price: '168.00',
-    category: '医疗',
-    image: '/img/checkup.jpg'
-  },
-  {
-    id: 3,
-    name: '豪华寄养套餐',
-    price: '128.00',
-    category: '寄养',
-    image: '/img/foster-luxury.jpg'
-  },
-  {
-    id: 4,
-    name: '疫苗接种服务',
-    price: '98.00',
-    category: '医疗',
-    image: '/img/vaccine.jpg'
-  }
-])
+const data = reactive({
+  hotServiceItemList: null,
+})
+
+// 获取热门服务数据
+const getHotServiceItem = () => {
+  request.get('/serviceItems/getHotServiceItem').then(res => {
+    if (res.code === 200) {
+      console.log( res)
+      data.hotServiceItemList = res.data;
+    }
+  }).catch(error => {
+    console.error(error);
+  })
+}
+
+onMounted(() => {
+  getHotServiceItem();
+})
+// 跳转到预约页面
+const goToBooking = () => {
+  router.push('/bookingHome');
+}
+
+// 跳转到咨询页面
+const goToConsultation = () => {
+  router.push('/consultationHome');
+}
+
+
+// 跳转到服务详情页
+const goToServiceDetail = (serviceId) => {
+  router.push(`/serviceDetail/${serviceId}`)
+}
 </script>
 
 <style scoped>
@@ -309,6 +315,8 @@ const recommendServices = ref([
   width: 80px;
   height: 80px;
   flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .recommend-info {
@@ -340,7 +348,7 @@ const recommendServices = ref([
 .footer {
   text-align: center;
   margin-top: 40px;
-  padding-bottom: 20px;
+  padding-bottom: 8vh;
 }
 
 .footer-text {

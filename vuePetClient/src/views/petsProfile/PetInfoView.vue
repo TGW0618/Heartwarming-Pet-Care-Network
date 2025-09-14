@@ -119,7 +119,7 @@ const getGenderText = (gender) => {
 }
 
 const onClickLeft = () => {
-  router.push("/petsProfile");
+  router.go(-1);
 }
 
 //右上角弹窗事件
@@ -139,7 +139,9 @@ const delPetInfo = () => {
       .then(() => {
         // on confirm
         petsInfo.deletePetsInfoById(petId)
-        router.push('/petsProfile')
+
+          router.back();
+
 
       })
       .catch(() => {

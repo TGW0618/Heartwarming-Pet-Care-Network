@@ -42,7 +42,7 @@ import HorizontalBarData from "@/components/HorizontalBarData.vue";
 import router from "@/router/index.js";
 
 const onClickLeft = () => {
-  router.push('/userinfo')
+  router.back()
 }
 
 const data = reactive({

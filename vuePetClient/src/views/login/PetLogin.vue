@@ -12,7 +12,7 @@
               label="用户名"
               placeholder="用户名"
               autocomplete="current-username"
-              :rules="[{ required: true, message: '请填写用户名' }]"
+              :rules="usernameRules"
           />
           <van-field
               v-model="password"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import request from "@/utils/request.js";
 import {showFailToast, showLoadingToast} from "vant";
 import router from "@/router/index.js";
@@ -53,6 +53,24 @@ const username = ref('');
 const password = ref('');
 
 userInfoStore.initializeStore();
+
+
+// 用户名验证规则
+const usernameRules = computed(() => [
+  { required: true, message: '请填写账号' },
+  {
+    pattern:  /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/,
+    message: '账号只能包含英文字母和数字'
+  },
+  {
+    min: 3,
+    message: '账号长度不能少于3位'
+  },
+  {
+    max: 20,
+    message: '账号长度不能超过20位'
+  }
+]);
 
 const onSubmit = (values) => {
   console.log('submit', values);

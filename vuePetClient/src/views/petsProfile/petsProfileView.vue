@@ -1,6 +1,5 @@
 <!--宠物信息页-->
 <template>
-
   <navBarTop title="宠物信息">
     <template #left>
       <div @click="onClickLeft">
@@ -16,7 +15,8 @@
       </div>
     </template>
   </navBarTop>
-  <div class="container">
+
+  <div v-if="hasPetsData" class="container">
     <van-row>
       <van-col
           v-for="item in petsInf.petsInfoData"
@@ -38,13 +38,17 @@
       </van-col>
     </van-row>
   </div>
+
+  <div v-else>
+    <van-empty description="暂无宠物数据" />
+  </div>
 </template>
 
 <script setup>
 import navBarTop from "@/components/navBarTop.vue"
 import petsInfo from "@/components/petsInfo.vue"
 import petsInfoStores from "@/stores/petsInfoStores.js"
-import {onMounted} from "vue"
+import {onMounted, computed} from "vue"
 import {useRouter} from "vue-router"
 import defaultAvatarImage from '@/assets/img/default-avatar.png'
 
@@ -54,12 +58,17 @@ const router = useRouter()
 // 默认头像（静态引入，非响应式）
 const defaultAvatar = defaultAvatarImage
 
+// 使用计算属性判断是否有宠物数据
+const hasPetsData = computed(() => {
+  return petsInf.petsInfoData && petsInf.petsInfoData.length > 0
+})
+
 onMounted(() => {
   petsInf.getPetsInfoData()
 })
 
 const onClickLeft = () => {
-  router.push('/userinfo')
+  router.go(-1)
 }
 
 // 跳转到宠物详情页面

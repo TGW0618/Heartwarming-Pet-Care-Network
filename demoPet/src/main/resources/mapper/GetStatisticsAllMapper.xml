@@ -16,9 +16,83 @@
                (SELECT SUM(amount) FROM service_order WHERE service_type = 'MEDICAL') AS totalMedicalIncome,# 医疗收入
                (SELECT SUM(amount) FROM service_order WHERE service_type = 'FOSTER')  AS totalFosterIncome# 寄养收入
     </select>
+
     <select id="getStatisticsRooms" resultType="com.tgwei.demopet.demos.web.entity.GetStatistics">
-        SELECT (SELECT COUNT(*) FROM rooms)                                            AS totalRooms,# 房间数
-               (SELECT COUNT(*) FROM rooms WHERE status = 'available')                AS availableRooms,# 可用房间数
-               (SELECT COUNT(*) FROM rooms WHERE status = 'occupied')                 AS occupiedRooms# 占用房间数
+        SELECT (SELECT COUNT(*) FROM rooms)                            AS totalRooms,# 房间数
+               (SELECT COUNT(*) FROM rooms WHERE status = 'available') AS availableRooms,# 可用房间数
+               (SELECT COUNT(*) FROM rooms WHERE status = 'occupied')  AS occupiedRooms# 占用房间数
     </select>
+    <!--    今日订单数-->
+    <select id="countTodayOrders" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM service_order
+        WHERE DATE(create_time) = CURDATE()
+          and status != 'canceled'
+    </select>
+    <!--    今日营收-->
+    <select id="sumTodayRevenue" resultType="java.lang.Integer">
+        SELECT SUM(amount)
+        FROM service_order
+        WHERE DATE(create_time) = CURDATE()
+          and status != 'canceled'
+    </select>
+    <!--    今日新增用户-->
+    <select id="countTodayNewUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM sys_user
+        WHERE DATE(create_time) = CURDATE()
+    </select>
+    <!--    订单增长率(今日与昨日对比)-->
+    <select id="countYesterdayOrders" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM service_order
+        WHERE DATE(create_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          and status != 'canceled'
+    </select>
+    <!--  营收增长率  -->
+    <select id="countYesterdayRevenue" resultType="java.lang.Integer">
+        SELECT SUM(amount)
+        FROM service_order
+        WHERE DATE(create_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          and status != 'canceled'
+    </select>
+    <!--    昨日新增用户-->
+    <select id="countYesterdayNewUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM sys_user
+        WHERE DATE(create_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+    </select>
+    <!--    总订单数-->
+    <select id="countOrders" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM service_order
+    </select>
+    <!--    总营收入-->
+    <select id="sumRevenue" resultType="java.lang.Integer">
+        SELECT SUM(amount)
+        FROM service_order
+    </select>
+    <!--    总用户数-->
+    <select id="countUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM sys_user
+    </select>
+    <!--    宠物总数-->
+    <select id="countPets" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM pet_info
+    </select>
+    <select id="countFosterOrders" resultType="java.lang.Object">
+        SELECT COUNT(*)
+        FROM service_order
+        WHERE service_type = 'FOSTER'
+          and DATE(create_time) = CURDATE()
+    </select>
+    <select id="countMedicalOrders" resultType="java.lang.Object">
+        SELECT COUNT(*)
+        FROM service_order
+        WHERE service_type = 'MEDICAL'
+          and DATE(create_time) = CURDATE()
+    </select>
+
 </mapper>

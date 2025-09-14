@@ -11,8 +11,7 @@ import java.util.List;
 public interface PetsInfoMapper {
 
 
-    @Select("select * from pet_info where owner_id = #{ownerId}")
-    List<PetsInfo> getAllPetsInfo(Integer ownerId);
+    List<PetsInfo> getAllPetsInfo(Long ownerId);
 
     @Select("select * from pet_info where id = #{id}")
     PetsInfo getPetsInfoById(Integer id);

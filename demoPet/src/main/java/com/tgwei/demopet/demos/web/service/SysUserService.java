@@ -22,8 +22,8 @@ public class SysUserService {
     }
 
     //    查询全部员工信息
-    public List<SysUser> getAllSysUserEmployee(String roleSpecialty, String role) {
-        return sysUserMapper.getAllSysUserEmployee(roleSpecialty, role);
+    public List<SysUser> getAllSysUserEmployee(String roleSpecialty, String role, Integer status) {
+        return sysUserMapper.getAllSysUserEmployee(roleSpecialty, role, status);
     }
 
     //根据id查询用户信息

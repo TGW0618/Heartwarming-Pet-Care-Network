@@ -19,8 +19,13 @@ public class PetsInfoController {
     private PetsInfoService petsInfoService;
 
     // 根据用户id查询该用户的所有宠物信息
+    /*
+    * 管理端查询时需要登录和传递用户的id
+    * 客户端查询时需登录
+    * */
+
     @GetMapping("/getAllPetsInfo")
-    public Result getAllPetsInfo(HttpServletRequest request, @RequestParam(required = false) Integer ownerId) {
+    public Result getAllPetsInfo(HttpServletRequest request, @RequestParam(required = false) Long ownerId) {
         // 从request attribute中获取用户信息
         Claims claims = (Claims) request.getAttribute("claims");
         Long tokenUserId = (Long) request.getAttribute("userId");
@@ -28,26 +33,23 @@ public class PetsInfoController {
 
         // 检查用户认证信息是否存在
         if (claims == null || tokenUserId == null) {
-            return Result.error(401, "未授权访问");
+            return Result.error(401, "请先登录");
         }
 
-        // 如果没有传id参数，则查询当前用户信息
-        if (ownerId == null) {
-            ownerId = tokenUserId.intValue();
-        }
-
-        // 权限检查：用户只能查询自己的信息，或者管理员可以查询所有用户
-        if (!tokenUserId.equals((long) ownerId) && !"admin".equals(role)) {
-            return Result.error(403, "无权限访问该用户信息");
-        }
-
-        List<PetsInfo> petsInfo = petsInfoService.getAllPetsInfo(ownerId);
-
-        if (petsInfo == null || petsInfo.isEmpty()) {
-            return Result.error(404, "暂无数据");
+        List<PetsInfo> petsInfo;
+        if (!role.equals("owner")) {
+            // 管理员角色必须提供ownerId
+            if (ownerId == null) {
+                return Result.error(400, "管理员查询需要提供ownerId参数");
+            }
+            petsInfo = petsInfoService.getAllPetsInfo(ownerId);
+        } else {
+            // owner角色查询自己的宠物信息
+            petsInfo = petsInfoService.getAllPetsInfo(tokenUserId);
         }
         return Result.success(petsInfo);
     }
+
 
 
     //    根据宠物id查询宠物信息

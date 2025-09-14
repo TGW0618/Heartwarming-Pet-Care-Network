@@ -14,7 +14,7 @@ public class PetsInfoService {
     private PetsInfoMapper petsInfoMapper;
 
 
-    public List<PetsInfo> getAllPetsInfo(Integer ownerId) {
+    public List<PetsInfo> getAllPetsInfo(Long ownerId) {
         return petsInfoMapper.getAllPetsInfo(ownerId);
     }
 

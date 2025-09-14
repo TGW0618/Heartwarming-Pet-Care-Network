@@ -72,8 +72,8 @@
             name="weight"
             label="体重(kg)"
             placeholder="请输入体重"
-            type="number"
-            :rules="[{ required: true, message: '请填写体重' }]"
+            type="digit"
+            :rules="weightRules"
         />
         <van-field
             v-model="form.healthStatus"
@@ -123,7 +123,7 @@
 
 <script setup>
 import navBarTop from "@/components/navBarTop.vue";
-import {reactive, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 import {showToast} from 'vant';
 import petsInfoStores from "@/stores/petsInfoStores.js";
@@ -151,6 +151,30 @@ const onConfirm = ({selectedValues}) => {
   form.birthDate = selectedValues.join('-');
   showPicker.value = false;
 };
+
+// 体重字段的验证规则
+const weightRules = computed(() => [
+  { required: true, message: '请填写体重' },
+  {
+    validator: (val) => {
+      // 检查是否为数字（包括小数）
+      if (!val) return true;
+      const regex = /^\d+(\.\d+)?$/;
+      return regex.test(val);
+    },
+    message: '请输入有效的数字'
+  },
+  {
+    validator: (val) => {
+      // 检查数值是否合理（0.1kg到200kg之间）
+      if (!val) return true;
+      const num = parseFloat(val);
+      return num >= 0.1 && num <= 200;
+    },
+    message: '请输入合理的体重范围（0.1-200kg）'
+  }
+]);
+
 
 // 头像文件列表
 const avatarFileList = ref([]);
@@ -228,6 +252,7 @@ const onSubmit = async (values) => {
     Object.assign(form, values, {avatar: form.avatar});
     console.log('提交的数据:', form);
     await petsInfo.addPetsInfo(form);
+    router.back() ;
   } catch (error) {
     console.error(error);
   }
