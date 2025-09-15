@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.RoomsMapper">
+    <update id="updateRooms">
+        UPDATE rooms
+        <set>
+            <if test="roomNumber != null and roomNumber != ''">
+                room_number = #{roomNumber},
+            </if>
+            <if test="roomType != null and roomType != ''">
+                room_type = #{roomType},
+            </if>
+            <if test="roomName != null and roomName != ''">
+                room_name = #{roomName},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity},
+            </if>
+            <if test="size != null">
+                size = #{size},
+            </if>
+            <if test="pricePerDay != null">
+                price_per_day = #{pricePerDay},
+            </if>
+            <if test="features != null and features != ''">
+                features = #{features},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="notes != null and notes != ''">
+                notes = #{notes},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            updated_at = now()
+        </set>
+        WHERE room_id = #{roomId}
+    </update>
+
+    <select id="getRoomsStatistics" resultType="com.tgwei.demopet.demos.web.entity.Rooms">
+        SELECT
+            (SELECT COUNT(*) FROM rooms) AS totalRooms,
+            (SELECT COUNT(*) FROM rooms WHERE status = 'available') AS availableRooms,
+            (SELECT COUNT(*) FROM rooms WHERE status = 'occupied') AS occupiedRooms
+    </select>
+</mapper>

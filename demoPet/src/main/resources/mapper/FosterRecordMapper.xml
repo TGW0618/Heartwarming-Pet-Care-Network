@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.FosterRecordMapper">
+
+
+    <insert id="addFosterRecord">
+        insert into foster_record(order_id, staff_id, room_id, check_in_time, check_out_time, daily_log,
+                                  food_preference, notes, create_time, update_time)
+        values (#{orderId}, #{staffId}, #{roomId}, #{checkInTime}, #{checkOutTime}, #{dailyLog}, #{foodPreference},
+                #{notes}, #{createTime}, #{updateTime})
+    </insert>
+    <select id="getFosterRecordByOrderId" resultType="com.tgwei.demopet.demos.web.entity.FosterRecordVO">
+        SELECT fr.id,
+               fr.order_id,
+               fr.staff_id,
+               fr.room_id,
+               fr.check_in_time   as checkInTime,
+               fr.check_out_time  as checkOutTime,
+               fr.daily_log       as dailyLog,
+               fr.food_preference as foodPreference,
+               fr.notes,
+               fr.create_time     as createTime,
+               fr.update_time     as updateTime,
+               r.room_number      as roomNumber,
+               r.room_type        as roomType,
+               su.id              as employeeID,
+               su.real_name       as employeeRealName,
+               su.role            as employeeRole
+
+        FROM foster_record fr
+                 LEFT JOIN rooms r ON fr.room_id = r.room_id
+                 LEFT JOIN sys_user su ON fr.staff_id = su.id
+        WHERE fr.order_id = #{orderId}
+    </select>
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.MedicalRecordMapper">
+
+    <insert id="addMedicalRecord">
+        insert into medical_record(order_id, veterinarian_id, symptoms, diagnosis, treatment, prescription,
+                                   next_visit_date, create_time, update_time)
+        values (#{orderId}, #{veterinarianId}, #{symptoms}, #{diagnosis}, #{treatment}, #{prescription},
+                #{nextVisitDate}, #{createTime}, #{updateTime})
+    </insert>
+    <select id="getMedicalRecordByOrderId" resultType="com.tgwei.demopet.demos.web.entity.MedicalRecordVO">
+        SELECT mr.id,
+               mr.order_id,
+               mr.veterinarian_id,
+               mr.symptoms,
+               mr.diagnosis,
+               mr.treatment,
+               mr.prescription,
+               mr.next_visit_date as nextVisitDate,
+               mr.create_time     as createTime,
+               mr.update_time     as updateTime,
+               su.id              as employeeID,
+               su.real_name       as employeeRealName,
+               su.role            as employeeRole
+        FROM medical_record mr
+                 LEFT JOIN sys_user su ON mr.veterinarian_id = su.id
+        WHERE mr.order_id = #{orderId}
+    </select>
+</mapper>

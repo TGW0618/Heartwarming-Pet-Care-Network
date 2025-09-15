@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.ServiceItemMapper">
+    <!--  useGeneratedKeys="true" keyProperty="id" 启用主键回填  -->
+    <insert id="addServiceItem" parameterType="com.tgwei.demopet.demos.web.entity.ServiceItem"
+            useGeneratedKeys="true" keyProperty="id"
+
+    >
+        INSERT INTO service_item(service_name, service_type, medical_type, category,
+                                 description, price, duration, image_url, status,
+                                 create_time, update_time)
+        VALUES (#{serviceName}, #{serviceType}, #{medicalType}, #{category},
+                #{description}, #{price}, #{duration}, #{imageUrl}, #{status},
+                #{createTime}, #{updateTime})
+    </insert>
+    <update id="updateServiceItem">
+        UPDATE service_item
+        <set>
+            <if test="serviceName != null">
+                service_name = #{serviceName},
+            </if>
+            <if test="serviceType != null">
+                service_type = #{serviceType},
+            </if>
+            <if test="medicalType != null">
+                medical_type = #{medicalType},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="duration != null">
+                duration = #{duration},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getAllServiceItem" resultType="com.tgwei.demopet.demos.web.entity.ServiceItem">
+        SELECT * FROM service_item
+        <where>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            and deleted = 0
+        </where>
+    </select>
+    <select id="getHotServiceItem" resultType="com.tgwei.demopet.demos.web.entity.ServiceItem">
+        SELECT si.*, COUNT(so.id) as order_count
+        FROM service_item si
+                 JOIN service_order so ON si.id = so.service_id
+        WHERE si.status = 1
+          AND si.deleted = 0
+        GROUP BY si.id
+        ORDER BY order_count DESC
+        LIMIT #{limit}
+    </select>
+</mapper>
