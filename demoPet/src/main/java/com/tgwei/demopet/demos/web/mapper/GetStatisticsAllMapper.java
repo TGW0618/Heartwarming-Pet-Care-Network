@@ -13,27 +13,27 @@ public interface GetStatisticsAllMapper {
 
     List<GetStatistics> getStatisticsRooms();
 
-    int countTodayOrders();
+    Integer countTodayOrders();
 
-    int sumTodayRevenue();
+    Integer sumTodayRevenue();
 
-    int countTodayNewUsers();
+    Integer countTodayNewUsers();
 
-    int countYesterdayOrders();
+    Integer countYesterdayOrders();
 
-    int countYesterdayRevenue();
+    Integer countYesterdayRevenue();
 
-    int countYesterdayNewUsers();
+    Integer countYesterdayNewUsers();
 
-    int countOrders();
+    Integer countOrders();
 
-    int sumRevenue();
+    Integer sumRevenue();
 
-    int countUsers();
+    Integer countUsers();
 
-    int countPets();
+    Integer countPets();
 
-    Object countFosterOrders();
+    Integer  countFosterOrders();
 
-    Object countMedicalOrders();
+    Integer  countMedicalOrders();
 }

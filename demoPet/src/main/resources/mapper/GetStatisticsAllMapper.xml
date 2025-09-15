@@ -82,13 +82,13 @@
         SELECT COUNT(*)
         FROM pet_info
     </select>
-    <select id="countFosterOrders" resultType="java.lang.Object">
+    <select id="countFosterOrders" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM service_order
         WHERE service_type = 'FOSTER'
           and DATE(create_time) = CURDATE()
     </select>
-    <select id="countMedicalOrders" resultType="java.lang.Object">
+    <select id="countMedicalOrders" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM service_order
         WHERE service_type = 'MEDICAL'

@@ -43,25 +43,31 @@ public class GetStatisticsAllService {
      * 今日订单数、今日营收、今日新增用户数。
      * */
     //    今日订单数
-    public Integer getTodayOrderCount() {
-        return getStatisticsAllMapper.countTodayOrders();
+    public int getTodayOrderCount() {
+        Integer todayOrderCount = getStatisticsAllMapper.countTodayOrders();
+        return todayOrderCount == null ? 0 : todayOrderCount;
     }
 
     //    今日营收
-    public Object getTodayRevenue() {
-        return getStatisticsAllMapper.sumTodayRevenue();
+    public int getTodayRevenue() {
+        Integer todayRevenue = getStatisticsAllMapper.sumTodayRevenue();
+        return todayRevenue == null ? 0 : todayRevenue;
     }
 
     //    今日新增用户
     public Object getTodayNewUsers() {
-        return getStatisticsAllMapper.countTodayNewUsers();
+        Integer todayNewUsers = getStatisticsAllMapper.countTodayNewUsers();
+        return todayNewUsers == null ? 0 : todayNewUsers;
     }
+
     public Object getTotalFosterOrders() {
-        return getStatisticsAllMapper.countFosterOrders();
+        Integer totalFosterOrders = getStatisticsAllMapper.countFosterOrders();
+        return totalFosterOrders == null ? 0 : totalFosterOrders;
     }
 
     public Object getTotalMedicalOrders() {
-        return getStatisticsAllMapper.countMedicalOrders();
+        Integer totalMedicalOrders = getStatisticsAllMapper.countMedicalOrders();
+        return totalMedicalOrders == null ? 0 : totalMedicalOrders;
     }
 
     /*
@@ -70,17 +76,21 @@ public class GetStatisticsAllService {
      * */
 //   昨日订单数据
     public Object getYesterdayOrderCount() {
-        return getStatisticsAllMapper.countYesterdayOrders();
+        Integer yesterdayOrderCount = getStatisticsAllMapper.countYesterdayOrders();
+
+        return yesterdayOrderCount == null ? 0 : yesterdayOrderCount;
     }
 
     //昨日收入数据
     public Object getYesterdayRevenue() {
-        return getStatisticsAllMapper.countYesterdayRevenue();
+        Integer yesterdayRevenue = getStatisticsAllMapper.countYesterdayRevenue();
+        return yesterdayRevenue == null ? 0 : yesterdayRevenue;
     }
 
     //昨日用户数据
     public Object getYesterdayNewUsers() {
-        return getStatisticsAllMapper.countYesterdayNewUsers();
+        Integer yesterdayNewUsers = getStatisticsAllMapper.countYesterdayNewUsers();
+        return yesterdayNewUsers == null ? 0 : yesterdayNewUsers;
     }
 
     //  订单增长率
@@ -161,7 +171,6 @@ public class GetStatisticsAllService {
     public int getTotalPets() {
         return getStatisticsAllMapper.countPets();
     }
-
 
 
 }
