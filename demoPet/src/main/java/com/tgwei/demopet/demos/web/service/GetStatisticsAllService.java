@@ -1,6 +1,9 @@
 package com.tgwei.demopet.demos.web.service;
 
 import com.tgwei.demopet.demos.web.entity.GetStatistics;
+import com.tgwei.demopet.demos.web.entity.OrderAmountDTO;
+import com.tgwei.demopet.demos.web.entity.OrderStatusDTO;
+import com.tgwei.demopet.demos.web.entity.ServiceItemHotDTO;
 import com.tgwei.demopet.demos.web.mapper.GetStatisticsAllMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,5 +176,30 @@ public class GetStatisticsAllService {
     }
 
 
+    //    订单状态占比
+    public List<OrderStatusDTO> getOrderStatus() {
+        return getStatisticsAllMapper.getOrderStatus();
+    }
+
+    //    热门服务
+    public List<ServiceItemHotDTO> getHotServiceItem(int i) {
+        List<ServiceItemHotDTO> serviceItems = getStatisticsAllMapper.getHotServiceItem(i);
+        for (ServiceItemHotDTO serviceItem : serviceItems) {
+            if (serviceItem.getServiceName() == null) {
+                serviceItem.setServiceName("服务不存在或以下架");
+            }
+        }
+
+
+        return serviceItems;
+    }
+
+    /*
+     * 动态查询 订单每日交易金额趋势。
+     *  status{pending，confirmed，processing，completed，canceled}
+     * */
+    public List<OrderAmountDTO> getOrderAmount(int days, String status) {
+        return getStatisticsAllMapper.getOrderAmount(days, status);
+    }
 }
 
