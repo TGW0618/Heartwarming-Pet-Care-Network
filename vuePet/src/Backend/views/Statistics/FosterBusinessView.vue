@@ -1,19 +1,23 @@
 <template>
-  寄养业务分析
-  专门针对寄养服务的精细化运营数据。
-
-  房型利用率 (条形图)
-
-  数据：各房型（小型、中型、大型、豪华、VIP）的被使用次数或总入住天数。帮助优化房型配置。
-
-  寄养时长分布 (饼图)
-
-  数据：短期（1-3天）、中期（4-7天）、长期（7天以上）的订单占比。有助于制定价格策略。
-
-
+  <div>
+    <el-row :gutter="18">
+      <el-col :span="12">
+        <div style="border-radius: 15px;padding: 5px">
+          <foster-room-type></foster-room-type>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div style="border-radius: 15px;padding: 5px">
+          <foster-time></foster-time>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 <script setup>
 
+import FosterRoomType from "@/Backend/views/Statistics/components/FosterRoomType.vue";
+import FosterTime from "@/Backend/views/Statistics/components/FosterTime.vue";
 </script>
 
 <style scoped>

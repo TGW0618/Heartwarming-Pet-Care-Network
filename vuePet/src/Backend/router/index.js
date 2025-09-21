@@ -101,6 +101,23 @@ const router = createRouter({
                     },
                     component: () => import('../views/StatisticsHome.vue'),
                 },
+                {
+                    path: 'InformHome',
+                    name: 'InformHome',
+                    meta: {
+                        title: '通知中心',
+                    },
+                    component: () => import('../views/InformHome.vue'),
+
+                },
+                {
+                    path: 'MessageHome',
+                    name: 'MessageHome',
+                    meta: {
+                        title: '信息中心',
+                    },
+                    component: () => import('../views/MessageHome.vue'),
+                }
             ]
         },
         //     自定义404错误页

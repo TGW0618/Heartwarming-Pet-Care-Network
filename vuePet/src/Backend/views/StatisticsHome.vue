@@ -8,25 +8,25 @@
             <OperationsView/>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="订单分析" name="OrderAnalysis">
+        <el-tab-pane label="订单分析" name="OrderAnalysis" lazy>
           <!--    订单分析-->
           <div>
             <OrderAnalysisView/>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="用户分析" name="UserAnalysis">
+        <el-tab-pane label="用户分析" name="UserAnalysis" lazy>
           <!--    用户分析-->
           <div>
             <UserAnalysisView/>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="寄养业务分析" name="FosterBusiness">
+        <el-tab-pane label="寄养业务分析" name="FosterBusiness" lazy>
           <!--    寄养业务分析-->
           <div>
             <FosterBusinessView/>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="医疗业务分析" name="MedicalBusiness">
+        <el-tab-pane label="医疗业务分析" name="MedicalBusiness" lazy>
           <!--     医疗业务分析-->
           <div>
             <MedicalBusinessView/>

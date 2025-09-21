@@ -1,10 +1,11 @@
 <template>
   <div>
-    员工界面
+    <Inform></Inform>
   </div>
 </template>
 <script setup>
 
+import Inform from "@/Backend/views/Inform/Inform.vue";
 </script>
 
 <style scoped>
