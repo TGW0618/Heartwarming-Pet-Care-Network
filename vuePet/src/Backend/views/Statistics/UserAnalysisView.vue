@@ -1,23 +1,34 @@
 <template>
-  用户分析
-  分析用户行为，支持用户增长和留存策略。
-
-  用户增长趋势 (折线图)
-
-  数据：每日/每周新增用户数，观察推广活动效果。
-
-  用户角色分布 (饼图)
-
-  数据：用户中，普通宠物主、寄养员、兽医、管理员的占比。
-
-  用户消费排名 (表格)
-
-  数据：消费金额最高的前N位用户（可关联其宠物信息），用于识别高价值客户。
+  <div>
+    <div>
+      <el-row :gutter="15">
+        <!--    用户增长趋势 (折线图)-->
+        <el-col :span="8" class="chat_col">
+          <user-zeng-zhang>
+          </user-zeng-zhang>
+        </el-col>
+        <!--         用户角色分布 (饼图)-->
+        <el-col :span="8" class="chat_col">
+          <user-role-fen-bu/>
+        </el-col>
+        <!--         用户消费排名 (表格)-->
+        <el-col :span="8" class="chat_col">
+          <user-xiao-fei-table/>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
 </template>
 <script setup>
+import UserZengZhang from "@/Backend/views/Statistics/components/UserZengZhang.vue";
+import UserRoleFenBu from "@/Backend/views/Statistics/components/UserRoleFenBu.vue";
+import UserXiaoFeiTable from "@/Backend/views/Statistics/components/UserXiaoFeiTable.vue";
 
 </script>
 
 <style scoped>
-
+.chat_col {
+  padding: 10px;
+  box-sizing: border-box;
+}
 </style>

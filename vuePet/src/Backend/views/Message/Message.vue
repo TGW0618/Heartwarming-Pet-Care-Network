@@ -1,7 +1,6 @@
+
 <template>
-  <div>
-    老板界面
-  </div>
+  <div>信息</div>
 </template>
 <script setup>
 

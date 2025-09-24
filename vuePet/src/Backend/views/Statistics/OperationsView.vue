@@ -1,5 +1,5 @@
 <template>
-  <div  style="margin-bottom: 10vh">
+  <div style="margin-bottom: 10vh">
     <!--    关键指标卡片 (KPI Cards)-->
     <div>
       <p>今日实时数据 ({{ data.overviewData?.date }})</p>
@@ -16,7 +16,7 @@
                 今日营收
               </template>
               <template #data>
-                {{ data.overviewData?.revenueToday || 0 }}$
+                {{ data.overviewData?.revenueToday || 0 }}￥
               </template>
             </RectangleComponents>
           </el-col>
@@ -84,7 +84,7 @@
                 总营收
               </template>
               <template #data>
-                {{ data.AccumulateData?.revenue || 0 }}$
+                {{ data.AccumulateData?.revenue || 0 }}￥
               </template>
             </RectangleComponents>
           </el-col>
@@ -183,6 +183,7 @@ const getOptionRevenue = () => {
       right: '4%',
       bottom: '3%',
       containLabel: true
+
     },
     series: [
       {
@@ -191,7 +192,11 @@ const getOptionRevenue = () => {
         smooth: true,
         symbolSize: 6,
         lineStyle: {
-          width: 2
+          width: 2,
+        },
+        itemStyle:{
+          color:"#ad4fc1"
+
         }
       }
     ],
@@ -228,7 +233,10 @@ const getOptionOrder = () => {
         smooth: true,
         symbolSize: 6,
         lineStyle: {
-          width: 2
+          width: 2,
+        },
+        itemStyle:{
+          color:"#ad4fc1"
         }
       }
     ]
@@ -259,11 +267,17 @@ const getOptionService = () => {
         data: [
           {
             value: data.overviewData?.medicalOrderCountToday || 0,
-            name: '医疗服务'
+            name: '医疗服务',
+            itemStyle: {
+              color: "#415bff"
+            }
           },
           {
             value: data.overviewData?.fosterOrderCountToday || 0,
-            name: '寄养类型'
+            name: '寄养类型',
+            itemStyle: {
+              color: "#ffd700"
+            }
           },
 
         ]

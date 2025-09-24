@@ -178,10 +178,10 @@ const searchInfo = () => {
 };
 
 const toUserMessage = () => {
-  ElMessage.info("通知功能开发中")
+  router.push('InformHome')
 };
 const toUserMail = () => {
-  ElMessage.info("邮箱功能开发中")
+  router.push('MessageHome')
 };
 
 const toUserCenter = () => {
