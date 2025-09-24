@@ -94,5 +94,31 @@
         WHERE service_type = 'MEDICAL'
           and DATE(create_time) = CURDATE()
     </select>
+    <select id="getOrderStatus" resultType="com.tgwei.demopet.demos.web.entity.OrderStatusDTO">
+        SELECT status,
+               COUNT(*) AS count
+        FROM service_order
+        GROUP BY status
+    </select>
+    <select id="getHotServiceItem" resultType="com.tgwei.demopet.demos.web.entity.ServiceItemHotDTO">
+        SELECT si.service_name,
+               COUNT(*) AS count
+        FROM service_order as so
+                 left join service_item as si on so.service_id = si.id
+        where so.service_id is not null
+        GROUP BY so.service_id, si.service_name
+        ORDER BY count DESC
+        LIMIT #{limit}
+    </select>
+    <select id="getOrderAmount" resultType="com.tgwei.demopet.demos.web.entity.OrderAmountDTO">
+        SELECT DATE(create_time) as date,
+               SUM(amount)       as amount
+        FROM service_order
+        WHERE create_time >= DATE_SUB(NOW(), INTERVAL #{days} DAY)
+          and service_order.status = #{status}
+        GROUP BY DATE(create_time)
+        ORDER BY date
+    </select>
+
 
 </mapper>

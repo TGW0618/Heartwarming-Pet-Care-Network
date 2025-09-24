@@ -5,6 +5,7 @@ import com.tgwei.demopet.demos.web.entity.GetStatistics;
 import com.tgwei.demopet.demos.web.service.GetStatisticsAllService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -88,6 +89,19 @@ public class GetStatisticsController {
         AccumulateData.put("userCount", getStatisticsAllService.getTotalUsers());
         AccumulateData.put("petCount", getStatisticsAllService.getTotalPets());
         return Result.success(AccumulateData);
+    }
+
+    /*
+     * 订单分析
+     * 订单状态占比、热门服务排序、订单每日交易金额趋势。
+     * */
+    @GetMapping("/getOrderAnalysis")
+    public Result getOrderAnalysis(@RequestParam(defaultValue = "30") int days, @RequestParam(defaultValue = "completed") String status) {
+        Map<String, Object> OrderAnalysis = new HashMap<>();
+        OrderAnalysis.put("orderStatus", getStatisticsAllService.getOrderStatus());
+        OrderAnalysis.put("hotService", getStatisticsAllService.getHotServiceItem(5));
+        OrderAnalysis.put("orderAmount", getStatisticsAllService.getOrderAmount(days, status));
+        return Result.success(OrderAnalysis);
     }
 
 
