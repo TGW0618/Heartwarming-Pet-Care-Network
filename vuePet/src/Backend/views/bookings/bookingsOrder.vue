@@ -100,7 +100,7 @@
                   </el-descriptions-item>
 
                   <el-descriptions-item label="订单金额">
-                    <span class="amount-highlight">¥{{ data.OrderDetail.servicePrice }}</span>
+                    <span class="amount-highlight">¥{{ data.OrderDetail.amount }}</span>
                   </el-descriptions-item>
 
                   <el-descriptions-item label="下单时间">
@@ -158,19 +158,19 @@
                 <h3 class="section-title">服务信息</h3>
                 <el-descriptions :column="2" border size="small">
                   <el-descriptions-item label="服务项目">
-                    {{ data.OrderDetail.serviceName }}
+                    {{ data.OrderDetail.serviceName || 'null' }}
                   </el-descriptions-item>
 
                   <el-descriptions-item label="服务类别">
-                    {{ data.OrderDetail.serviceCategory || '暂无' }}
+                    {{ data.OrderDetail.serviceType || '暂无' }}
                   </el-descriptions-item>
 
                   <el-descriptions-item label="服务时长">
-                    {{ data.OrderDetail.serviceDuration || '暂无' }}分钟
+                    {{ data.OrderDetail.serviceDuration || 'null' }}分钟
                   </el-descriptions-item>
 
                   <el-descriptions-item label="服务费用">
-                    <span class="amount-highlight">¥{{ data.OrderDetail.servicePrice }}</span>
+                    <span class="amount-highlight">{{ data.OrderDetail.servicePrice || 'null' }}¥</span>
                   </el-descriptions-item>
 
                   <el-descriptions-item label="预约时间" :span="2">
@@ -630,7 +630,10 @@ onMounted(() => {
   if (!userStore.userRole) {
     userStore.getUserRole()
   }
-
+  getOrderList()
+  getVetOrderList()
+  getRoomsStatistics()
+  getAvailableRooms()
   // 延迟一点时间确保角色信息加载完成
   setTimeout(() => {
     getOrderByRole()
@@ -651,6 +654,7 @@ const dialogVisibleDisposeVet = ref(false)
 const handleDetail = (row) => {
   dialogVisible.value = true
   data.OrderDetail = row
+  console.log(data.OrderDetail)
 }
 
 /**

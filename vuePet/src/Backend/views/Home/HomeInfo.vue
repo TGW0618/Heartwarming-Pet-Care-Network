@@ -3,7 +3,7 @@
     <div>
       <el-row :gutter="10">
         <!--          系统概况-->
-        <el-col :span="6">
+        <el-col :span="12" style="padding-bottom: 10px">
           <div>
             <div class="Title">
               <title-composition>
@@ -20,14 +20,14 @@
             <div class="Box">
               <info-item>
                 <template #text>
-                  欢迎！{{ data.userInfo.username }}
+                  你好,{{ data.userInfo.username }}
                 </template>
               </info-item>
             </div>
           </div>
         </el-col>
         <!--        快捷操作入口-->
-        <el-col :span="6">
+        <el-col :span="12">
           <div>
             <div class="Title">
               <title-composition>
@@ -42,41 +42,44 @@
               </title-composition>
             </div>
             <div class="Box">
-              <div v-if="data.userInfo.role === 'admin'">
-                <info-item @click="toStatisticsHome">
-                  <template #text>
-                    数据统计
-                  </template>
-                </info-item>
-                <info-item @click="toUsersHome">
-                  <template #text>
-                    用户管理
-                  </template>
-                </info-item>
-              </div>
               <div>
-                <info-item @click="toBookingsHome">
-                  <template #text>
-                    处理订单
-                  </template>
-                </info-item>
-                <info-item v-if="data.userInfo.role === 'admin' || data.userInfo.role === 'foster_staff' "
-                           @click="toRoomsHome">
-                  <template #text>
-                    宠舍管理
-                  </template>
-                </info-item>
-                <info-item @click="toUserCenter">
-                  <template #text>
-                    个人中心
-                  </template>
-                </info-item>
+                <el-row :gutter="10">
+                  <el-col :span="12" style="padding-bottom: 5px;">
+                    <el-button @click="toStatisticsHome" v-if="data.userInfo.role === 'admin'"
+                               style="width: 100%;">
+                      数据统计
+                    </el-button>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-button @click="toUsersHome" v-if="data.userInfo.role === 'admin'"
+                               style="width: 100%;">
+                      用户管理
+                    </el-button>
+                  </el-col>
+                  <el-col :span="12" style="padding-bottom: 5px;">
+                    <el-button @click="toBookingsHome" style="width: 100%">
+                      处理预约
+                    </el-button>
+                  </el-col>
+                  <el-col :span="12" style="padding-bottom: 5px;">
+                    <el-button @click="toRoomsHome"
+                               v-if="data.userInfo.role === 'admin' || data.userInfo.role === 'foster_staff'"
+                               style="width: 100%">
+                      宠舍管理
+                    </el-button>
+                  </el-col>
+                  <el-col :span="12" style="padding-bottom: 5px;">
+                    <el-button @click="toUserCenter" style="width: 100%">
+                      个人中心
+                    </el-button>
+                  </el-col>
+                </el-row>
               </div>
             </div>
           </div>
         </el-col>
         <!--        关键业务预览-->
-        <el-col :span="6">
+        <el-col :span="12">
           <div>
             <div class="Title">
               <title-composition>
@@ -105,19 +108,19 @@
                     {{ data.overviewData?.revenueToday || 0 }}￥
                   </template>
                 </RectangleComponents>
-                <RectangleComponents @click="toStatisticsHome">
-                  <template #icon>
-                    <el-icon>
-                      <UserFilled/>
-                    </el-icon>
-                  </template>
-                  <template #title>
-                    今日订单
-                  </template>
-                  <template #data>
-                    {{ data.overviewData?.orderCountToday || 0 }}单
-                  </template>
-                </RectangleComponents>
+                <!--                <RectangleComponents @click="toStatisticsHome">-->
+                <!--                  <template #icon>-->
+                <!--                    <el-icon>-->
+                <!--                      <UserFilled/>-->
+                <!--                    </el-icon>-->
+                <!--                  </template>-->
+                <!--                  <template #title>-->
+                <!--                    今日订单-->
+                <!--                  </template>-->
+                <!--                  <template #data>-->
+                <!--                    {{ data.overviewData?.orderCountToday || 0 }}单-->
+                <!--                  </template>-->
+                <!--                </RectangleComponents>-->
               </div>
               <div v-if="data.userInfo.role">
 
@@ -126,7 +129,7 @@
           </div>
         </el-col>
         <!--        通知公告-->
-        <el-col :span="6">
+        <el-col :span="12">
           <div>
             <div class="Title">
               <title-composition>
@@ -212,6 +215,7 @@ onMounted(() => {
   border: 1px solid rgba(174, 84, 193, 0.16);
 
 }
+
 
 .iconY {
   font-size: 10px;
