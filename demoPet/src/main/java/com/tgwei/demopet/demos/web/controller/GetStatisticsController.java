@@ -104,5 +104,12 @@ public class GetStatisticsController {
         return Result.success(OrderAnalysis);
     }
 
+    /*
+     * 医疗业务分析
+     * 兽医接诊数量排名(返回兽医名称及接诊数量)
+     * 常见症状统计（）
+     * */
+
+
 
 }
