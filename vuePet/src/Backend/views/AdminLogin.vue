@@ -21,15 +21,39 @@
         <!--        logo结束-->
         <!-- 登录表单开始 -->
         <el-form :model="data.loginForm" :rules="data.loginRules" ref="loginFormRef">
-          <el-form-item prop="username">
-            <el-input
-                v-model="data.loginForm.username"
-                placeholder="请输入账号"
-                prefix-icon="User"
-                size="large"
-                @keyup.enter="handleLogin"
-            />
-          </el-form-item>
+          <div v-if="loginMode==='username'">
+            <el-form-item prop="username">
+              <el-input
+                  v-model="data.loginForm.username"
+                  placeholder="请输入账号"
+                  prefix-icon="User"
+                  size="large"
+                  @keyup.enter="handleLogin"
+              />
+            </el-form-item>
+          </div>
+          <div v-if="loginMode==='email'">
+            <el-form-item prop="email">
+              <el-input
+                  v-model="data.loginForm.email"
+                  placeholder="请输入邮箱"
+                  prefix-icon="User"
+                  size="large"
+                  @keyup.enter="handleLogin"
+              />
+            </el-form-item>
+          </div>
+          <div v-if="loginMode==='phone'">
+            <el-form-item prop="phone">
+              <el-input
+                  v-model="data.loginForm.phone"
+                  placeholder="请输入手机号"
+                  prefix-icon="User"
+                  size="large"
+                  @keyup.enter="handleLogin"
+              />
+            </el-form-item>
+          </div>
           <el-form-item prop="password">
             <el-input
                 v-model="data.loginForm.password"
@@ -83,11 +107,12 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import {Avatar, Cellphone, Message} from '@element-plus/icons-vue'
 import request from "@/Backend/utils/request.js";
 import {ElMessage} from "element-plus";
 import router from "@/Backend/router/index.js";
+
 
 const loginFormRef = ref(null)
 const rememberMe = ref(false)
@@ -105,8 +130,9 @@ const data = reactive({
     ]
   },
   loginUser: [],
+  userInfo: null,
 })
-
+const loginMode = ref('username')
 
 const handleLogin = () => {
   loginFormRef.value.validate(valid => {
@@ -117,11 +143,12 @@ const handleLogin = () => {
         if (res.code === 200) {
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('petSysUser', JSON.stringify(res.data.user))// 把数据转为json字符串存储用户数据，
+          data.userInfo = res.data.user
           //   跳转后台管理系统
-          ElMessage.success('登录成功,即将进入后台')
           setTimeout(function () {
             router.replace('/admin/home')
           }, 1000)
+          ElMessage.success('登录成功!欢迎' + res.data.user.username)
         } else {
           ElMessage.error(res.message)
         }
@@ -130,17 +157,21 @@ const handleLogin = () => {
   })
 }
 
+
 const forgetPassword = () => {
   ElMessage.info('请联系管理员')
 }
 const handleLoginUser = () => {
-  ElMessage.info('功能开发中')
+  loginMode.value = 'username'
+  ElMessage.info('使用账号登录')
 }
 const handleLoginMessage = () => {
-  ElMessage.info('功能开发中')
+  loginMode.value = 'email'
+  ElMessage.info('使用邮箱登录')
 }
 const handleLoginPhone = () => {
-  ElMessage.info('功能开发中')
+  loginMode.value = 'phone'
+  ElMessage.info('使用手机号登录')
 }
 
 </script>

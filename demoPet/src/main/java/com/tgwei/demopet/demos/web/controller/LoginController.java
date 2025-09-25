@@ -27,9 +27,10 @@ public class LoginController {
     //    后台管理系统登录接口
     @PostMapping("/admin/login")
     public Result adminLogin(@RequestBody SysUser sysUser) {
-//        SysUser dbSysUser = loginService.adminLogin(sysUser);
-//        return Result.success(dbSysUser);
-
+        SysUser dbSysUser = loginService.adminLogin(sysUser);
+        if (dbSysUser == null) {
+            return Result.error(500, "用户不存在");
+        }
         return this.clientLogin(sysUser);
 
     }
