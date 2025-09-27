@@ -207,7 +207,7 @@ public class SysOrderController {
 
             boolean result = sysOrderService.createSysOrder(serviceOrder);
             if (result) {
-                return Result.success("订单创建成功");
+                return Result.success();
             } else {
                 return Result.error(500, "订单创建失败");
             }
@@ -216,10 +216,11 @@ public class SysOrderController {
         }
     }
 
-    //    创建预约医生订单
+
     /*
-     * 预约医生
-     * 医生后台查看预约订单处理
+     * 创建预约挂号订单
+     * 根据token获取下单的用户id，生成该用户的订单
+     * 根据前端传入的数据进行订单创建，
      * */
     @PostMapping("/createSysOrderForVet")
     public Result createSysOrderForVet(HttpServletRequest request, @RequestBody ServiceOrder serviceOrder) {
@@ -233,15 +234,21 @@ public class SysOrderController {
                 return Result.error(401, "请先登录");
             }
 
+//            判断预约服务是否存在
+            ServiceItem bookingServiceItem = serviceItemService.getServiceItemById(37L);
+            if (bookingServiceItem == null) {
+                return Result.error(400, "预约服务不存在");
+            }
+
+//            设置订单信息
             serviceOrder.setUserId(tokenUserId);
             serviceOrder.setServiceType("medical");
+            serviceOrder.setServiceId(37L);
             serviceOrder.setAmount(serviceOrder.getPrice());
-
 
             boolean result = sysOrderService.createSysOrder(serviceOrder);
             if (result) {
                 return Result.success(true);
-
             } else {
                 return Result.error(500, "订单创建失败");
             }
@@ -249,5 +256,6 @@ public class SysOrderController {
             return Result.error(500, "创建订单失败: " + e.getMessage());
         }
     }
+
 
 }

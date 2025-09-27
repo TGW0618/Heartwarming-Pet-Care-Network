@@ -208,7 +208,7 @@ public class ServiceItemService {
         return Result.success("删除成功");
     }
 
-
+    //    获取所有服务项
     public List<ServiceItem> getAllServiceItem(String serviceType, String medicalType) {
         if (serviceType != null && !serviceType.isEmpty()) {
             return serviceItemMapper.getAllServiceItemServiceType(serviceType);
@@ -219,6 +219,8 @@ public class ServiceItemService {
         }
     }
 
+
+//    根据id获取服务项
     public ServiceItem getServiceItemById(Long id) {
         return serviceItemMapper.getServiceItemById(id);
     }

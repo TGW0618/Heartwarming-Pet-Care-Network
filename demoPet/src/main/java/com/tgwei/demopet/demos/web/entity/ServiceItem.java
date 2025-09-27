@@ -106,25 +106,21 @@ public class ServiceItem {
      */
     @Getter
     public enum MedicalType {
-        vacation("vacation", "疫苗"),
-        diagnosis("diagnosis", "诊疗");
+        vaccination("vaccination"),
+        diagnosis("diagnosis"),
+        booking("booking");
+        private final String value;
 
-        private final String code;
-        private final String description;
-
-        MedicalType(String code, String description) {
-            this.code = code;
-            this.description = description;
+        MedicalType(String value) {
+            this.value = value;
         }
-
-        public static MedicalType fromCode(String code) {
+        public static MedicalType fromValue(String value) {
             for (MedicalType type : MedicalType.values()) {
-                if (type.getCode().equals(code)) {
+                if (type.getValue().equals(value)) {
                     return type;
                 }
             }
-            throw new IllegalArgumentException("Unknown medical type code: " + code);
+            throw new IllegalArgumentException("Unknown medical type value: " + value);
         }
-
     }
 }
