@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tgwei.demopet.demos.web.mapper.SysNotificationMapper">
+    <insert id="createSysNotification">
+        insert into sys_notification (user_id, type, title, content, is_read, related_order_id, create_time)
+        values (#{userId}, #{type}, #{title}, #{content}, #{isRead}, #{relatedOrderId}, #{createTime})
+    </insert>
+    <select id="getSysNotification" resultType="com.tgwei.demopet.demos.web.entity.SysNotification">
+        select * from sys_notification where user_id = #{userId}
+        <if test="limit != null">
+            limit #{limit}
+        </if>
+    </select>
+
+</mapper>

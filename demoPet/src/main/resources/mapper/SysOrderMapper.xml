@@ -439,6 +439,11 @@
         </where>
         ORDER BY so.create_time DESC
     </select>
+    <select id="getOrderByOrderNo" resultType="com.tgwei.demopet.demos.web.entity.ServiceOrder">
+        SELECT *
+        FROM service_order
+        WHERE order_no = #{orderNo}
+    </select>
 
 
     <delete id="deleteSysOrder">

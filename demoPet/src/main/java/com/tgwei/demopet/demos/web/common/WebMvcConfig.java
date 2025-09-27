@@ -31,7 +31,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/serviceItems/updateServiceItem",
                         "/serviceItems/deleteServiceItem/{id}",
                         "/deleteRooms/{id}",
-                        "/updateRooms")
+                        "/updateRooms",
+                        "/getSysNotification")
                 // 排除接口
                 .excludePathPatterns("/client/login",
                         "/admin/login");

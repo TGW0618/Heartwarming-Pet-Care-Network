@@ -107,16 +107,8 @@ const router = createRouter({
                     meta: {
                         title: '通知中心',
                     },
-                    component: () => import('../views/InformHome.vue'),
+                    component: () => import('../views/NoticeHome.vue'),
 
-                },
-                {
-                    path: 'MessageHome',
-                    name: 'MessageHome',
-                    meta: {
-                        title: '信息中心',
-                    },
-                    component: () => import('../views/MessageHome.vue'),
                 }
             ]
         },

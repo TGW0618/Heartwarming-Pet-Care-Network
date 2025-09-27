@@ -56,4 +56,7 @@ public interface SysOrderMapper {
     List<ServiceOrderVO> getOrderAll(@Param("userId") Long userId, @Param("orderType") String orderType, @Param("employeeId") Long employeeId);
 
 
+//    根据订单编号查询订单
+    ServiceOrder getOrderByOrderNo(String orderNo);
+
 }
