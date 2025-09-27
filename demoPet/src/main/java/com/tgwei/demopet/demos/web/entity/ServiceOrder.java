@@ -1,6 +1,7 @@
 package com.tgwei.demopet.demos.web.entity;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,10 +11,10 @@ public class ServiceOrder {
     private Long id;                            // 订单ID
     private String orderNo;                     // 订单编号（唯一，格式：YYYYMMDD+8位随机数）
     private Long userId;                        // 用户ID（宠物主人）
-    private Long employeeId;                        // 员工ID
+    private Long employeeId;                    // 员工ID
     private Long petId;                         // 宠物ID
     private Long serviceId;                     // 服务项目ID
-    private String serviceType;                 // 服务类型（foster, medical, grooming）
+    private String serviceType;                 // 服务类型（foster, medical）
     private LocalDateTime appointmentStartTime; // 预约开始时间
     private LocalDateTime appointmentEndTime;   // 预约结束时间（寄养用）
     private LocalDateTime actualStartTime;      // 实际开始时间
@@ -28,4 +29,8 @@ public class ServiceOrder {
     private String remark;                      // 用户备注（如宠物特殊需求）
     private LocalDateTime createTime;           // 创建时间
     private LocalDateTime updateTime;           // 更新时间
+
+
+
+
 }

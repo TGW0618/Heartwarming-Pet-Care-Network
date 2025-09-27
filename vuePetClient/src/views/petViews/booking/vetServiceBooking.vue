@@ -15,13 +15,13 @@
         <h3 class="section-title">预约时间</h3>
         <!-- 日期选择 -->
         <div>
-          <van-cell title="预约日期" :value="dateDisplay" @click="showCalendar = true"  is-link/>
+          <van-cell title="预约日期" :value="dateDisplay" @click="showCalendar = true" is-link/>
           <van-calendar style="z-index: 30000;padding-bottom: 100px"
-              v-model:show="showCalendar"
-              :min-date="minDate"
-              :max-date="maxDate"
-              @confirm="onDateConfirm"
-              :round="true"
+                        v-model:show="showCalendar"
+                        :min-date="minDate"
+                        :max-date="maxDate"
+                        @confirm="onDateConfirm"
+                        :round="true"
           />
         </div>
 
@@ -467,8 +467,13 @@ const createOrderPost = (formBookingData) => {
   });
   request.post('/sysOrder/createSysOrderForVet', cleanData)
       .then(res => {
+        console.log(res)
         if (res.code === 200) {
-          showToast('订单创建成功');
+          if (res.data) {
+            showToast('预约成功');
+          } else {
+            showToast('预约失败');
+          }
           router.go(-1);
         } else {
           showToast('订单创建失败');
@@ -725,12 +730,6 @@ watch(() => petsStore.petsInfoData, (newValue) => {
     font-size: 20px;
   }
 }
-
-
-
-
-
-
 
 
 </style>

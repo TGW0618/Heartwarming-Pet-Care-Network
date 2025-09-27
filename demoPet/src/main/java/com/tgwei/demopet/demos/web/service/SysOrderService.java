@@ -3,6 +3,7 @@ package com.tgwei.demopet.demos.web.service;
 import com.tgwei.demopet.demos.web.common.Result;
 import com.tgwei.demopet.demos.web.entity.ServiceOrder;
 import com.tgwei.demopet.demos.web.entity.ServiceOrderVO;
+import com.tgwei.demopet.demos.web.entity.SysNotification;
 import com.tgwei.demopet.demos.web.entity.SysOrder;
 import com.tgwei.demopet.demos.web.mapper.SysOrderMapper;
 import io.jsonwebtoken.Claims;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,14 +21,17 @@ import java.util.List;
 @Transactional
 public class SysOrderService {
 
-    @Autowired
+    @Resource
     private SysOrderMapper sysOrderMapper;
-    @Autowired
+    @Resource
     @Lazy//懒加载(解决循环依赖问题)
     private MedicalRecordService medicalRecordService;
-    @Autowired
+    @Resource
     @Lazy//懒加载
     private FosterRecordService fosterRecordService;
+
+    @Resource
+    private SysNotificationService sysNotificationService;
 
 
     // 获取订单(根据角色，订单类型（可为空），角色id（可为空）获取订单信息)
@@ -160,10 +165,6 @@ public class SysOrderService {
 
     // 用户创建订单
     public Boolean createSysOrder(ServiceOrder serviceOrder) {
-        if (serviceOrder == null) {
-            throw new IllegalArgumentException("订单信息不能为空");
-        }
-
         // 生成固定格式的订单号：Pet+服务类型 + YYYYMMDDHHmmss + 8位随机数
         String dateTimeStr = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String randomStr = String.format("%08d", new java.util.Random().nextInt(100000000));
@@ -185,6 +186,21 @@ public class SysOrderService {
             // 第三方支付流水号：支付方式 + YYYYMMDDHHmmss + 8位随机数
             serviceOrder.setTransactionId(serviceOrder.getPaymentMethod() + dateTimeStr + randomStr);
         }
+
+        /*调用通知接口，根据员工id发送预约成功通知给该员工
+         * 设置通知内容
+         * 设置通知接收者
+         * 发送通知
+         * */
+
+        System.out.println("员工id:" + serviceOrder.getEmployeeId());
+        SysNotification sysNotification = new SysNotification();
+        sysNotification.setUserId(serviceOrder.getEmployeeId());
+        sysNotification.setType(SysNotification.Type.ORDER);
+        sysNotification.setTitle("订单通知");
+        sysNotification.setContent("您有新的订单，请及时处理");
+
+        sysNotificationService.createSysNotification(sysNotification);
 
         return sysOrderMapper.createSysOrder(serviceOrder);
     }

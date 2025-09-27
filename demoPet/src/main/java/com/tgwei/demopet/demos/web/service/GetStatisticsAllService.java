@@ -201,5 +201,7 @@ public class GetStatisticsAllService {
     public List<OrderAmountDTO> getOrderAmount(int days, String status) {
         return getStatisticsAllMapper.getOrderAmount(days, status);
     }
+
+
 }
 
