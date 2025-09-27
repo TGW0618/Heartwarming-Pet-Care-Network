@@ -7,7 +7,6 @@ import com.tgwei.demopet.demos.web.entity.SysNotification;
 import com.tgwei.demopet.demos.web.entity.SysOrder;
 import com.tgwei.demopet.demos.web.mapper.SysOrderMapper;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,6 +162,9 @@ public class SysOrderService {
         return sysOrderMapper.deleteSysOrder(id);
     }
 
+    /*
+     * 创建订单并生成通知
+     * */
     // 用户创建订单
     public Boolean createSysOrder(ServiceOrder serviceOrder) {
         // 生成固定格式的订单号：Pet+服务类型 + YYYYMMDDHHmmss + 8位随机数
@@ -187,23 +189,33 @@ public class SysOrderService {
             serviceOrder.setTransactionId(serviceOrder.getPaymentMethod() + dateTimeStr + randomStr);
         }
 
-        /*调用通知接口，根据员工id发送预约成功通知给该员工
-         * 设置通知内容
-         * 设置通知接收者
-         * 发送通知
-         * */
+        boolean orderCreated = sysOrderMapper.createSysOrder(serviceOrder);
 
-        System.out.println("员工id:" + serviceOrder.getEmployeeId());
+        if (orderCreated) {
+//            根据订单编号查询订单
+            ServiceOrder sysOrderItem = sysOrderMapper.getOrderByOrderNo(serviceOrder.getOrderNo());
+//            订单ID
+            Long sysOrderId = sysOrderItem.getId();
+//            调用订单通知方法传入参数设置通知信息
+            SysNotification sysNotification = getSysNotification(serviceOrder, sysOrderId);
+            //            调用创建通知接口传入参数
+            sysNotificationService.createSysNotification(sysNotification);
+        }
+        return orderCreated;
+    }
+
+    //    设置订单通知信息
+    private static SysNotification getSysNotification(ServiceOrder serviceOrder, Long sysOrderId) {
         SysNotification sysNotification = new SysNotification();
         sysNotification.setUserId(serviceOrder.getEmployeeId());
-        sysNotification.setType(SysNotification.Type.ORDER);
-        sysNotification.setTitle("订单通知");
-        sysNotification.setContent("您有新的订单，请及时处理");
-
-        sysNotificationService.createSysNotification(sysNotification);
-
-        return sysOrderMapper.createSysOrder(serviceOrder);
+        sysNotification.setTitle("预约提醒");
+        sysNotification.setContent("您有新的预约订单，请及时处理");
+        sysNotification.setType(SysNotification.Type.order);
+        sysNotification.setIsRead(0);
+        sysNotification.setRelatedOrderId(sysOrderId);
+        return sysNotification;
     }
+
 
     // 根据订单id获取订单相关信息（连表查询）
     public ServiceOrderVO getSysOrderById(Integer id) {
